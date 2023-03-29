@@ -75,7 +75,7 @@ public class ToolBar {
     private int avatarY = dp(10);
 
     private int nameX = dp(60);
-    private int nameY = dp(14);
+    private int nameY = dp(15);
 
     private int secondNameX = dp(60);
     private int secondNameY = dp(14);
@@ -193,25 +193,34 @@ public class ToolBar {
     public void settFeed() {
         hasBackground = false;
 //        setLeftIcon(null);
-        setRightIcon(Themp.toolbar.igtv);
-        setCenterIcon(Themp.toolbar.ok);
+        setRightIcon(Themp.toolbar.forward);
         setLeftIcon(Themp.toolbar.camera);
 //        setRightIcon(Themp.toolbar.forward);
 //        setFeedLogoIcon(Themp.toolbar.forward);
 //        parent.invalidate();
     }
+    public void settMirror() {
+        hasBackground = false;
+        setLeftIcon(Themp.toolbar.cast);
+    }
+
 
     public void setSetting() {
         hasBackground = false;
         setLeftIcon(Themp.toolbar.AlertProfile);
     }
 
-    public void setMovies() {
+    public void setMovie() {
         hasBackground = false;
-        setLeftIcon(Themp.toolbar.rotate);
+        setLeftIcon(Themp.toolbar.movies);
     }
 
-    public void settDirect(String username) {
+    public void setMusic() {
+        hasBackground = false;
+        setLeftIcon(Themp.toolbar.music);
+
+    }
+        public void settDirect(String username) {
         setUsername(dp(75), dp(12), username, transparent ? Themp.TEXT_PAINT_FILL_AND_STROKE_3_WHITE[9] : Themp.TEXT_PAINT_FILL_AND_STROKE_4_BLACK[10]);
         setRightIcon(Themp.bitmapChat[9]);
         setCenterIcon(Themp.bitmapChat[1]);
@@ -362,7 +371,7 @@ public class ToolBar {
     }
 
     public void setName(String name) {
-        nameLayout = new StaticLayout(name, Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[8], dp(400), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+        nameLayout = new StaticLayout(name, Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[10], dp(400), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
         parent.invalidate();
     }
 

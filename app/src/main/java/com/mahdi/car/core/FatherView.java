@@ -17,13 +17,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.mahdi.car.bookmark.BookmarkCollectionFragment;
+import com.mahdi.car.mirror.MirrorScreenFragment;
 import com.mahdi.car.feed.FeedFragment;
 import com.mahdi.car.library.autolinklibrary.AutoLinkItem;
 import com.mahdi.car.library.autolinklibrary.AutoLinkMode;
 import com.mahdi.car.library.autolinklibrary.AutoLinkUtils;
 import com.mahdi.car.library.autolinklibrary.TouchableSpan;
-import com.mahdi.car.movies.MoviesFragment;
+import com.mahdi.car.movie.MovieFragment;
+import com.mahdi.car.music.MusicFragment;
 import com.mahdi.car.server.model.Post;
 import com.mahdi.car.server.model.User;
 import com.mahdi.car.setting.SettingFragment;
@@ -36,6 +37,7 @@ import java.util.regex.Pattern;
 
 
 public class FatherView {
+
     public static final int PAGE_HOME = 0;
     public static final int PAGE_EXPLORE = 1;
     public static final int PAGE_MOVIES = 2;
@@ -96,6 +98,9 @@ public class FatherView {
     }
 
     public void init(Context context) {
+
+        //clear();
+
         this.context = context;
 
         isFullScreen = false;
@@ -156,25 +161,28 @@ public class FatherView {
     }
 
     public void showPage(int index, boolean rebuild) {
+
+        Log.d("FatherView:ShoPage:", "index:" + index);
+
         if (coreFragments[index] == null || rebuild) {
 
             coreFragments[index] = new CoreFragment(context);
-            if (contentView != null) {
-                contentView.addView(coreFragments[index], LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
-            }
+            //if (contentView != null) {
+            contentView.addView(coreFragments[index], LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
+            //}
 
             switch (index) {
                 case PAGE_HOME:
                     coreFragments[index].presentFragment(new FeedFragment());
                     break;
                 case PAGE_EXPLORE:
-                    coreFragments[index].presentFragment(new BookmarkCollectionFragment());
+                    coreFragments[index].presentFragment(new MirrorScreenFragment());
                     break;
                 case PAGE_MOVIES:
-                    coreFragments[index].presentFragment(new MoviesFragment());
+                    coreFragments[index].presentFragment(new MovieFragment());
                     break;
                 case PAGE_PROFILE:
-                    coreFragments[index].presentFragment(new SettingFragment());
+                    coreFragments[index].presentFragment(new MusicFragment());
                     break;
             }
         }
@@ -315,6 +323,10 @@ public class FatherView {
     }
 
     public void clear() {
+        if(contentView == null){
+            return;
+        }
+
         BaseFragment fragment = getCurrentFragment();
         if (fragment == null)
             return;

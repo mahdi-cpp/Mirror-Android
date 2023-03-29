@@ -77,7 +77,7 @@ public class SettingFragment extends BaseFragment
             } else if (position == rowAccount) {
                 cell.setIcon(Themp.setting.account, "Account");
             } else if (position == rowCash) {
-                cell.setIcon(Themp.setting.cash, "Cash");
+                cell.setIcon(Themp.setting.cash, "Resolation");
             } else if (position == rowAbout) {
                 cell.setIcon(Themp.setting.about, "About");
             } else if (position == rowHelp) {

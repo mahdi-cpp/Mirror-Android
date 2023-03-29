@@ -43,6 +43,8 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import androidx.core.app.ActivityCompat;
 
 import com.mahdi.car.core.QZoomView;
+import com.mahdi.car.service.UDPListenerService;
+import com.mahdi.car.service.WebSocketService;
 import com.mahdi.car.share.component.ui.LayoutHelper;
 import com.mahdi.car.core.FatherView;
 import com.mahdi.car.messenger.*;
@@ -87,6 +89,17 @@ public class MyActivity extends android.app.Activity implements NotificationCent
     private BroadcastReceiver receiver;
 
     public static int height;
+
+    //BoundService class Objet
+    WebSocketService webSocketService;
+
+    //boolean variable to keep a check on service bind and unbind event
+    boolean isBound = false;
+
+    UdpReceiver udpReceiver = null;
+    WebSocketReceiver webSocketReceiver = null;
+    IntentFilter udpIntentFilter;
+    IntentFilter webSocketIntentFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -270,6 +283,46 @@ public class MyActivity extends android.app.Activity implements NotificationCent
 
         AndroidUtilities.hideStatusBar();
         AndroidUtilities.showStatusBar();
+
+        //-------------------------------------
+
+        udpReceiver = new UdpReceiver();
+        udpReceiver.setDelegate(new UdpReceiver.Delegate() {
+            @Override
+            public void receive(String sender, String message) {
+
+            }
+        });
+
+        webSocketReceiver = new WebSocketReceiver();
+        webSocketReceiver.setDelegate(new WebSocketReceiver.Delegate() {
+            @Override
+            public void onOpened() {
+                //toolbar.setName("connected");
+            }
+
+            @Override
+            public void onClose() {
+                //toolbar.setName("closed");
+            }
+
+            @Override
+            public void onMessage(String message) {
+
+            }
+        });
+
+        udpIntentFilter = new IntentFilter("udp.mahdi");
+        webSocketIntentFilter = new IntentFilter("mahdi.websocket");
+
+        registerReceiver(udpReceiver, udpIntentFilter);
+        registerReceiver(webSocketReceiver, webSocketIntentFilter);
+
+        startService(new Intent(this, UDPListenerService.class));
+
+        Intent webSocketIntent = new Intent(this, WebSocketService.class);
+        startService(webSocketIntent);
+        bindService(webSocketIntent, boundServiceConnection, BIND_AUTO_CREATE);
 
     }
 
@@ -483,16 +536,45 @@ public class MyActivity extends android.app.Activity implements NotificationCent
     protected void onDestroy()
     {
         FatherView.instance().onDestroy();
+
         unregisterReceiver(receiver);
+        unregisterReceiver(udpReceiver);
+        unregisterReceiver(webSocketReceiver);
+
+        if (isBound) {
+            unbindService(boundServiceConnection);
+            isBound = false;
+        }
+
         super.onDestroy();
         onFinish();
     }
+    @Override
+    public void onBackPressed()
+    {
+        if (!FatherView.instance().onBackPressed()) {
+            return;
+        }
 
+        //FatherView.instance().clear();
+        super.onBackPressed();
+    }
     @Override
     protected void onResume()
     {
         super.onResume();
+
+        if (webSocketService != null) {
+            if (webSocketService.isOpened()) {
+                Log.d("WebSocket:", "opened");
+            } else {
+                Log.d("WebSocket:", "closed");
+            }
+        }
+
+        //FatherView.instance().init(this);
         FatherView.instance().onResume();
+
 
         //showLanguageAlert(false);
         App.mainInterfacePaused = false;
@@ -665,16 +747,6 @@ public class MyActivity extends android.app.Activity implements NotificationCent
         //        outState.putString("last_updated_on", mLastUpdateTime);
     }
 
-    @Override
-    public void onBackPressed()
-    {
-        if (!FatherView.instance().onBackPressed()) {
-            return;
-        }
-
-        FatherView.instance().clear();
-        super.onBackPressed();
-    }
 
     @Override
     public void onLowMemory()
@@ -919,5 +991,26 @@ public class MyActivity extends android.app.Activity implements NotificationCent
         int permissionState = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         return permissionState == PackageManager.PERMISSION_GRANTED;
     }
+
+
+    private ServiceConnection boundServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+
+            WebSocketService.MyBinder binderBridge = (WebSocketService.MyBinder) service;
+            webSocketService = binderBridge.getService();
+            isBound = true;
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+            isBound = false;
+            webSocketService = null;
+
+        }
+    };
 
 }

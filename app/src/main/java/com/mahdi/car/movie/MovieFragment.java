@@ -1,13 +1,14 @@
-package com.mahdi.car.bookmark;
+package com.mahdi.car.movie;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mahdi.car.bookmark.cell.CollectionCell;
 import com.mahdi.car.core.BaseFragment;
+import com.mahdi.car.movie.cell.CollectionCell;
 import com.mahdi.car.server.dtos.BookmarkDTO;
 import com.mahdi.car.server.https.Server;
 import com.mahdi.car.server.model.BookmarkCollection;
@@ -20,42 +21,39 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class BookmarkCollectionFragment extends BaseFragment
-{
+public class MovieFragment extends BaseFragment {
+
     private Adapter adapter;
 
     private List<BookmarkCollection> collections = new ArrayList<>();
     private List<Post> allPosts = new ArrayList<>();
     private List<Post> allShops = new ArrayList<>();
 
+
+    @SuppressLint("HardwareIds")
     @Override
-    public View createView(Context context)
-    {
+    public View createView(Context context) {
+        loadingShow = false;
+        config.hasServerData = false;
+
         super.adapter = adapter = new Adapter(context);
         super.linearLayoutManager = new CustomGridLayoutManager(context, 2);
         super.createView(context);
 
-        setEmpetyStateView();
-
-        adapter.notifyDataSetChanged();
-
-        toolbar.setName("Saved");
-
-        //emptyStateView.setBookmark();
+        toolbar.setName("Movies");
+        toolbar.setMovie();
 
         return contentView;
     }
 
     @Override
-    public void serverSend()
-    {
+    public void serverSend() {
         super.serverSend();
         server(Server.bookmark.getAllCollections());
     }
 
     @Override
-    public <T> void serverOnResponse(Call<T> call, Response<T> response)
-    {
+    public <T> void serverOnResponse(Call<T> call, Response<T> response) {
         super.serverOnResponse(call, response);
 
         BookmarkDTO bookmarkDTO = (BookmarkDTO) response.body();
@@ -79,31 +77,26 @@ public class BookmarkCollectionFragment extends BaseFragment
 
     }
 
-    private class Adapter extends RecyclerView.Adapter
-    {
+    private class Adapter extends RecyclerView.Adapter {
         Context context;
 
-        public Adapter(Context context)
-        {
+        public Adapter(Context context) {
             this.context = context;
         }
 
         @Override
-        public int getItemCount()
-        {
-            return collections.size() + 2;
+        public int getItemCount() {
+            return collections.size() + 4;
         }
 
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-        {
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = new CollectionCell(context);
             return new Holder(view);
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
-        {
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
             if (holder.itemView instanceof CollectionCell) {
 
@@ -111,11 +104,18 @@ public class BookmarkCollectionFragment extends BaseFragment
                 String name;
 
                 if (position == 0) {
-                    name = "All Posts";
+                    name = "Movies";
                     cell.setAllPosts(allPosts, name, position);
 
                 } else if (position == 1) {
-                    name = "Wish List";
+                    name = "Series";
+                    cell.setAllPosts(allShops, name, position);
+                }else if (position == 2) {
+                    name = "Iran TV";
+                    cell.setAllPosts(allPosts, name, position);
+
+                } else if (position == 3) {
+                    name = "Animations";
                     cell.setAllPosts(allShops, name, position);
                 } else {
                     BookmarkCollection collection = collections.get(position - 2);
@@ -129,5 +129,4 @@ public class BookmarkCollectionFragment extends BaseFragment
 
     }
 }
-
 

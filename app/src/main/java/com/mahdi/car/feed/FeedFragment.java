@@ -1,7 +1,5 @@
 package com.mahdi.car.feed;
 
-import static android.content.Context.BIND_AUTO_CREATE;
-
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -9,15 +7,9 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.IBinder;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -28,27 +20,23 @@ import androidx.annotation.NonNull;
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mahdi.car.App;
 import com.mahdi.car.core.BaseFragment;
 import com.mahdi.car.core.FatherView;
+import com.mahdi.car.core.QZoomView;
 import com.mahdi.car.dialog.popup.QDialog;
 import com.mahdi.car.direct.DirectView;
-import com.mahdi.car.feed.cell.MirrorPhotoView;
 import com.mahdi.car.library.viewAnimator.ViewAnimator;
-import com.mahdi.car.messenger.UdpReceiver;
-import com.mahdi.car.messenger.WebSocketReceiver;
 import com.mahdi.car.server.dtos.FeedDTO;
 import com.mahdi.car.server.https.Server;
 import com.mahdi.car.server.model.Post;
 import com.mahdi.car.server.model.User;
-import com.mahdi.car.service.UDPListenerService;
-import com.mahdi.car.service.WebSocketService;
 import com.mahdi.car.share.CustomLinearLayoutManager;
 import com.mahdi.car.share.component.ui.LayoutHelper;
 import com.mahdi.car.story.camera.StoryCameraView;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -56,6 +44,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class FeedFragment extends BaseFragment {
+
     private DirectView directView;
 
     private StoryCameraView storyCameraView;
@@ -73,21 +62,7 @@ public class FeedFragment extends BaseFragment {
     private boolean isAnimation = false;
     private boolean isShowDirect = false;
 
-    private MirrorPhotoView mirrorPhotoView;
 
-
-    UdpReceiver udpReceiver = null;
-    WebSocketReceiver webSocketReceiver = null;
-
-    IntentFilter udpIntentFilter;
-    IntentFilter webSocketIntentFilter;
-
-    String ubuntu_ip = null;
-
-    //BoundService class Objet
-    WebSocketService webSocketService;
-    //boolean variable to keep a check on service bind and unbind event
-    boolean isBound = false;
 
     @Override
     public View createView(Context context) {
@@ -117,52 +92,8 @@ public class FeedFragment extends BaseFragment {
         toolbar.setTransparent(false);
         toolbar.setName("Car Application");
 
-        udpReceiver = new UdpReceiver();
-        udpReceiver.setDelegate(new UdpReceiver.Delegate() {
-            @Override
-            public void receive(String sender, String message) {
-
-            }
-        });
-
-        webSocketReceiver = new WebSocketReceiver();
-        webSocketReceiver.setDelegate(new WebSocketReceiver.Delegate() {
-            @Override
-            public void onOpened() {
-                toolbar.setName("connected");
-            }
-
-            @Override
-            public void onClose() {
-                toolbar.setName("closed");
-            }
-
-            @Override
-            public void onMessage(String message) {
-
-            }
-        });
-
-        udpIntentFilter = new IntentFilter("udp.mahdi");
-        webSocketIntentFilter = new IntentFilter("mahdi.websocket");
-
-        getParentActivity().registerReceiver(udpReceiver, udpIntentFilter);
-        getParentActivity().registerReceiver(webSocketReceiver, webSocketIntentFilter);
-
         QDialog.getInstance().setParentActivity(getParentActivity());
 
-        //        storiesView = new StoriesView(context);
-        //        storiesView.setAli(new StoriesView.Delegate()
-        //        {
-        //            @Override
-        //            public void permissionSwipe(boolean enabled)
-        //            {
-        //                permissionSwipe = enabled;
-        //                swipe.setScrollEnabled(false);
-        //                CustomLinearLayoutManager a = (CustomLinearLayoutManager) linearLayoutManager;
-        //                a.setScrollEnabled(enabled);
-        //            }
-        //        });
 
         gestureDetector = new GestureDetector(context, new GestureDetector.OnGestureListener() {
             @Override
@@ -199,42 +130,6 @@ public class FeedFragment extends BaseFragment {
 
         });
 
-        User user = new User();
-        user.ID = 9;
-        user.is_verified = true;
-        user.Username = "Mahdi";
-        user.Avatar = "/profile-photos/meisamca_212534697_346885453492622_2753089786031568080_n.jpg";
-
-        mirrorPhotoView = new MirrorPhotoView(context, true);
-        mirrorPhotoView.setUser(user);
-        mirrorPhotoView.setDelegate(new MirrorPhotoView.Delegate() {
-            @Override
-            public void posts() {
-
-            }
-
-            @Override
-            public void follower() {
-
-            }
-
-            @Override
-            public void following() {
-
-            }
-
-            @Override
-            public void edit() {
-
-            }
-        });
-        swipe.addView(mirrorPhotoView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 600, Gravity.TOP, 0, 48, 0, 0));
-
-
-        //  WelcomeViewPager welcomeViewPager = new WelcomeViewPager(context);
-        //  contentView.addView(welcomeViewPager, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP, 0, 48, 0, 48));
-
-
         directView = new DirectView(context);
         directView.setTranslationX(width);
         directView.setDelegate(new DirectView.Delegate() {
@@ -247,9 +142,6 @@ public class FeedFragment extends BaseFragment {
 
         parentView.invalidate();
 
-        Intent intent = new Intent(getParentActivity(), WebSocketService.class);
-        getParentActivity().startService(intent);
-        getParentActivity().bindService(intent, boundServiceConnection, BIND_AUTO_CREATE);
 
         return contentView;
     }
@@ -257,48 +149,21 @@ public class FeedFragment extends BaseFragment {
     @Override
     public void toolbarLeftPressed() {
 
-        webSocketService.send("Android: " + new Date().getTime());
+        if (directView.isShow()) {
+            hide(0);
+        } else {
+            if (storyCameraView == null) {
+                storyCameraView = new StoryCameraView(App.context, getParentActivity(), contentView);
+                QZoomView.getInstance().addCamera(storyCameraView);
+            }
 
-//        if (directView.isShow()) {
-//            hide(0);
-//        } else {
-//            if (storyCameraView == null) {
-//                storyCameraView = new StoryCameraView(App.context, getParentActivity(), contentView);
-//                QZoomView.getInstance().addCamera(storyCameraView);
-//            }
-//
-//            storyCameraView.show();
-//        }
-
-//        if (webSocket.isOpen()) {
-//            webSocket.send("Android: Hello Qml");
-//        }
+            storyCameraView.show();
+        }
 
     }
 
     @Override
     public void toolbarCenterPressed() {
-        //Intent serviceIntent = new Intent();
-        //serviceIntent.setAction("com.mahdi.car.service.UDPListenerService");
-        getParentActivity().startService(new Intent(getParentActivity(), UDPListenerService.class));
-
-
-//        if (webSocket.isOpen()) {
-//            webSocket.send("Mahdi Abdolmaleki");
-//        } else {
-//            try {
-//                webSocket = new WebSocket(new URI("ws://localhost:8095"));
-//            } catch (URISyntaxException e) {
-//                throw new RuntimeException(e);
-//            }
-//            webSocket.connect();
-//        }
-
-        //        try {
-        //            //Trim.trimVideo("/storage/emulated/0/DCIM/Screenshots/ali.mp4", "/storage/emulated/0/DCIM/Screenshots/ali4.mp4", 1, 45);
-        //        } catch (IOException e) {
-        //            e.printStackTrace();
-        //        }
 
         //        presentFragment(new ExploreIGTVFragment());
         //
@@ -340,10 +205,7 @@ public class FeedFragment extends BaseFragment {
 
     @Override
     public void toolbarRightPressed() {
-        //Toast.makeText(getParentActivity(), String.valueOf(webSocketService.randomGenerator()),Toast.LENGTH_SHORT).show();
-
-        int state = webSocketService.startServer("192.168.1.113");
-        //showDirect();
+        showDirect();
     }
 
     //    @Override
@@ -569,51 +431,17 @@ public class FeedFragment extends BaseFragment {
         animatorSet.start();
     }
 
-    private ServiceConnection boundServiceConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-
-            WebSocketService.MyBinder binderBridge = (WebSocketService.MyBinder) service;
-            webSocketService = binderBridge.getService();
-            isBound = true;
-
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-
-            isBound = false;
-            webSocketService = null;
-
-        }
-    };
 
     @Override
     protected void onFragmentDestroy() {
         super.onFragmentDestroy();
 
-        getParentActivity().unregisterReceiver(udpReceiver);
-        getParentActivity().unregisterReceiver(webSocketReceiver);
 
-        if (isBound) {
-            getParentActivity().unbindService(boundServiceConnection);
-            isBound = false;
-        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        if(webSocketService != null){
-            if (webSocketService.isOpened()) {
-                Log.d("WebSocket:", "opened");
-            } else {
-                Log.d("WebSocket:", "closed");
-            }
-        }
-
 
         if (storyCameraView != null)
             storyCameraView.onResume();

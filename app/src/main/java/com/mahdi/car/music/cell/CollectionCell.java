@@ -1,4 +1,4 @@
-package com.mahdi.car.bookmark.cell;
+package com.mahdi.car.music.cell;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -53,6 +53,11 @@ public class CollectionCell extends CellView
         for (int i = 0; i < allPosts.size(); i++) {
             photos[i] = allPosts.get(i).Medias.get(0).Thumbnail;
         }
+
+        photos[0] = "music-cover.jpg";
+        photos[1] = "Ragheb-Delbari.jpg";
+        photos[2] = "aa45.jpg";
+        photos[3] = "Moein-Z-Male-Mani-500x500.jpg";
 
         if (photos[0] != null) {
             setGallery(drawables, 0, photos[0]);
@@ -162,10 +167,13 @@ public class CollectionCell extends CellView
         canvas.drawRoundRect(new RectF(0, 0, photoSize, photoSize), round, round, Themp.STROKE_PAINT_PX_FFDDDDDD);
         canvas.restore();
 
-        if (position == 1) {
+        if (position == 0) {
+            canvas.drawBitmap(Themp.favourit36, space, photoSize + dp(24), Themp.ICON_PAINT_SRC_IN_RED);
+        }else if (position == 1) {
             canvas.drawBitmap(Themp.shop36, space, photoSize + dp(24), Themp.ICON_PAINT_SRC_IN_BLACK);
         }
 
-        drawTextLayout(nameLayout, position == 1 ? (space * 3) : space, photoSize + dp(22));
+        int shift = AndroidUtilities.isOdd(position) ? dp(25) : dp(35);
+        drawTextLayout(nameLayout, shift, photoSize + dp(22));
     }
 }

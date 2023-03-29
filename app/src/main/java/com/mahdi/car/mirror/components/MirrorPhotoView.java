@@ -1,4 +1,4 @@
-package com.mahdi.car.feed.cell;
+package com.mahdi.car.mirror.components;
 
 
 import android.content.Context;
@@ -45,7 +45,6 @@ public class MirrorPhotoView extends CellView {
     private String biography;
     private int shift = dp(70);
     private int cell;
-    private boolean isHomeProfile;
     private int cellHeight;
     private int height;
 
@@ -67,8 +66,6 @@ public class MirrorPhotoView extends CellView {
 
         spannableShiftX = dp(15);
         spannableShiftY = dp(156);
-
-        this.isHomeProfile = isHomeProfile;
 
         buttons = new String[]{"Following", "Message"};
 
@@ -157,11 +154,7 @@ public class MirrorPhotoView extends CellView {
 
         int y = avatarY + avatarSize + dp(20);
 
-        if (isHomeProfile) {
-            canvas.drawBitmap(Themp.toolbar.storyProfileAdd, avatarX + avatarSize - dp(24), avatarY + avatarSize - dp(16), null);
-        } else {
-            //canvas.drawCircle(leftMargin + avatarSize / 2, topMargin + avatarSize / 2, (avatarSize / 2) + dp(3), Themp.STROKE_PAINT_1DP_FFDDDDDD);
-        }
+        canvas.drawBitmap(Themp.toolbar.storyProfileAdd, avatarX + avatarSize - dp(24), avatarY + avatarSize - dp(16), null);
 
         drawTextLayout(nameLayout, 0, y);
         drawTextLayout(categoryLayout, 0, y + dp(30));
@@ -185,46 +178,10 @@ public class MirrorPhotoView extends CellView {
         canvas.save();
         canvas.translate(0, hasSavedStory ? -dp(105) : 0);
 
-        if (isHomeProfile) {
-            RectF rectF = new RectF(dp(100), -dp(5), width - dp(100), dp(30));
-            canvas.save();
-            canvas.translate(0, getHeight() - dp(90));
-            canvas.drawRoundRect(rectF, round, round, Themp.PAINT_WHITE);
-            canvas.drawRoundRect(rectF, round, round, Themp.STROKE_PAINT_1DP_FFDDDDDD);
-            StaticLayout layout = new StaticLayout("Connect", Themp.TEXT_PAINT_FILL_AND_STROKE_2_BLACK[6], width, Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
-            layout.draw(canvas);
-            canvas.restore();
+        drawRoundRect(centerX - dp(60), dp(450), new RectF(0, 0, dp(120), dp(40)), dp(5), Themp.PAINT_BLUE);
+        StaticLayout layout = new StaticLayout("Request", Themp.TEXT_PAINT_FILL_AND_STROKE_3_WHITE[8], getWidth(), Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
+        drawTextLayout(layout, 0, dp(450 + 7));
 
-        } else {
-
-            RectF rectF = new RectF(0, -dp(6), width / 2 - dp(34), dp(25));
-
-            canvas.save();
-            canvas.translate((dp(13)), getHeight() - dp(80 + 20));
-            canvas.drawRoundRect(rectF, round, round, Themp.PAINT_WHITE);
-            canvas.drawRoundRect(rectF, round, round, Themp.STROKE_PAINT_1DP_FFDDDDDD);
-            StaticLayout layout = new StaticLayout("Following", Themp.TEXT_PAINT_FILL_AND_STROKE_2_BLACK[6], width / 2 - dp(40), Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
-            layout.draw(canvas);
-            canvas.drawBitmap(Themp.toolbar.aaa, width / 3 - dp(15), dp(4), null);
-            canvas.restore();
-
-            canvas.save();
-            canvas.translate((width / 2 - dp(13)), getHeight() - dp(80 + 20));
-            canvas.drawRoundRect(rectF, round, round, Themp.PAINT_WHITE);
-            canvas.drawRoundRect(rectF, round, round, Themp.STROKE_PAINT_1DP_FFDDDDDD);
-            layout = new StaticLayout("Message", Themp.TEXT_PAINT_FILL_AND_STROKE_2_BLACK[5], width / 2 - dp(40), Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
-            layout.draw(canvas);
-            canvas.restore();
-
-            rectF = new RectF(0, -dp(6), dp(27), dp(25));
-            canvas.save();
-            canvas.translate(width - dp(40), getHeight() - dp(80 + 20));
-            canvas.drawRoundRect(rectF, round, round, Themp.PAINT_WHITE);
-            canvas.drawRoundRect(rectF, round, round, Themp.STROKE_PAINT_1DP_FFDDDDDD);
-            canvas.drawBitmap(Themp.toolbar.aaa, dp(8), dp(4), null);
-            canvas.restore();
-
-        }
 
         for (int i = 1; i < 4; i++) {
 

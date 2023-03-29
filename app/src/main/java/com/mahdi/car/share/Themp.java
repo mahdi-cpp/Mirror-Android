@@ -25,6 +25,9 @@ public class Themp
     public static class Toolbar
     {
 //        public Bitmap logo = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.d0x);
+        public Bitmap cast = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.cast);
+        public Bitmap movies = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.movies);
+        public Bitmap music = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.music);
         public Bitmap finish = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.dor);
         public Bitmap camera = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ar);
         public Bitmap cameraFill = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.b0g);
@@ -105,6 +108,7 @@ public class Themp
     public static Bitmap bitmapGallery = null;
     public static Bitmap shop95 = null;
     public static Bitmap shop72 = null;
+    public static Bitmap favourit36 = null;
     public static Bitmap shop36 = null;
     public static Bitmap bitmapNext = null;
     public static Bitmap bitmapIGTVClose = null;
@@ -218,6 +222,7 @@ public class Themp
     public static Paint STROKE_PAINT_1DP_WHITE = new Paint(Paint.ANTI_ALIAS_FLAG);
     public static Paint STROKE_PAINT_2DP_WHITE = new Paint(Paint.ANTI_ALIAS_FLAG);
     public static Paint STROKE_PAINT_8DP_WHITE = new Paint(Paint.ANTI_ALIAS_FLAG);
+    public static Paint STROKE_PAINT_18DP_WHITE = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     public static Paint STROKE_PAINT_1DP_BLACK = new Paint(Paint.ANTI_ALIAS_FLAG);
     public static Paint STROKE_PAINT_2DP_BLACK = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -533,6 +538,10 @@ public class Themp
         STROKE_PAINT_8DP_WHITE.setStyle(Paint.Style.STROKE);
         STROKE_PAINT_8DP_WHITE.setStrokeWidth(dp(8));
 
+        STROKE_PAINT_18DP_WHITE.setColor(0xFFFFFFFF);
+        STROKE_PAINT_18DP_WHITE.setStyle(Paint.Style.STROKE);
+        STROKE_PAINT_18DP_WHITE.setStrokeWidth(dp(15));
+
         STROKE_PAINT_1DP_BLACK.setColor(0xff000000);
         STROKE_PAINT_1DP_BLACK.setStyle(Paint.Style.STROKE);
         STROKE_PAINT_1DP_BLACK.setStrokeWidth(one);
@@ -795,6 +804,7 @@ public class Themp
         shop95 = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.dmj);
         shop72 = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.cb7);
         shop36 = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.cs3);
+        favourit36 = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.favourite);
         bitmapNext = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.next);
         bitmapIGTVClose = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.bc);
         bitmapClose24 = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ic_close_white_24dp);
@@ -825,22 +835,32 @@ public class Themp
 
         notificationCursor = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.notification_coursor);
 
-        mainToolBarIcons[0] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.rl);
-        //mainToolBarIcons[1] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.bb7);
-        //mainToolBarIcons[2] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.location_bottom);
-//        mainToolBarIcons[2] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.tq);
-        mainToolBarIcons[1] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.igtv);
-//        mainToolBarIcons[3] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.bdx);
-        mainToolBarIcons[2] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.xe);
-        mainToolBarIcons[3] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.bx3);
 
 
-        mainToolBarSelectedIcons[0] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.s8);
-        //mainToolBarSelectedIcons[1] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.wc);
-        //mainToolBarSelectedIcons[2] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.map_select);
-        mainToolBarSelectedIcons[1] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.igtv);
-        mainToolBarSelectedIcons[2] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.r1);
-        mainToolBarSelectedIcons[3] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.bae);
+
+
+
+
+        mainToolBarIcons[0] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.home_b);
+        mainToolBarIcons[1] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.cast);
+        mainToolBarIcons[2] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.movies);
+        mainToolBarIcons[3] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.music);
+
+
+        mainToolBarSelectedIcons[0] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.home_blue);
+        mainToolBarSelectedIcons[1] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.cast_blue);
+        mainToolBarSelectedIcons[2] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.movies_blue);
+        mainToolBarSelectedIcons[3] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.music_blue);
+
+
+
+
+
+
+
+
+
+
 
 
         bitmapsHandListGrid[0] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.grid);
@@ -848,8 +868,8 @@ public class Themp
         bitmapsHandListGrid[2] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.shop72);
         bitmapsHandListGrid[3] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.igtv_category);
 
-        //        bookmarkLikeBitmaps[0] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ufi_save_bold);
-        //        bookmarkLikeBitmaps[1] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ufi_save_active_bold);
+
+
 
         postCell[2] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.bdx);
         postCell[3] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.r1);
