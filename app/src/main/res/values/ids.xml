@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <item name="home_saleListView" type="id"/>
+    <item name="home_rentListView" type="id"/>
+    <item name="home_officeSaleListView" type="id"/>
+    <item name="home_officeRentListView" type="id"/>
+
+    <item name="home_saleHeader" type="id"/>
+    <item name="home_rentHeader" type="id"/>
+    <item name="home_officeSaleHeader" type="id"/>
+    <item name="home_officeRentHeader" type="id"/>
+
+
+
+
+    <item name="Adviserfragment_nameheader" type="id"/>
+    <item name="Adviserfragment_adviserheader" type="id"/>
+    <item name="Adviserfragment_phone" type="id"/>
+    <item name="Adviserfragment_showmap" type="id"/>
+
+    <item name="amu_text" type="id"/>
+    <item name="toolbar" type="id" />
+
+    <item name="menu_crop" type="id" />
+    <item name="menu_crop_rect" type="id" />
+    <item name="menu_crop_square" type="id" />
+    <item name="menu_crop_circle" type="id" />
+
+    <item name="tag_holder" type="id" />
+    <item name="tag_item" type="id" />
+
+    <item name="menu_regular" type="id"/>
+    <item name="menu_bold" type="id"/>
+    <item name="menu_italic" type="id"/>
+    <item name="menu_groupbolditalic" type="id"/>
+
+</resources>

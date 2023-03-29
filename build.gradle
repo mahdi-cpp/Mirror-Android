@@ -1,0 +1,21 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript
+        {
+            repositories {
+                mavenCentral()
+                google()
+            }
+
+            dependencies {
+                //classpath 'com.android.tools.build:gradle:3.5.3'
+                classpath 'com.android.tools.build:gradle:7.0.4'
+                classpath "io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE"
+            }
+        }
+
+
+allprojects {
+    repositories {
+        google()
+    }
+}
