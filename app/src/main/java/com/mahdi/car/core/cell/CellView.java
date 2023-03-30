@@ -45,14 +45,14 @@ public class CellView extends View implements Share
     protected Delegate delegate;
 
     protected static int width = AndroidUtilities.width;
-    protected static int height = AndroidUtilities.height;
+    protected static int screenH = AndroidUtilities.screenHeight;
     protected static int statusBarHeight = AndroidUtilities.statusBarHeight;
 
     protected int cellWidth = width;
-    protected int cellHeight = height;
+    protected int cellHeight = screenH;
 
     protected int centerX = width / 2;
-    protected int centerY = height / 2;
+    protected int centerY = screenH / 2;
 
     protected int avatarX;
     protected int avatarY;
@@ -232,6 +232,7 @@ public class CellView extends View implements Share
 
         canvas.restore();
     }
+
 
     private void drawStoryProgress(int x, int y)
     {

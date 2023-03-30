@@ -37,36 +37,20 @@ public class MirrorScreenFragment extends BaseFragment {
         user.ID = 9;
         user.is_verified = true;
         user.Username = "Mahdi";
-        user.Avatar = "/profile-photos/meisamca_212534697_346885453492622_2753089786031568080_n.jpg";
+        user.Avatar = null;
 
         mirrorPhotoView = new MirrorPhotoView(context, true);
         mirrorPhotoView.setUser(user);
         mirrorPhotoView.setDelegate(new MirrorPhotoView.Delegate() {
             @Override
-            public void posts() {
-
-            }
-
-            @Override
-            public void follower() {
-
-            }
-
-            @Override
-            public void following() {
-
-            }
-
-            @Override
-            public void edit() {
+            public void button() {
 
             }
         });
 
         welcomeView = new WelcomeView(context, android_id);
 
-        //contentView.addView(welcomeView);
-        swipe.addView(mirrorPhotoView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 600, Gravity.TOP, 0, 40, 0, 0));
+        contentView.addView(mirrorPhotoView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 600, Gravity.TOP, 0, 50, 0, 0));
 
         return contentView;
     }

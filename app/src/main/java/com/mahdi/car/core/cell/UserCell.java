@@ -43,10 +43,10 @@ public class UserCell extends CellView
     {
         super(context);
 
-        height = 74;
+        screenH = 74;
 
         setBackgroundColor(0xffffffff);
-        setLayoutParams(LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, height));
+        setLayoutParams(LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, screenH));
 
         round = dp(4);
         rectF = new RectF(0, 0, button_width, dp(30));
@@ -223,7 +223,7 @@ public class UserCell extends CellView
                             delegate.following(isFollowing, position);
                             invalidate();
                         }
-                    } else if (y > 0 && y < height && isPressed == ITEM_CLICK) {
+                    } else if (y > 0 && y < screenH && isPressed == ITEM_CLICK) {
                         delegate.click(user);
                     }
                 }

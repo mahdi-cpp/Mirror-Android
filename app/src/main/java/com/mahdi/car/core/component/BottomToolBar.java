@@ -9,21 +9,23 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.view.animation.DecelerateInterpolator;
 
-import com.mahdi.car.share.Themp;
 import com.mahdi.car.core.BaseFragment;
 import com.mahdi.car.core.FatherView;
 import com.mahdi.car.messenger.AndroidUtilities;
+import com.mahdi.car.share.Themp;
 
-public class BottomToolBar
-{
+public class BottomToolBar {
     private Delegate delegate;
+
+
+    public final int viewHeight = dp(48);
 
     private final int count = 4;
     private int index = 0;
     private int select = 0;
-    private int topMargin = dp(58);
+    private int topMargin = dp(10);
     private int width = AndroidUtilities.width;
-    private int height = AndroidUtilities.height;
+    private int screenHeight = AndroidUtilities.screenHeight;
     public static int center = 0;
 
     private boolean isPopup = false;
@@ -39,8 +41,7 @@ public class BottomToolBar
     private boolean isStartBookmark = false;
     private boolean isShowBookmark = false;
 
-    public BottomToolBar()
-    {
+    public BottomToolBar() {
         center = ((((width / count) * (1 * 2 + 1)) - Themp.mainToolBarIcons[1].getWidth()) / 2) + (Themp.mainToolBarIcons[1].getWidth() / 2);
 
         profileAnimator = new ValueAnimator();
@@ -66,11 +67,9 @@ public class BottomToolBar
             delegate.invalidate();
         });
 
-        bookmarkAnimator.addListener(new AnimatorListenerAdapter()
-        {
+        bookmarkAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationEnd(Animator animation)
-            {
+            public void onAnimationEnd(Animator animation) {
                 if (isStartBookmark) {
                     new Handler().postDelayed(() -> {
                         isStartBookmark = false;
@@ -88,8 +87,7 @@ public class BottomToolBar
         select = BaseFragment.currentPage;
     }
 
-    private void showBookmark()
-    {
+    private void showBookmark() {
         if (isStartBookmark) {
             return;
         }
@@ -100,59 +98,48 @@ public class BottomToolBar
         bookmarkAnimator.start();
     }
 
-    private void bookmark(Canvas canvas)
-    {
-        int size = dp(44);
-        canvas.save();
+//    private void bookmark(Canvas canvas) {
+//        int size = dp(44);
+//        canvas.save();
+//
+//        if (isStartBookmark) {
+//            canvas.translate(width - dp(40 + 18), dp(10));
+//            canvas.scale(bookmarkScale, bookmarkScale, size / 2, +size / 2);
+//
+//        } else {
+//            canvas.translate(width - dp(40 + 18), dp(10) + bookmarkY);
+//        }
+//
+//        if (bookmarkDrawable != null) {
+//            bookmarkDrawable.setBounds(0, 0, dp(44), dp(44));
+//            bookmarkDrawable.draw(canvas);
+//        }
+//
+//        canvas.restore();
+//    }
 
-        if (isStartBookmark) {
-            canvas.translate(width - dp(40 + 18), dp(10));
-            canvas.scale(bookmarkScale, bookmarkScale, size / 2, +size / 2);
-
-        } else {
-            canvas.translate(width - dp(40 + 18), dp(10) + bookmarkY);
-        }
-
-        if (bookmarkDrawable != null) {
-            bookmarkDrawable.setBounds(0, 0, dp(44), dp(44));
-            bookmarkDrawable.draw(canvas);
-        }
-
-        canvas.restore();
-    }
-
-    public void selectPage(int index)
-    {
+    public void selectPage(int index) {
         this.select = index;
         delegate.invalidate();
     }
 
-    public void see()
-    {
+    public void see() {
         isNotification = false;
         isPopup = false;
         delegate.invalidate();
         //ViewPropertyObjectAnimator.animate(notificationView).translationY(dp(60)).setDuration(150).start();
     }
 
-    public void dispatchDraw(float dx, Canvas canvas)
-    {
+    public void dispatchDraw(float dx, Canvas canvas) {
         canvas.save();
         canvas.translate(dx, 0);
 
-        if (isShowBookmark) {
-            bookmark(canvas);
-        }
-
-        height = canvas.getHeight();
         select = FatherView.instance().currentPage;
 
         canvas.save();
-        canvas.translate(0, height - dp(110));
+        canvas.translate(0, screenHeight - viewHeight);
 
-        Themp.drawableToolbar[1].setBounds(0, dp(59), width, dp(62));
-        Themp.drawableToolbar[1].draw(canvas);
-        canvas.drawRect(0, AndroidUtilities.dp(62), width, height, Themp.PAINT_WHITE);
+        canvas.drawRect(0, 0, width, viewHeight, Themp.PAINT_WHITE);
 
         for (int i = 0; i < count; i++) {
 
@@ -161,32 +148,27 @@ public class BottomToolBar
             int y = 15;
 
             if (select == i) {
-
                 if (i == 4) {
-                    int shift = (Themp.mainToolBarSelectedIcons[i].getWidth() / 2);
                     canvas.save();
-                    canvas.scale(profileValue, profileValue, x + shift, dp(15) + topMargin + shift);
-                    canvas.drawBitmap(Themp.mainToolBarSelectedIcons[i], x, dp(15) + topMargin, Themp.ICON_PAINT_MULTIPLY_WHITE);
+                    canvas.drawBitmap(Themp.mainToolBarSelectedIcons[i], x, topMargin, Themp.ICON_PAINT_MULTIPLY_WHITE);
                     canvas.restore();
                 } else {
-                    canvas.drawBitmap(Themp.mainToolBarSelectedIcons[i], x, dp(15) + topMargin, Themp.ICON_PAINT_MULTIPLY_WHITE);
+                    canvas.drawBitmap(Themp.mainToolBarSelectedIcons[i], x, topMargin, Themp.ICON_PAINT_MULTIPLY_WHITE);
                 }
 
             } else {
                 if (i == 4) {
-                    int shift = (Themp.mainToolBarIcons[i].getWidth() / 2);
                     canvas.save();
-                    canvas.scale(profileValue, profileValue, x + shift, dp(15) + topMargin + shift);
-                    canvas.drawBitmap(Themp.mainToolBarIcons[i], x, dp(15) + topMargin, Themp.ICON_PAINT_MULTIPLY_WHITE);
+                    canvas.drawBitmap(Themp.mainToolBarIcons[i], x, topMargin, Themp.ICON_PAINT_MULTIPLY_WHITE);
                     canvas.restore();
                 } else {
-                    canvas.drawBitmap(Themp.mainToolBarIcons[i], x, dp(15) + topMargin, Themp.ICON_PAINT_MULTIPLY_WHITE);
+                    canvas.drawBitmap(Themp.mainToolBarIcons[i], x, topMargin, Themp.ICON_PAINT_MULTIPLY_WHITE);
                 }
             }
 
-            if (i == 1 && isNotification) {
-                canvas.drawCircle(center, height - dp(10), dp(2), Themp.PAINT_BLACK);
-            }
+            Themp.drawableToolbar[0].setBounds(0, 0, width, dp(1));
+            Themp.drawableToolbar[0].draw(canvas);
+
         }
 
         canvas.restore();
@@ -194,25 +176,21 @@ public class BottomToolBar
 
     }
 
-    public void showBookmark(Drawable bookmarkDrawable)
-    {
+    public void showBookmark(Drawable bookmarkDrawable) {
         this.bookmarkDrawable = bookmarkDrawable;
         showBookmark();
     }
 
-    public interface Delegate
-    {
+    public interface Delegate {
         void invalidate();
     }
 
-    public void setDelegate(Delegate delegate)
-    {
+    public void setDelegate(Delegate delegate) {
         this.delegate = delegate;
     }
 
     //Utility functions----------------------------------------------------------
-    protected int dp(float value)
-    {
+    protected int dp(float value) {
         if (value == 0) {
             return 0;
         }

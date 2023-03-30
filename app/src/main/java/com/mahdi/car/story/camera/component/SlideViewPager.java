@@ -169,7 +169,7 @@ public class SlideViewPager extends CellFrameLayout
     public void processScroll(MotionEvent event, float dX, float dY)
     {
         float y = event.getY();
-        if (y > height - dp(70)) {
+        if (y > screenHeight - dp(70)) {
 
             //slideView.setTranslationX(dX);
             slideView.select(0);

@@ -74,7 +74,7 @@ public class AndroidUtilities
     public static int width = 400;
 
     public static int statusBarHeight = 0;
-    public static int height = 0;
+    public static int screenHeight = 0;
     public static int navigationBarHeight = 0;
     //---------------------------------------------------------
 
@@ -478,12 +478,12 @@ public class AndroidUtilities
         return (int) dp;
     }
 
-    public static void init(Activity parentActivity, int width, int height)
+    public static void init(Activity parentActivity, int width, int screenHeight)
     {
         AndroidUtilities.parentActivity = parentActivity;
 
         AndroidUtilities.width = width;
-        AndroidUtilities.height = height - AndroidUtilities.statusBarHeight;
+        AndroidUtilities.screenHeight = screenHeight;
 
         formatter = new DecimalFormat("#");
         formatter.setGroupingUsed(true);

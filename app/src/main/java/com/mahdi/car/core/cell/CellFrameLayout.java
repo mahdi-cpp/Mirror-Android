@@ -44,14 +44,14 @@ public class CellFrameLayout extends FrameLayout implements Share
     protected Delegate delegate;
 
     protected static int width = AndroidUtilities.width;
-    protected static int height = AndroidUtilities.height;
+    protected static int screenHeight = AndroidUtilities.screenHeight;
     protected static int statusBarHeight = AndroidUtilities.statusBarHeight;
 
     protected int cellWidth = width;
-    protected int cellHeight = height;
+    protected int cellHeight = screenHeight;
 
     protected int centerX = width / 2;
-    protected int centerY = height / 2;
+    protected int centerY = screenHeight / 2;
 
     protected int avatarX;
     protected int avatarY;

@@ -212,7 +212,7 @@ public class QDialog
 
 
         private int width = AndroidUtilities.width;
-        private int height = AndroidUtilities.height;
+        private int height = AndroidUtilities.screenHeight;
         private int size = dp(72);
         private int cellHeight = dp(46);
         private int round = dp(8);
@@ -558,7 +558,7 @@ public class QDialog
         private StaticLayout staticLayout;
 
         private int width = AndroidUtilities.width;
-        private int height = AndroidUtilities.height;
+        private int height = AndroidUtilities.screenHeight;
         private int size = dp(72);
         private int cellHeight = dp(46);
         private int round = dp(8);

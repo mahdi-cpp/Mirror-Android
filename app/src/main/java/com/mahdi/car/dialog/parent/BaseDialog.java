@@ -138,7 +138,7 @@ public abstract class BaseDialog extends CellFrameLayout
         shadowView.setBackgroundColor(0x22000000);
 
         addView(shadowView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
-        addView(roundView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, AndroidUtilities.height * 2));
+        addView(roundView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, AndroidUtilities.screenHeight * 2));
         addView(recyclerView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 1000, Gravity.TOP, 0, 0, 0, 0));
 
         addView(statusBarView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 0, Gravity.TOP));
@@ -293,7 +293,7 @@ public abstract class BaseDialog extends CellFrameLayout
         {
             super(context);
             setBackgroundColor(0x00ffffff);
-            setLayoutParams(LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, px(AndroidUtilities.height) / 3));
+            setLayoutParams(LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, px(AndroidUtilities.screenHeight) / 3));
         }
     }
 
@@ -323,7 +323,7 @@ public abstract class BaseDialog extends CellFrameLayout
         {
             super(context);
             setAlpha(0);
-            setLayoutParams(LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, px(AndroidUtilities.height) / 2.2f));
+            setLayoutParams(LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, px(AndroidUtilities.screenHeight) / 2.2f));
         }
     }
 

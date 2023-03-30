@@ -3,37 +3,22 @@ package com.mahdi.car.core;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Path;
 import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.StaticLayout;
-import android.text.style.StyleSpan;
 import android.util.Log;
-import android.view.MotionEvent;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.mahdi.car.mirror.MirrorScreenFragment;
+import com.mahdi.car.core.component.FloatViewParent;
 import com.mahdi.car.feed.FeedFragment;
-import com.mahdi.car.library.autolinklibrary.AutoLinkItem;
 import com.mahdi.car.library.autolinklibrary.AutoLinkMode;
-import com.mahdi.car.library.autolinklibrary.AutoLinkUtils;
-import com.mahdi.car.library.autolinklibrary.TouchableSpan;
+import com.mahdi.car.mirror.MirrorScreenFragment;
 import com.mahdi.car.movie.MovieFragment;
 import com.mahdi.car.music.MusicFragment;
 import com.mahdi.car.server.model.Post;
 import com.mahdi.car.server.model.User;
-import com.mahdi.car.setting.SettingFragment;
 import com.mahdi.car.share.component.ui.LayoutHelper;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class FatherView {
@@ -51,6 +36,7 @@ public class FatherView {
     private boolean isFullScreen = false;
     private FrameLayout fullContentView;
     private CoreFragment fullCoreFragment;
+    private FloatViewParent floatViewParent = null;
 
     public int currentPage = PAGE_HOME;
     private int color = 0xffeeeeee;
@@ -102,9 +88,7 @@ public class FatherView {
         //clear();
 
         this.context = context;
-
         isFullScreen = false;
-
         currentPage = PAGE_HOME;
 
         contentView = new FrameLayout(context);
@@ -120,7 +104,8 @@ public class FatherView {
         fullCoreFragment.setBackgroundColor(0x00ffffff);
         fullContentView.addView(fullCoreFragment, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
-        addAutoLinkMode(AutoLinkMode.MODE_HASHTAG, AutoLinkMode.MODE_MENTION, AutoLinkMode.MODE_URL);
+        floatViewParent = new FloatViewParent(context);
+
 
         //        ContentView is the root view of the layout of this activity/fragment
         contentView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
@@ -186,6 +171,12 @@ public class FatherView {
                     break;
             }
         }
+
+        if (floatViewParent.getParent() == null) {
+            contentView.addView(floatViewParent, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP, 0, 0, 0, 48));
+            floatViewParent.setZ(100);
+        }
+
 
         //onResume
         BaseFragment lastFragment = coreFragments[index].fragmentsStack.get(coreFragments[index].fragmentsStack.size() - 1);
@@ -323,7 +314,7 @@ public class FatherView {
     }
 
     public void clear() {
-        if(contentView == null){
+        if (contentView == null) {
             return;
         }
 
@@ -464,104 +455,6 @@ public class FatherView {
     }
 
     //-------------------------------------------------------------
-    public SpannableString makeSpannableString(String username, int x, int y, StaticLayout layout, CharSequence text, MotionEvent event) {
-        return makeSpannableString(0xff2F41a4, username, x, y, layout, text, event);
-    }
-
-    public SpannableString makeSpannableString(int color, String username, int x, int y, StaticLayout layout, CharSequence text, MotionEvent event) {
-        final SpannableString spannableString = new SpannableString(text);
-
-        List<AutoLinkItem> autoLinkItems = matchedRanges(text);
-
-        for (final AutoLinkItem autoLinkItem : autoLinkItems) {
-
-            TouchableSpan clickableSpan = new TouchableSpan(color, 0xffffffff, isUnderLineEnabled) {
-                @Override
-                public void onClick(View widget) {
-                }
-            };
-
-            spannableString.setSpan(clickableSpan, autoLinkItem.getStartPoint(), autoLinkItem.getEndPoint(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-            //get the start and end points of url span
-            int start = autoLinkItem.getStartPoint();
-            int end = autoLinkItem.getEndPoint();
-
-            Path dest = new Path();
-            layout.getSelectionPath(start, end, dest);
-
-            RectF rectF = new RectF();
-            dest.computeBounds(rectF, true);
-
-
-            //Add the left and top margins of your staticLayout here.
-            rectF.offset(x, y);
-
-            if (event != null) {
-                if (rectF.contains(event.getX(), event.getY())) {
-                    String str = autoLinkItem.getMatchedText();
-
-                    Log.e("click---", "" + str);
-
-                    char ch = str.charAt(0);
-                    if (ch == '@') {
-                        String u = str.substring(1);
-                        profile(u);
-                    } else if (ch == '#') {
-                        String hashtag = str.substring(1);
-//                        presentFragment(new HashtagFragment(hashtag));
-                    } else {
-
-                    }
-                }
-            }
-        }
-
-        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, username.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        //        TermAndConditions t = new TermAndConditions()
-        //        {
-        //            @Override
-        //            public void onClick(View widget)
-        //            {
-        //
-        //            }
-        //        };
-        //        spannableString.setSpan(t, 0, 7, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        return spannableString;
-    }
-
-    public List<AutoLinkItem> matchedRanges(CharSequence text) {
-        List<AutoLinkItem> autoLinkItems = new LinkedList<>();
-
-        if (autoLinkModes == null) {
-            throw new NullPointerException("Please add at least one mode");
-        }
-
-        for (AutoLinkMode anAutoLinkMode : autoLinkModes) {
-
-            String regex = AutoLinkUtils.getRegexByAutoLinkMode(anAutoLinkMode, "");
-            Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(text);
-
-            if (anAutoLinkMode == AutoLinkMode.MODE_PHONE) {
-                while (matcher.find()) {
-                    if (matcher.group().length() > 2)
-                        autoLinkItems.add(new AutoLinkItem(matcher.start(), matcher.end(), matcher.group(), anAutoLinkMode));
-                }
-            } else {
-                while (matcher.find()) {
-                    autoLinkItems.add(new AutoLinkItem(matcher.start(), matcher.end(), matcher.group(), anAutoLinkMode));
-                }
-            }
-        }
-
-        return autoLinkItems;
-    }
-
-    private void addAutoLinkMode(AutoLinkMode... autoLinkModes) {
-        this.autoLinkModes = autoLinkModes;
-    }
 
     public void menu(Post post) {
 //        presentFragment(new EditPostFragment(post));

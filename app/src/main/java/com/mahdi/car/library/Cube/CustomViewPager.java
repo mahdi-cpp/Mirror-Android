@@ -184,7 +184,7 @@ public class CustomViewPager extends ViewPager
 
         if (Math.abs(dY) > Math.abs(dX)) {
 
-            if (dY < (AndroidUtilities.height - AndroidUtilities.dp(100)) && delegate != null) {
+            if (dY < (AndroidUtilities.screenHeight - AndroidUtilities.dp(100)) && delegate != null) {
                 delegate.vertical(dY);
             }
         }

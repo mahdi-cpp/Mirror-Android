@@ -26,6 +26,9 @@ public class Themp
     {
 //        public Bitmap logo = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.d0x);
         public Bitmap cast = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.cast);
+        public Bitmap cast_large = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.cast_large);
+        public Bitmap android_mobile = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.android_mobile);
+
         public Bitmap movies = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.movies);
         public Bitmap music = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.music);
         public Bitmap finish = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.dor);

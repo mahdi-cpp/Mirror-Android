@@ -86,7 +86,7 @@ public class MovieFragment extends BaseFragment {
 
         @Override
         public int getItemCount() {
-            return collections.size() + 4;
+            return collections.size() + 10;
         }
 
         @Override
@@ -110,11 +110,32 @@ public class MovieFragment extends BaseFragment {
                 } else if (position == 1) {
                     name = "Series";
                     cell.setAllPosts(allShops, name, position);
-                }else if (position == 2) {
+                } else if (position == 2) {
                     name = "Iran TV";
                     cell.setAllPosts(allPosts, name, position);
 
                 } else if (position == 3) {
+                    name = "Animations";
+                    cell.setAllPosts(allShops, name, position);
+                } else if (position == 4) {
+                    name = "Iran TV";
+                    cell.setAllPosts(allPosts, name, position);
+
+                } else if (position == 5) {
+                    name = "Animations";
+                    cell.setAllPosts(allShops, name, position);
+                } else if (position == 6) {
+                    name = "Iran TV";
+                    cell.setAllPosts(allPosts, name, position);
+
+                } else if (position == 7) {
+                    name = "Animations";
+                    cell.setAllPosts(allShops, name, position);
+                } else if (position == 8) {
+                    name = "Iran TV";
+                    cell.setAllPosts(allPosts, name, position);
+
+                } else if (position == 9) {
                     name = "Animations";
                     cell.setAllPosts(allShops, name, position);
                 } else {

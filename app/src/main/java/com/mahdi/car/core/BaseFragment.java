@@ -77,8 +77,10 @@ public class BaseFragment implements Share {
     protected int swipeBottomMargin = 48;
 
     protected int width = AndroidUtilities.width;
+    protected int bottomToolbarHeight = dp(48);
+
     protected int statusBarHeight = AndroidUtilities.statusBarHeight;
-    protected int height = AndroidUtilities.height;
+    protected int screenHeight = AndroidUtilities.screenHeight;
     protected int navigationBarHeight = AndroidUtilities.navigationBarHeight;
 
     protected int centerX = width / 2;
@@ -392,7 +394,7 @@ public class BaseFragment implements Share {
                     parentView.invalidate();
                 }
             });
-            showAnimator.setValues(PropertyValuesHolder.ofFloat("swipeY", height, 0));
+            showAnimator.setValues(PropertyValuesHolder.ofFloat("swipeY", screenHeight, 0));
             showAnimator.start();
 
             hideAnimator = new ValueAnimator();
@@ -527,7 +529,7 @@ public class BaseFragment implements Share {
         if (config.animation == 3) {
             hideAnimator.setValues(PropertyValuesHolder.ofFloat("swipeX", 0, width));
         } else {
-            hideAnimator.setValues(PropertyValuesHolder.ofFloat("swipeY", 0, height + dp(100)));
+            hideAnimator.setValues(PropertyValuesHolder.ofFloat("swipeY", 0, screenHeight + dp(100)));
         }
         hideAnimator.start();
     }

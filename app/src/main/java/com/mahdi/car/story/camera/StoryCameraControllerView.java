@@ -300,8 +300,8 @@ public class StoryCameraControllerView extends CellFrameLayout implements Notifi
     {
         this.setTranslationY(dY);
 
-        float divide = ((float) height / 255);
-        float alpha = (height + dY) / (divide);
+        float divide = ((float) screenHeight / 255);
+        float alpha = (screenHeight + dY) / (divide);
 
         alpha = 255 - alpha;
         alpha += 20;

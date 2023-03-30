@@ -26,7 +26,6 @@ import com.mahdi.car.App;
 
 import com.mahdi.car.library.viewAnimator.ViewAnimator;
 import com.mahdi.car.messenger.AndroidUtilities;
-import com.mahdi.car.setting.SettingFragment;
 import com.mahdi.car.share.component.ui.LayoutHelper;
 
 public class QZoomView
@@ -170,8 +169,8 @@ public class QZoomView
 
     public void setPivot(float pivotY)
     {
-        if (pivotY > AndroidUtilities.height - AndroidUtilities.dp(200)) {
-            pivotY = AndroidUtilities.height;
+        if (pivotY > AndroidUtilities.screenHeight - AndroidUtilities.dp(200)) {
+            pivotY = AndroidUtilities.screenHeight;
         }
 
         this.pivotY = pivotY;

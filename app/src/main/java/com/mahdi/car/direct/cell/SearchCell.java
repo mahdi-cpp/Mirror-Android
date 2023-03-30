@@ -29,7 +29,7 @@ public class SearchCell extends CellView {
         setBackgroundColor(0xffffffff);
         setLayoutParams(LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 80));
 
-        height = dp(70);
+        screenH = dp(70);
 
         searchLayout = new StaticLayout("Search", Themp.TEXT_PAINT_FILL_GREY[7], width, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
         messageLayout = new StaticLayout("Messages", Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[6], width, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
@@ -40,7 +40,7 @@ public class SearchCell extends CellView {
         super.dispatchDraw(canvas);
 
         if (isPressed == ITEM_CLICK) {
-            canvas.drawRect(new Rect(0, 0, width, height), Themp.PAINT_PRESS_BLACK);
+            canvas.drawRect(new Rect(0, 0, width, screenH), Themp.PAINT_PRESS_BLACK);
         }
 
         canvas.drawRoundRect(new RectF(dp(16), dp(19), width - dp(16), dp(20 + 37)), dp(8), dp(8), Themp.PAINT_FFEEEEEE);
@@ -65,7 +65,7 @@ public class SearchCell extends CellView {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
 
-                if (x > dp(16) && x < dp(154) && y > dp(16) && y < height - dp(16)) {
+                if (x > dp(16) && x < dp(154) && y > dp(16) && y < screenH - dp(16)) {
                     isPressed = ITEM_FOLLOWING;
                     invalidate();
                 } else if (y > 0 && y < getHeight()) {

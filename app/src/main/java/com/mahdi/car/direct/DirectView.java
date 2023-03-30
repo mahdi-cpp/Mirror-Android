@@ -137,7 +137,7 @@ public class DirectView extends CellFrameLayout {
         super.dispatchDraw(canvas);
 
         width = getWidth();
-        height = getHeight();
+        screenHeight = getHeight();
 
         //        if (loadingShow) {
         //            canvas.drawRect(0, loadingTopMargin, width, getHeight(), Themp.PAINT_WHITE);

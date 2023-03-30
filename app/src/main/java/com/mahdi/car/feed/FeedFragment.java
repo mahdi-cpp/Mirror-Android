@@ -165,42 +165,6 @@ public class FeedFragment extends BaseFragment {
     @Override
     public void toolbarCenterPressed() {
 
-        //        presentFragment(new ExploreIGTVFragment());
-        //
-        //        long startTime = System.currentTimeMillis();
-        //
-        //        Observer observer = new Observer()
-        //        {
-        //            @Override
-        //            public void onSubscribe(@NonNull Disposable d)
-        //            {
-        //
-        //            }
-        //
-        //            @Override
-        //            public void onNext(Object o)
-        //            {
-        //                User user = (User) o;
-        //                Log.e("onNext:", " " + user.username + " " + (System.currentTimeMillis() - startTime));
-        //            }
-        //
-        //            @Override
-        //            public void onError(@NonNull Throwable e)
-        //            {
-        //
-        //            }
-        //
-        //            @Override
-        //            public void onComplete()
-        //            {
-        //
-        //            }
-        //        };
-        //
-        //        //Timer
-        //        //Observable.fromIterable(stories).filter(x -> x.userid > 1).zipWith(Observable.interval(50, TimeUnit.MILLISECONDS), (item, interval) -> item).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(observer);
-        //
-        //        Observable.fromIterable(stories).filter(x -> x.userid > 1).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(observer);
     }
 
     @Override

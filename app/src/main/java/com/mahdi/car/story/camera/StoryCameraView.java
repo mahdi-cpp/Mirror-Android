@@ -44,7 +44,7 @@ public class StoryCameraView extends CellFrameLayout implements NotificationCent
     private boolean isShow = false;
     private boolean isGalleryShow = false;
     private boolean permissionClick = true;
-    private int h = height + statusBarHeight;
+    private int h = screenHeight + statusBarHeight;
     private float velocityX;
 
     public StoryCameraView(Context context, Activity parentActivity, FrameLayout feedContentView) {

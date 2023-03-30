@@ -28,10 +28,10 @@ public class DirectCell extends CellView {
     public DirectCell(Context context) {
         super(context);
 
-        height = 74;
+        screenH = 74;
 
         setBackgroundColor(0xffffffff);
-        setLayoutParams(LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, height));
+        setLayoutParams(LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, screenH));
 
         round = dp(4);
         avatarX = dp(20);
