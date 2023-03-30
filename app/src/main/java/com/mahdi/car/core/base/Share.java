@@ -4,7 +4,7 @@ import android.view.View;
 
 import java.util.Date;
 
-import com.mahdi.car.core.FatherView;
+import com.mahdi.car.core.RootView;
 import com.mahdi.car.messenger.AndroidUtilities;
 import com.mahdi.car.server.model.User;
 
@@ -62,6 +62,6 @@ public interface Share
 
     default User owner()
     {
-        return FatherView.instance().owner;
+        return RootView.instance().owner;
     }
 }

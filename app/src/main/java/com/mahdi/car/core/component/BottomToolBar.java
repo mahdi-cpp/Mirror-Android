@@ -10,7 +10,7 @@ import android.os.Handler;
 import android.view.animation.DecelerateInterpolator;
 
 import com.mahdi.car.core.BaseFragment;
-import com.mahdi.car.core.FatherView;
+import com.mahdi.car.core.RootView;
 import com.mahdi.car.messenger.AndroidUtilities;
 import com.mahdi.car.share.Themp;
 
@@ -134,7 +134,7 @@ public class BottomToolBar {
         canvas.save();
         canvas.translate(dx, 0);
 
-        select = FatherView.instance().currentPage;
+        select = RootView.instance().currentPage;
 
         canvas.save();
         canvas.translate(0, screenHeight - viewHeight);

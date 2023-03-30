@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -48,7 +47,6 @@ public class FloatViewParent extends CellFrameLayout {
 
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
-                resetToTop();
                 return false;
             }
 
@@ -73,25 +71,25 @@ public class FloatViewParent extends CellFrameLayout {
         invalidate();
 
         floatView = new FloatView(context);
-        floatView.setTranslationY(screenHeight - bottomToolBar - headerHeight);
+        floatView.setTranslationY(screenHeight - bottomToolBar);
         addView(floatView);
 
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
+    public boolean dispatchTouchEvent(MotionEvent event) {
 
-        float x = ev.getX();
-        float y = ev.getY();
+        float x = event.getX();
+        float y = event.getY();
 
-        gestureDetector.onTouchEvent(ev);
+        gestureDetector.onTouchEvent(event);
+        floatView.onTouchEvent(event);
 
-        switch (ev.getAction()) {
+        switch (event.getAction()) {
 
             case MotionEvent.ACTION_DOWN:
 
                 if (y > screenHeight - headerHeight - bottomToolBar && y < screenHeight) {
-                    Log.e("isPressed", "screenHeight: " + screenHeight);
                     isPressed = true;
                     return true;
                 }
@@ -106,13 +104,14 @@ public class FloatViewParent extends CellFrameLayout {
 
                 if (y > screenHeight - headerHeight - bottomToolBar && y < screenHeight - bottomToolBar && isPressed == true) {
                     resetToTop();
+                    isPressed = false;
+                    isSelect = true;
+                    velocityY = -2000;
                     return true;
                 }
 
                 isPressed = false;
                 isSelect = false;
-                dX = 0;
-                dY = 0;
 
                 if (floatView.getTranslationY() > screenHeight / 2) {
                     if (velocityY > -1000) {
@@ -143,7 +142,6 @@ public class FloatViewParent extends CellFrameLayout {
         dX -= distanceX;
         dY -= distanceY;
 
-
         if (Math.abs(dY) > Math.abs(dX)) {
             if (isFullScreen) {
                 floatView.setTranslationY(dY);
@@ -153,12 +151,20 @@ public class FloatViewParent extends CellFrameLayout {
         }
     }
 
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        cellHeight = getHeight();
+    }
+
     private void resetToTop() {
         isFullScreen = true;
         ViewAnimator.animate(floatView).setInterpolator(new DecelerateInterpolator()).translationY(0).setDuration(200).addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
+                dX = 0;
+                dY = 0;
             }
         }).start();
     }
@@ -169,15 +175,29 @@ public class FloatViewParent extends CellFrameLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
+                dX = 0;
+                dY = 0;
             }
         }).start();
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        cellHeight = getHeight();
+    public void show(String username, String title) {
+        floatView.setParameters(username, title);
+        ViewAnimator.animate(floatView).setInterpolator(new DecelerateInterpolator()).translationY(screenHeight - bottomToolBar - headerHeight).setDuration(200).addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+            }
+        }).start();
     }
 
+    public void hide() {
+        ViewAnimator.animate(floatView).setInterpolator(new DecelerateInterpolator()).translationY(screenHeight - bottomToolBar).setDuration(200).addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+            }
+        }).start();
+    }
 
 }

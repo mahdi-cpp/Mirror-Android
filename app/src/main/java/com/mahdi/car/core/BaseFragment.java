@@ -133,7 +133,7 @@ public class BaseFragment implements Share {
 
         bottomToolBar = new BottomToolBar();
 
-        hasBottomToolbar = !FatherView.instance().getFullScreen();
+        hasBottomToolbar = !RootView.instance().getFullScreen();
 
         if (thisFragment == fragment.profile_edit || thisFragment == fragment.chat || thisFragment == fragment.comment) {
             hasBottomToolbar = false;
@@ -459,7 +459,7 @@ public class BaseFragment implements Share {
         //
 
 
-        if (FatherView.instance().getFullScreen() && thisFragment == fragment.profile) {
+        if (RootView.instance().getFullScreen() && thisFragment == fragment.profile) {
             config.animation = 1;
         }
 
@@ -499,7 +499,7 @@ public class BaseFragment implements Share {
         if (swipe != null && swipe.isSwipe()) {
             return;
         }
-        FatherView.instance().presentFragment(fragment);
+        RootView.instance().presentFragment(fragment);
     }
 
     public void toolbarRightPressed() {
@@ -515,7 +515,7 @@ public class BaseFragment implements Share {
     }
 
     public void finishFragment() {
-        if (FatherView.instance().isKeyboardShowing()) {
+        if (RootView.instance().isKeyboardShowing()) {
             keyboardHide(contentView);
             return;
         }
@@ -725,7 +725,7 @@ public class BaseFragment implements Share {
 
         toolbar.events(event);
 
-        if (FatherView.instance().getFullScreen() || !hasBottomToolbar)
+        if (RootView.instance().getFullScreen() || !hasBottomToolbar)
             return;
 
         switch (event.getAction()) {
@@ -756,19 +756,19 @@ public class BaseFragment implements Share {
 
                 if (x < cell && y > top && y < h && isPressed == 0) {
                     currentPage = 0;
-                    FatherView.instance().page(currentPage);
+                    RootView.instance().page(currentPage);
                 } else if (x > cell && x < (cell * 2) && y > top && y < h && isPressed == 1) {
                     currentPage = 1;
-                    FatherView.instance().page(currentPage);
+                    RootView.instance().page(currentPage);
                 } else if (x > (cell * 2) && x < (cell * 3) && y > top && y < h && isPressed == 2) {
                     currentPage = 2;
-                    FatherView.instance().page(currentPage);
+                    RootView.instance().page(currentPage);
                 } else if (x > (cell * 3) && x < (cell * 4) && y > top && y < h && isPressed == 3) {
                     currentPage = 3;
-                    FatherView.instance().page(currentPage);
+                    RootView.instance().page(currentPage);
                 } else if (x > (cell * 4) && x < (cell * 5) && y > top && y < h && isPressed == 4) {
                     currentPage = 4;
-                    FatherView.instance().page(currentPage);
+                    RootView.instance().page(currentPage);
                 }
 
                 isPressed = -1;

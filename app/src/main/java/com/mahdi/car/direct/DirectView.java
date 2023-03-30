@@ -11,7 +11,7 @@ import android.widget.FrameLayout;
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mahdi.car.core.FatherView;
+import com.mahdi.car.core.RootView;
 import com.mahdi.car.core.cell.CellFrameLayout;
 import com.mahdi.car.core.cell.CellView;
 import com.mahdi.car.core.component.ToolBar;
@@ -286,7 +286,7 @@ public class DirectView extends CellFrameLayout {
                         public void click(User user) {
 //                            if (swipe.isSwipe())
 //                                return;
-                            FatherView.instance().presentFragment(new ChatFragment(user));
+                            RootView.instance().presentFragment(new ChatFragment(user));
                         }
                     });
                 }

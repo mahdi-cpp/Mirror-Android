@@ -21,7 +21,7 @@ import com.mahdi.car.server.model.User;
 import com.mahdi.car.share.component.ui.LayoutHelper;
 
 
-public class FatherView {
+public class RootView {
 
     public static final int PAGE_HOME = 0;
     public static final int PAGE_EXPLORE = 1;
@@ -48,15 +48,15 @@ public class FatherView {
     public User owner;
 
     @SuppressLint("StaticFieldLeak")
-    private static volatile FatherView Instance = null;
+    private static volatile RootView Instance = null;
 
-    public static FatherView instance() {
-        FatherView localInstance = Instance;
+    public static RootView instance() {
+        RootView localInstance = Instance;
         if (localInstance == null) {
-            synchronized (FatherView.class) {
+            synchronized (RootView.class) {
                 localInstance = Instance;
                 if (localInstance == null) {
-                    Instance = localInstance = new FatherView();
+                    Instance = localInstance = new RootView();
                 }
             }
         }
@@ -381,14 +381,13 @@ public class FatherView {
         fragment.setX(dX);
     }
 
-//    public void moreLine(PostCell cell, Post post, int position)
-//    {
-//        BaseFragment fragment = getCurrentFragment();
-//        if (fragment == null)
-//            return;
-//
-//        fragment.moreLine(cell, post, position);
-//    }
+    public void showFloatView(String username, String title) {
+        floatViewParent.show(username, title);
+    }
+
+    public void hideFloatView() {
+        floatViewParent.hide();
+    }
 
     public void forward() {
         BaseFragment fragment = getCurrentFragment();

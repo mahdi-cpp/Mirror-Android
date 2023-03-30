@@ -58,7 +58,7 @@ public class CircleButton extends CellView
 
     }
 
-    @Override
+
     public boolean onTouchEvent(MotionEvent event)
     {
         float x = event.getX();

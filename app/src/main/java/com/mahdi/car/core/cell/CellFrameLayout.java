@@ -36,7 +36,7 @@ import com.mahdi.car.core.base.DrawableEvent;
 import com.mahdi.car.core.base.Share;
 import com.mahdi.car.share.Themp;
 import com.mahdi.car.App;
-import com.mahdi.car.core.FatherView;
+import com.mahdi.car.core.RootView;
 import com.mahdi.car.messenger.AndroidUtilities;
 
 public class CellFrameLayout extends FrameLayout implements Share
@@ -156,7 +156,7 @@ public class CellFrameLayout extends FrameLayout implements Share
         isStoryRing = true;
         storyAnimator.start();
 
-        FatherView.instance().showStory(this, userid, username, avatarDrawable, avatarSize);
+        RootView.instance().showStory(this, userid, username, avatarDrawable, avatarSize);
     }
 
     public int getAvatarPivotX()

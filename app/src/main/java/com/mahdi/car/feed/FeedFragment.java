@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.view.GestureDetector;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mahdi.car.App;
 import com.mahdi.car.core.BaseFragment;
-import com.mahdi.car.core.FatherView;
-import com.mahdi.car.core.QZoomView;
+import com.mahdi.car.core.RootView;
 import com.mahdi.car.dialog.popup.QDialog;
 import com.mahdi.car.direct.DirectView;
 import com.mahdi.car.library.viewAnimator.ViewAnimator;
@@ -61,7 +58,6 @@ public class FeedFragment extends BaseFragment {
 
     private boolean isAnimation = false;
     private boolean isShowDirect = false;
-
 
 
     @Override
@@ -149,16 +145,18 @@ public class FeedFragment extends BaseFragment {
     @Override
     public void toolbarLeftPressed() {
 
-        if (directView.isShow()) {
-            hide(0);
-        } else {
-            if (storyCameraView == null) {
-                storyCameraView = new StoryCameraView(App.context, getParentActivity(), contentView);
-                QZoomView.getInstance().addCamera(storyCameraView);
-            }
+        RootView.instance().showFloatView("Parse", "screen Mirror 12");
 
-            storyCameraView.show();
-        }
+//        if (directView.isShow()) {
+//            hide(0);
+//        } else {
+//            if (storyCameraView == null) {
+//                storyCameraView = new StoryCameraView(App.context, getParentActivity(), contentView);
+//                QZoomView.getInstance().addCamera(storyCameraView);
+//            }
+//
+//            storyCameraView.show();
+//        }
 
     }
 
@@ -169,35 +167,10 @@ public class FeedFragment extends BaseFragment {
 
     @Override
     public void toolbarRightPressed() {
-        showDirect();
+        RootView.instance().hideFloatView();
+        //showDirect();
     }
 
-    //    @Override
-    //    public boolean onInterceptTouchEvent(MotionEvent event)
-    //    {
-    //        gestureDetector.onTouchEvent(event);
-    //
-    //        switch (event.getAction()) {
-    //
-    //            case MotionEvent.ACTION_DOWN:
-    //                //                if (dX != 0) {
-    //                //                    //resetX();
-    //                //                }
-    //                dX = 0;
-    //                break;
-    //            case MotionEvent.ACTION_MOVE:
-    //
-    //                break;
-    //
-    //            case MotionEvent.ACTION_UP:
-    //            case MotionEvent.ACTION_POINTER_UP:
-    //            case MotionEvent.ACTION_CANCEL:
-    //                resetX();
-    //                break;
-    //        }
-    //
-    //        return false;
-    //    }
 
     private void processScroll(MotionEvent e1, float distanceX, float distanceY) {
         dX -= distanceX;
@@ -263,7 +236,7 @@ public class FeedFragment extends BaseFragment {
                 Collections.shuffle(stories);
                 //Collections.shuffle(feed.posts);
 
-                FatherView.instance().setOwner(stories.get(0));
+                RootView.instance().setOwner(stories.get(0));
                 //FatherView.instance().setOwner(feed.user);
 
                 //App.userid = feed.user.userid;

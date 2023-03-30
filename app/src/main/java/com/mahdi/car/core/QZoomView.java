@@ -137,7 +137,7 @@ public class QZoomView
             dY = (float) animation.getAnimatedValue("dyProperty");
             //cell.zoomReset(dX, dY, scale);
             if (isVideo) {
-                FatherView.instance().zoom(dX, dY, pivotX, pivotY, scale);
+                RootView.instance().zoom(dX, dY, pivotX, pivotY, scale);
             }
             view.invalidate();
         });
@@ -150,9 +150,9 @@ public class QZoomView
                 view.setVisibility(INVISIBLE);
                 isShow = false;
                 if (isVideo) {
-                    FatherView.instance().zoomClear(contentView);
+                    RootView.instance().zoomClear(contentView);
                 }
-                FatherView.instance().setX(0);
+                RootView.instance().setX(0);
             }
         });
 
@@ -208,7 +208,7 @@ public class QZoomView
         this.scale = scale;
 
         if (isVideo) {
-            FatherView.instance().zoom(dX, dY, pivotX, AndroidUtilities.dp(110), scale);
+            RootView.instance().zoom(dX, dY, pivotX, AndroidUtilities.dp(110), scale);
         } else {
             view.invalidate();
         }

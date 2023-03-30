@@ -1,6 +1,5 @@
 package com.mahdi.car.core;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
@@ -83,7 +82,7 @@ public class CoreFragment extends FrameLayout
 
     public boolean onBackPressed()
     {
-        if (fragmentsStack.isEmpty() && !FatherView.instance().getFullScreen()) {
+        if (fragmentsStack.isEmpty() && !RootView.instance().getFullScreen()) {
             return true;
         }
 
@@ -101,7 +100,7 @@ public class CoreFragment extends FrameLayout
             }
             return false;
 
-        } else if (FatherView.instance().getFullScreen()) {
+        } else if (RootView.instance().getFullScreen()) {
 
             BaseFragment lastFragment = fragmentsStack.get(0);
 

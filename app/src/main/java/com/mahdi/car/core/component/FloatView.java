@@ -1,6 +1,5 @@
 package com.mahdi.car.core.component;
 
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.RectF;
@@ -37,7 +36,7 @@ public class FloatView extends CellView {
     private int photoSize = dp(30);
     private int heightSize = dp(40);
 
-    private int button_y_shift = screenH - dp(200);
+    private int button_y_shift = screenHeight - dp(200);
     private boolean buttonVisible = true;
 
 
@@ -51,7 +50,7 @@ public class FloatView extends CellView {
         setBackgroundColor(0xffffffff);
         setLayoutParams(LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP, 0, 0, 0, 0));
 
-        startStoryRing();
+        //startStoryRing();
 
         round = dp(18);
         cellWidth = (width - (space * 3)) / 2;
@@ -61,10 +60,10 @@ public class FloatView extends CellView {
         avatarX = dp(15);
         avatarY = dp(11);
 
-        setAllPosts("Mahdi Abdolmaleki");
+        setParameters("0", "0");
     }
 
-    public void setAllPosts(String name) {
+    public void setParameters(String username, String title) {
 
         for (int i = 0; i < 4; i++) {
             drawables[i] = null;
@@ -77,21 +76,13 @@ public class FloatView extends CellView {
             setGallery(drawables, 0, photos[0]);
         }
 
-        if (name == null) {
-            name = "";
-        }
-
-        if (name.length() > 20) {
-            name = name.substring(0, 20) + " ...";
-        }
         User user = new User();
         userid = user.ID;
-        username = user.Username;
         user.Avatar = "00044.jpg";
         setAvatar(user.Avatar);
 
-        toolbarNameLayout = new StaticLayout(name, Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[5], dp(200), Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
-        toolbarTitleLayout = new StaticLayout("Screen is live on display", Themp.TEXT_PAINT_FILL_GREY[5], dp(200), Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
+        toolbarNameLayout = new StaticLayout(username, Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[5], dp(200), Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
+        toolbarTitleLayout = new StaticLayout(title, Themp.TEXT_PAINT_FILL_GREY[5], dp(200), Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
 
         titleLayout = new StaticLayout("Screen Mirror On Ubuntu Desktop", Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[11], width, Layout.Alignment.ALIGN_CENTER, 1.2f, 0.2f, false);
         descriptionLayout = new StaticLayout("Screen is live on display", Themp.TEXT_PAINT_FILL_GREY[8], width, Layout.Alignment.ALIGN_CENTER, 1.2f, 0.2f, false);
@@ -101,7 +92,6 @@ public class FloatView extends CellView {
 
         invalidate();
     }
-
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -116,7 +106,7 @@ public class FloatView extends CellView {
 
         //canvas.drawLine(0, dp(0), width, dp(0), Themp.PAINT_GRAY);
         canvas.drawLine(0, dp(54), width, dp(54), Themp.PAINT_GRAY);
-        canvas.drawLine(0, screenH - bottomToolBar - statusBarHeight, width, screenH - bottomToolBar - statusBarHeight, Themp.PAINT_GRAY);
+        //canvas.drawLine(0, screenHeight - bottomToolBar, width, screenHeight - bottomToolBar, Themp.PAINT_GRAY);
 
         //shadows
         Themp.drawableToolbar[0].setBounds(0, 0, width, dp(54));
@@ -137,13 +127,12 @@ public class FloatView extends CellView {
         if (buttonVisible) {
             drawRoundRect(dp(70), button_y_shift, new RectF(0, 0, width - dp(140), dp(40)), dp(5), isPressed == ITEM_BUTTON ? Themp.PAINT_BLACK : Themp.PAINT_BLUE);
             StaticLayout layout = new StaticLayout("Finish Screen Mirror", Themp.TEXT_PAINT_FILL_AND_STROKE_3_WHITE[8], getWidth(), Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
-            drawTextLayout(layout, 0, button_y_shift + dp(+7));
+            drawTextLayout(layout, 0, button_y_shift + dp(9));
         }
 
     }
 
 
-    @Override
     public boolean onTouchEvent(MotionEvent event) {
 
         float x = event.getX();
@@ -154,9 +143,7 @@ public class FloatView extends CellView {
             case MotionEvent.ACTION_POINTER_DOWN:
             case MotionEvent.ACTION_DOWN:
 
-                Log.e("gggggggggg", "ggggggggggg");
-
-                if (x > dp(100) && x < width - dp(100) && y > button_y_shift && y < button_y_shift + dp(50) && buttonVisible) {
+                if (x > dp(70) && x < width - dp(70) && y > button_y_shift && y < button_y_shift + dp(50) && buttonVisible) {
                     isPressed = ITEM_BUTTON;
                 } else {
                     isPressed = -1;
@@ -165,8 +152,8 @@ public class FloatView extends CellView {
                 break;
             case MotionEvent.ACTION_UP:
 
-                if (x > dp(100) && x < width - dp(100) && y > button_y_shift && y < button_y_shift + dp(50) && isPressed == ITEM_BUTTON) {
-
+                if (x > dp(70) && x < width - dp(70) && y > button_y_shift && y < button_y_shift + dp(50) && isPressed == ITEM_BUTTON) {
+                    Log.e("FloatView", "click");
                 }
 
                 isPressed = -1;
@@ -182,6 +169,6 @@ public class FloatView extends CellView {
                 break;
         }
 
-        return false;
+        return true;
     }
 }

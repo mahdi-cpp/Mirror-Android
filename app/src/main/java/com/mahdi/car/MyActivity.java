@@ -46,7 +46,7 @@ import com.mahdi.car.core.QZoomView;
 import com.mahdi.car.service.UDPListenerService;
 import com.mahdi.car.service.WebSocketService;
 import com.mahdi.car.share.component.ui.LayoutHelper;
-import com.mahdi.car.core.FatherView;
+import com.mahdi.car.core.RootView;
 import com.mahdi.car.messenger.*;
 
 import java.io.File;
@@ -150,10 +150,10 @@ public class MyActivity extends android.app.Activity implements NotificationCent
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         AndroidUtilities.init(this, displayMetrics.widthPixels, displayMetrics.heightPixels);
 
-        FatherView.instance().init(this);
-        setContentView(FatherView.instance().getContentView(), LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
+        RootView.instance().init(this);
+        setContentView(RootView.instance().getContentView(), LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
-        addContentView(FatherView.instance().getFullContentView(), LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
+        addContentView(RootView.instance().getFullContentView(), LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
         QZoomView.getInstance().setParentActivity(this);//for zoom photo
         addContentView(QZoomView.getInstance().getView(), QZoomView.getInstance().getView().getLayoutParams());
@@ -499,7 +499,7 @@ public class MyActivity extends android.app.Activity implements NotificationCent
     {
         super.onPause();
 
-        FatherView.instance().onPause();
+        RootView.instance().onPause();
 
         //UserConfig.lastAppPauseTime = System.currentTimeMillis();
         App.mainInterfacePaused = true;
@@ -535,7 +535,7 @@ public class MyActivity extends android.app.Activity implements NotificationCent
     @Override
     protected void onDestroy()
     {
-        FatherView.instance().onDestroy();
+        RootView.instance().onDestroy();
 
         unregisterReceiver(receiver);
         unregisterReceiver(udpReceiver);
@@ -552,7 +552,7 @@ public class MyActivity extends android.app.Activity implements NotificationCent
     @Override
     public void onBackPressed()
     {
-        if (!FatherView.instance().onBackPressed()) {
+        if (!RootView.instance().onBackPressed()) {
             return;
         }
 
@@ -573,7 +573,7 @@ public class MyActivity extends android.app.Activity implements NotificationCent
         }
 
         //FatherView.instance().init(this);
-        FatherView.instance().onResume();
+        RootView.instance().onResume();
 
 
         //showLanguageAlert(false);
