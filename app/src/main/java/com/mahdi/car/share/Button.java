@@ -8,33 +8,55 @@ import android.text.StaticLayout;
 import android.view.MotionEvent;
 
 import com.mahdi.car.core.cell.CellView;
+import com.mahdi.car.share.component.ui.LayoutHelper;
 
 public class Button extends CellView {
 
     private Delegate delegate;
-    private int iconColor = 0xff000000;
+
+    private StaticLayout titleLayout;
+    private int iconColor = 0;
     private String title = "Button";
+
+    private int fontSize = 8;
 
     public Button(Context context) {
         super(context);
+        invalidate();
+    }
+    public void setFontSize(int fontSize) {
+        this.fontSize = fontSize;
+        invalidate();
     }
 
     public void setColor(int color) {
         this.iconColor = color;
         invalidate();
     }
+
     public void setTitle(String title) {
         this.title = title;
+        titleLayout = new StaticLayout("title", Themp.TEXT_PAINT_FILL_AND_STROKE_3_WHITE[fontSize], cellWidth, Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
+
         invalidate();
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+    protected void dispatchDraw(Canvas canvas) {
+        super.dispatchDraw(canvas);
 
-        drawRoundRect(0, 0, new RectF(0, 0, getWidth(), getHeight()), dp(10), isPressed == 1 ? Themp.PAINT_BLACK : Themp.PAINT_BLUE);
-        StaticLayout layout = new StaticLayout(title, Themp.TEXT_PAINT_FILL_AND_STROKE_3_WHITE[8], getWidth(), Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
-        drawTextLayout(layout, 0, 0 + dp(9));
+        cellWidth = getWidth();
+        centerY = getHeight() / 2;
+
+        if(iconColor == 0){
+            titleLayout = new StaticLayout(title, Themp.TEXT_PAINT_FILL_AND_STROKE_3_WHITE[fontSize], cellWidth, Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
+            drawRoundRect(0, 0, new RectF(0, 0, getWidth(), getHeight()), dp(10), isPressed == 1 ? Themp.PAINT_BLACK : Themp.PAINT_BLUE);
+        }else {
+            titleLayout = new StaticLayout(title, Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[fontSize], cellWidth, Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
+            drawRoundRect(0, 0, new RectF(0, 0, getWidth(), getHeight()), dp(10), isPressed == 1 ? Themp.PAINT_FFCCCCCC : Themp.PAINT_FFEEEEEE);
+        }
+
+        drawTextLayout(titleLayout, 0, centerY / 2 - dp(2));
 
     }
 

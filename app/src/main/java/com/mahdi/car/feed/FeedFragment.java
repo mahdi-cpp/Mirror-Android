@@ -28,6 +28,7 @@ import com.mahdi.car.core.BaseFragment;
 import com.mahdi.car.core.QZoomView;
 import com.mahdi.car.core.RootView;
 import com.mahdi.car.dialog.popup.QDialog;
+import com.mahdi.car.feed.components.MirrorView;
 import com.mahdi.car.setting.SettingView;
 import com.mahdi.car.library.viewAnimator.ViewAnimator;
 import com.mahdi.car.model.Person;
@@ -68,6 +69,8 @@ public class FeedFragment extends BaseFragment {
     private Button btnDisconnect;
     private Button btnConnection;
 
+    MirrorView mirrorView;
+
     @Override
     public View createView(Context context) {
 
@@ -96,7 +99,7 @@ public class FeedFragment extends BaseFragment {
 
         toolbar.settFeed();
         toolbar.setTransparent(false);
-        toolbar.setName("Car Application");
+        toolbar.setName("");
 
         QDialog.getInstance().setParentActivity(getParentActivity());
 
@@ -115,14 +118,20 @@ public class FeedFragment extends BaseFragment {
 
         btnConnection = new Button(context);
         btnConnection.setTitle("Connect");
+        btnConnection.setColor(1);
         btnConnection.setDelegate((Button.Delegate) () -> {
             getParentActivity().websocketStart();
             RootView.instance().showFloatView("Mahdi Abdolmaleki", "start show phone screen on car display");
+            mirrorView.setConnection(true);
         });
 
         btnDisconnect = new Button(context);
         btnDisconnect.setTitle("Disconnect");
+        btnDisconnect.setColor(1);
         btnDisconnect.setDelegate((Button.Delegate) () -> {
+
+            mirrorView.setConnection(false);
+
             Gson gson = new GsonBuilder().disableHtmlEscaping().create();
             Person person = new Person("12", "Ali", "" + new Date().getTime(), 35);
             getParentActivity().webSocketSend(gson.toJson(person, Person.class));
@@ -130,8 +139,12 @@ public class FeedFragment extends BaseFragment {
             RootView.instance().hideFloatView();
         });
 
-        swipe.addView(btnConnection, LayoutHelper.createFrame(220, 40, Gravity.TOP, 100, 100, 0, 0));
-        swipe.addView(btnDisconnect, LayoutHelper.createFrame(220, 40, Gravity.TOP, 100, 170, 0, 0));
+        mirrorView = new MirrorView(context);
+
+        swipe.addView(mirrorView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP, 0, 0, 0, 0));
+
+        swipe.addView(btnConnection, LayoutHelper.createFrame(220, 40, Gravity.BOTTOM, 100, 0, 0, 170));
+        swipe.addView(btnDisconnect, LayoutHelper.createFrame(220, 40, Gravity.BOTTOM, 100, 0, 0, 100));
 
         parentView.invalidate();
 
@@ -172,7 +185,7 @@ public class FeedFragment extends BaseFragment {
 
             Gson gson = new GsonBuilder().disableHtmlEscaping().create();
             State state = gson.fromJson(jsonString, State.class);
-            toolbar.setName(state.music.coverPath);
+            toolbar.setName(state.music.artistName);
 
         } catch (JsonSyntaxException e) {
 
@@ -191,6 +204,7 @@ public class FeedFragment extends BaseFragment {
             swipe.setScrollEnabled(false);
 
             swipe.recyclerView.setTranslationX(dX);
+            //RootView.instance().floatViewParent.setTranslationX(dX);
         }
     }
 
@@ -245,7 +259,7 @@ public class FeedFragment extends BaseFragment {
 
     public void showSettingView() {
 
-        RootView.instance().floatViewVisible(0x00000004); //invisible
+        //RootView.instance().floatViewVisible(0x00000004); //invisible
 
         if (isAnimation) {
             return;
@@ -257,9 +271,10 @@ public class FeedFragment extends BaseFragment {
 
         ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(swipe, "translationX", -width);
         ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(settingView, "translationX", 0);
+        ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(RootView.instance().floatViewParent, "translationX", -width);
 
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(objectAnimator1, objectAnimator2);
+        animatorSet.playTogether(objectAnimator1, objectAnimator2, objectAnimator3);
         animatorSet.setInterpolator(new LinearOutSlowInInterpolator());
         animatorSet.setDuration(300);
         animatorSet.addListener(new AnimatorListenerAdapter() {
@@ -282,10 +297,11 @@ public class FeedFragment extends BaseFragment {
 
         ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(swipe, "translationX", 0);
         ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(settingView, "translationX", width);
+        ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(RootView.instance().floatViewParent, "translationX", 0);
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.setStartDelay(delay);
-        animatorSet.playTogether(objectAnimator1, objectAnimator2);
+        animatorSet.playTogether(objectAnimator1, objectAnimator2, objectAnimator3);
         animatorSet.setInterpolator(new LinearOutSlowInInterpolator());
         animatorSet.setDuration(300);
         animatorSet.addListener(new AnimatorListenerAdapter() {

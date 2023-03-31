@@ -181,6 +181,8 @@ public class Themp {
     public static Paint PAINT_GRAY = new Paint(TextPaint.ANTI_ALIAS_FLAG);
     public static Paint PAINT_LINE = new Paint(TextPaint.ANTI_ALIAS_FLAG);
     public static Paint PAINT_PROFILE_CIRCLE = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+    public static Paint PAINT_RED = new Paint(Paint.ANTI_ALIAS_FLAG);
     public static Paint PAINT_GREEN = new Paint(Paint.ANTI_ALIAS_FLAG);
     public static Paint PAINT_BLUE = new Paint(Paint.ANTI_ALIAS_FLAG);
 
@@ -404,6 +406,9 @@ public class Themp {
         PAINT_PROFILE_CIRCLE.setStyle(Paint.Style.STROKE);
         PAINT_PROFILE_CIRCLE.setColor(0xff888888);
         PAINT_PROFILE_CIRCLE.setStrokeWidth(1);
+
+        PAINT_RED.setStyle(Paint.Style.FILL);
+        PAINT_RED.setColor(0xffff5722);
 
         PAINT_GREEN.setStyle(Paint.Style.FILL);
         PAINT_GREEN.setColor(0xff00C853);

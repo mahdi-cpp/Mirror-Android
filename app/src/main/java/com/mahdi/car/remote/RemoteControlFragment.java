@@ -88,8 +88,6 @@ public class RemoteControlFragment extends BaseFragment {
         contentView.addView(btnOval, LayoutHelper.createFrame(70, 150, Gravity.BOTTOM | Gravity.RIGHT, 100, 0, 30, 140));
 
 
-
-
         btnBack = new CircleButton(context);
         btnBack.setIcon(Themp.toolbar.arrow_back_large);
         contentView.addView(btnBack, LayoutHelper.createFrame(150, 150, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0, 0, 140));

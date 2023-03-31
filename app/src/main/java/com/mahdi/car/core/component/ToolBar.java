@@ -48,6 +48,7 @@ public class ToolBar {
 
     private int avatarSize = dp(30);
     private boolean verify = false;
+    private boolean connect = false;
 
     private Drawable avatarDrawable;
 
@@ -72,7 +73,7 @@ public class ToolBar {
     private int avatarX = dp(60);
     private int avatarY = dp(10);
 
-    private int nameX = dp(60);
+    private int nameX = dp(70);
     private int nameY = dp(15);
 
     private int secondNameX = dp(60);
@@ -373,7 +374,12 @@ public class ToolBar {
     public void setName(String name) {
         if (name == null)
             return;
-        nameLayout = new StaticLayout(name, Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[10], dp(400), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+        nameLayout = new StaticLayout(name, Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[8], dp(400), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
+        parent.invalidate();
+    }
+
+    public void setConnection(boolean connect){
+        this.connect = connect;
         parent.invalidate();
     }
 
@@ -460,6 +466,7 @@ public class ToolBar {
         drawShadow();
 
         drawPressed();
+
 
         if (icons[0] != null)//Left Icon
             canvas.drawBitmap(icons[0], iconLeftX, iconLeftY, transparent ? Themp.ICON_PAINT_SRC_IN_BLACK : Themp.ICON_PAINT_MULTIPLY_BLACK);

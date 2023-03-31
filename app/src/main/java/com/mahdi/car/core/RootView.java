@@ -33,7 +33,7 @@ public class RootView {
     private boolean isFullScreen = false;
     private FrameLayout fullContentView;
     private CoreFragment fullCoreFragment;
-    private FloatViewParent floatViewParent = null;
+    public  FloatViewParent floatViewParent = null;
 
     public int currentPage = PAGE_HOME;
     private int color = 0xffeeeeee;
@@ -349,7 +349,7 @@ public class RootView {
     }
 
     public void floatViewVisible(int visible) {
-        floatViewParent.setVisibility(visible);
+        //floatViewParent.setVisibility(visible);
     }
 
     public void showFloatView(String username, String title) {

@@ -54,31 +54,10 @@ import java.util.ArrayList;
 
 public class MyActivity extends android.app.Activity implements NotificationCenter.NotificationCenterDelegate {
 
-    public static final String TAG = "LaunchActivity";
+    public static final String TAG = "MyActivity";
 
     private boolean finished;
     private int currentConnectionState;
-
-    // location last updated time
-    private String mLastUpdateTime;
-
-    // location updates interval - 10sec
-    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 20000;
-
-    // fastest updates interval - 5 sec
-    // location updates will be received if another app is requesting the locations
-    // than your app can handle
-    private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 20000;
-    private static final int REQUEST_CHECK_SETTINGS = 100;
-
-    // bunch of location related apis
-    //    public static LatLng latLng;
-    //    private FusedLocationProviderClient mFusedLocationClient;
-    //    private SettingsClient mSettingsClient;
-    //    private LocationRequest mLocationRequest;
-    //    private LocationSettingsRequest mLocationSettingsRequest;
-    //    private LocationCallback mLocationCallback;
-    //    private Location mCurrentLocation;
 
     // boolean flag to toggle the ui
     private boolean mRequestingLocationUpdates;
@@ -200,40 +179,11 @@ public class MyActivity extends android.app.Activity implements NotificationCent
 
                 if (postid > 0) {
 
-                    //NetbargFragment fragment = new NetbargFragment(postid);
-                    //                    fragment.setDelegate(new NetbargFragment.Delegate()
-                    //                    {
-                    //                        @Override
-                    //                        public void finish()
-                    //                        {
-                    //                            //QToolBar.getInstance().homePage.setIsFragment(false);
-                    //                        }
-                    //                    });
-                    //QToolBar.getInstance().homePage.setIsFragment(true);
-                    //presentFragment(fragment);
                 }
             }
 
         } else {
 
-            //            for (BaseFragment fragment : actionBarLayout.fragmentsStack) {
-            //                fragment.onFragmentDestroy();
-            //            }
-            //            actionBarLayout.fragmentsStack.clear();
-            //            fragments.clear();
-            //
-            //            LoginFragment loginFragment = new LoginFragment();
-            //            loginFragment.setDelegate(new LoginFragment.LoginFragmentDelegate()
-            //            {
-            //                @Override
-            //                public void ok()
-            //                {
-            //
-            //                    actionBarLayout.presentFragment(QToolBar.getInstance().homePage = new HomeFragment(), true, true, true);
-            //                    loginFragment.finishFragment();
-            //                }
-            //            });
-            //            actionBarLayout.presentFragment(loginFragment, true, true, true);
         }
 
         Intent intent = getIntent();
@@ -245,17 +195,6 @@ public class MyActivity extends android.app.Activity implements NotificationCent
                 int index = url.lastIndexOf('/');
                 String postid = url.substring(index + 1, url.length());
 
-                //NetbargFragment fragment = new NetbargFragment(Long.parseLong(postid));
-                //                fragment.setDelegate(new NetbargFragment.Delegate()
-                //                {
-                //                    @Override
-                //                    public void finish()
-                //                    {
-                //                        //QToolBar.getInstance().homePage.setIsFragment(false);
-                //                    }
-                //                });
-                //QToolBar.getInstance().homePage.setIsFragment(true);
-                //presentFragment(fragment);
             }
         }
 
@@ -419,17 +358,8 @@ public class MyActivity extends android.app.Activity implements NotificationCent
             return;
         }
 
-
         super.onActivityResult(requestCode, resultCode, data);
-        //
-        //        if (QMainView..fragmentsStack.size() != 0) {
-        //            BaseFragment fragment = actionBarLayout.fragmentsStack.get(actionBarLayout.fragmentsStack.size() - 1);
-        //            fragment.onActivityResultFragment(requestCode, resultCode, data);
-        //        }
 
-        if (AndroidUtilities.isTablet()) {
-
-        }
     }
 
     @SuppressWarnings({"ResourceType"})
@@ -459,29 +389,9 @@ public class MyActivity extends android.app.Activity implements NotificationCent
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                 NotificationCenter.getInstance().postNotificationName(NotificationCenter.locationPermissionGranted);
-
-                //                if (QSnapp.getInstance().googleMap != null) {
-                //                    try {
-                //                        QSnapp.getInstance().googleMap.setMyLocationEnabled(true);
-                //                    } catch (Exception e) {
-                //                        FileLog.e(e);
-                //                    }
-                //
-                //                    LatLng latLng = new LatLng(35.6892, 51.3890);
-                //                    CameraUpdate position = CameraUpdateFactory.newLatLngZoom(latLng, QSnapp.getInstance().googleMap.getMaxZoomLevel() - 8);
-                //                    QSnapp.getInstance().googleMap.moveCamera(position);
-                //
-                //                    QSnapp.getInstance().googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                //                    QSnapp.getInstance().googleMap.getUiSettings().setZoomControlsEnabled(false);
-                //                    QSnapp.getInstance().googleMap.getUiSettings().setCompassEnabled(false);
-                //                }
             }
         }
 
-        //        if (actionBarLayout.fragmentsStack.size() != 0) {
-        //            BaseFragment fragment = actionBarLayout.fragmentsStack.get(actionBarLayout.fragmentsStack.size() - 1);
-        //            fragment.onRequestPermissionsResultFragment(requestCode, permissions, grantResults);
-        //        }
 
         if (AndroidUtilities.isTablet()) {
 
@@ -576,22 +486,6 @@ public class MyActivity extends android.app.Activity implements NotificationCent
 
         MediaController.checkGallery();
 
-        /*
-        if (passcodeView.getVisibility() != View.VISIBLE) {
-
-            if (AndroidUtilities.isTablet()) {
-                rightActionBarLayout.onResume();
-                layersActionBarLayout.onResume();
-            }
-        } else {
-            actionBarLayout.dismissDialogs();
-            if (AndroidUtilities.isTablet()) {
-                rightActionBarLayout.dismissDialogs();
-                layersActionBarLayout.dismissDialogs();
-            }
-            passcodeView.onResume();
-        }
-        */
         AndroidUtilities.checkForCrashes(this);
         AndroidUtilities.checkForUpdates(this);
 
@@ -673,49 +567,6 @@ public class MyActivity extends android.app.Activity implements NotificationCent
         }
     }
 
-    private void checkFreeDiscSpace() {
-
-        if (Build.VERSION.SDK_INT >= 26) {
-            return;
-        }
-        Utilities.globalQueue.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-
-                try {
-                    SharedPreferences preferences = App.applicationContext.getSharedPreferences("mainconfig", android.app.Activity.MODE_PRIVATE);
-                    if (Math.abs(preferences.getLong("last_space_check", 0) - System.currentTimeMillis()) >= 3 * 24 * 3600 * 1000) {
-                        File path = FileLoader.getInstance().getDirectory(FileLoader.MEDIA_DIR_CACHE);
-                        if (path == null) {
-                            return;
-                        }
-                        long freeSpace;
-                        StatFs statFs = new StatFs(path.getAbsolutePath());
-                        if (Build.VERSION.SDK_INT < 18) {
-                            freeSpace = Math.abs(statFs.getAvailableBlocks() * statFs.getBlockSize());
-                        } else {
-                            freeSpace = statFs.getAvailableBlocksLong() * statFs.getBlockSizeLong();
-                        }
-                        preferences.edit().putLong("last_space_check", System.currentTimeMillis()).commit();
-                        if (freeSpace < 1024 * 1024 * 100) {
-                            AndroidUtilities.run(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        //AlertsCreator.createFreeSpaceDialog(LaunchActivity.this).close();
-                                    } catch (Throwable ignore) {
-
-                                    }
-                                }
-                            });
-                        }
-                    }
-                } catch (Throwable ignore) {
-
-                }
-            }
-        }, 2000);
-    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -731,65 +582,7 @@ public class MyActivity extends android.app.Activity implements NotificationCent
         //actionBarLayout.onLowMemory();
     }
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
-
-            /*else if (ArticleViewer.getInstance().isVisible()) {
-                return super.onKeyUp(keyCode, event);
-            }
-            */
-            if (AndroidUtilities.isTablet()) {
-
-            } else {
-                //                if (actionBarLayout.fragmentsStack.size() == 1) {
-                //                    /*
-                //                    if (!drawerLayoutContainer.isDrawerOpened()) {
-                //                        if (getCurrentFocus() != null) {
-                //                            AndroidUtilities.hideKeyboard(getCurrentFocus());
-                //                        }
-                //                        drawerLayoutContainer.openDrawer(false);
-                //                    } else {
-                //                        drawerLayoutContainer.closeDrawer(false);
-                //                    }
-                //                    */
-                //                } else {
-                //                    actionBarLayout.onKeyUp(keyCode, event);
-                //                }
-            }
-        }
-        return super.onKeyUp(keyCode, event);
-    }
-
     private void init() {
-
-        //        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        //        mSettingsClient = LocationServices.getSettingsClient(this);
-        //
-        //        mLocationCallback = new LocationCallback()
-        //        {
-        //            @Override
-        //            public void onLocationResult(LocationResult locationResult)
-        //            {
-        //                super.onLocationResult(locationResult);
-        //                // location is received
-        //                mCurrentLocation = locationResult.getLastLocation();
-        //                mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-        //
-        //                updateLocationUI();
-        //            }
-        //        };
-        //
-        //        mRequestingLocationUpdates = false;
-        //
-        //        mLocationRequest = new LocationRequest();
-        //        mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
-        //        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
-        //        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        //
-        //        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
-        //        builder.addLocationRequest(mLocationRequest);
-        //        mLocationSettingsRequest = builder.build();
 
         // Requesting ACCESS_FINE_LOCATION using Dexter library
         Dexter.withActivity(this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION).withListener(new PermissionListener() {
@@ -828,123 +621,12 @@ public class MyActivity extends android.app.Activity implements NotificationCent
                 //mCurrentLocation = savedInstanceState.getParcelable("last_known_location");
             }
 
-            if (savedInstanceState.containsKey("last_updated_on")) {
-                mLastUpdateTime = savedInstanceState.getString("last_updated_on");
-            }
         }
 
         //updateLocationUI();
     }
 
-    /**
-     * Update the UI displaying the location data
-     * and toggling the buttons
-     */
-    //    private void updateLocationUI()
-    //    {
-    //
-    //        if (mCurrentLocation != null) {
-    //            //txtLocationResult.setText("Lat: " + mCurrentLocation.getLatitude() + ", " + "Lng: " + mCurrentLocation.getLongitude());
-    //
-    //            // giving a blink animation on TextView
-    //            //txtLocationResult.setAlpha(0);
-    //            //txtLocationResult.animate().alpha(1).setDuration(300);
-    //
-    //            latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
-    //
-    //            //Toast.makeText(getApplicationContext(), "Lat: " + mCurrentLocation.getLatitude() + ", " + "Lng: " + mCurrentLocation.getLongitude(), Toast.LENGTH_SHORT).Reply();
-    //
-    //            // location last updated time
-    //            //txtUpdatedOn.setText("Last updated on: " + mLastUpdateTime);
-    //        }
-    //    }
 
-    /**
-     * Starting location updates
-     * Check whether location settings are satisfied and then
-     * location updates will be requested
-     */
-    //    private void startLocationUpdates()
-    //    {
-    //
-    //        mSettingsClient.checkLocationSettings(mLocationSettingsRequest).addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>()
-    //        {
-    //
-    //            @SuppressLint("MissingPermission")
-    //            @Override
-    //            public void onSuccess(LocationSettingsResponse locationSettingsResponse)
-    //            {
-    //                Log.i(TAG, "All location settings are satisfied.");
-    //
-    //                //Toast.makeText(getApplicationContext(), "Started location updates!", Toast.LENGTH_SHORT).Reply();
-    //
-    //                //noinspection MissingPermission
-    //                mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-    //
-    //                updateLocationUI();
-    //            }
-    //
-    //        }).addOnFailureListener(this, new OnFailureListener()
-    //        {
-    //            @Override
-    //            public void onFailure(@NonNull Exception e)
-    //            {
-    //                int statusCode = ((ApiException) e).getStatusCode();
-    //                switch (statusCode) {
-    //                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-    //
-    //                        /*
-    //                        Log.i(TAG, "Location settings are not satisfied. Attempting to upgrade " + "location settings ");
-    //                        try {
-    //                            // Show the dialog by calling startResolutionForResult(), and check the
-    //                            // result in onActivityResult().
-    //                            ResolvableApiException rae = (ResolvableApiException) e;
-    //                            rae.startResolutionForResult(LaunchActivity.this, REQUEST_CHECK_SETTINGS);
-    //                        } catch (IntentSender.SendIntentException sie) {
-    //                            Log.i(TAG, "PendingIntent unable to execute request.");
-    //                        }
-    //                        break;
-    //                        */
-    //
-    //                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-    //                        String errorMessage = "Location settings are inadequate, and cannot be " + "fixed here. Fix in Settings.";
-    //                        //Log.e(TAG, errorMessage);
-    //
-    //                        //Toast.makeText(LaunchActivity.this, errorMessage, Toast.LENGTH_LONG).Reply();
-    //                }
-    //
-    //                updateLocationUI();
-    //            }
-    //        });
-    //    }
-    //
-    //    public void stopLocationButtonClick()
-    //    {
-    //        mRequestingLocationUpdates = false;
-    //        stopLocationUpdates();
-    //    }
-    //
-    //    public void stopLocationUpdates()
-    //    {
-    //        // Removing location updates
-    //        mFusedLocationClient.removeLocationUpdates(mLocationCallback).addOnCompleteListener(this, new OnCompleteListener<Void>()
-    //        {
-    //            @Override
-    //            public void onComplete(@NonNull Task<Void> task)
-    //            {
-    //                Toast.makeText(getApplicationContext(), "Location updates stopped!", Toast.LENGTH_SHORT).show();
-    //            }
-    //        });
-    //    }
-    //
-    //    public void showLastKnownLocation()
-    //    {
-    //        if (mCurrentLocation != null) {
-    //            Toast.makeText(getApplicationContext(), "Lat: " + mCurrentLocation.getLatitude() + ", Lng: " + mCurrentLocation.getLongitude(), Toast.LENGTH_LONG).show();
-    //        } else {
-    //            Toast.makeText(getApplicationContext(), "Last known location is not available!", Toast.LENGTH_SHORT).show();
-    //        }
-    //    }
     private void openSettings() {
         Intent intent = new Intent();
         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);

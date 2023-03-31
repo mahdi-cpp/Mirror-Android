@@ -12,10 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mahdi.car.core.cell.CellFrameLayout;
 import com.mahdi.car.core.cell.CellView;
 import com.mahdi.car.core.component.ToolBar;
+import com.mahdi.car.library.viewAnimator.ViewAnimator;
 import com.mahdi.car.setting.cell.BitrateView;
+import com.mahdi.car.setting.cell.ProfileCell;
 import com.mahdi.car.setting.cell.QualityView;
 import com.mahdi.car.setting.cell.SettingCell;
-import com.mahdi.car.library.viewAnimator.ViewAnimator;
 import com.mahdi.car.share.CustomGridLayoutManager;
 import com.mahdi.car.share.RefreshRecyclerView;
 import com.mahdi.car.share.Themp;
@@ -24,6 +25,7 @@ import com.mahdi.car.share.component.ui.LayoutHelper;
 public class SettingView extends CellFrameLayout {
 
     private static int rowCount = 0;
+    private static final int rowProfile = rowCount++;
     private static final int rowNotification = rowCount++;
     private static final int rowAccount = rowCount++;
     private static final int rowMirrorSeparate = rowCount++;
@@ -237,7 +239,9 @@ public class SettingView extends CellFrameLayout {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            if (viewType == rowBitrate) {
+            if (viewType == rowProfile) {
+                return new Holder(new ProfileCell(context));
+            } else if (viewType == rowBitrate) {
                 return new Holder(new BitrateView(context));
             } else if (viewType == rowResolution) {
                 return new Holder(new QualityView(context));
@@ -249,7 +253,9 @@ public class SettingView extends CellFrameLayout {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-            if (position == rowNotification) {
+            if (position == rowProfile) {
+                ProfileCell cell = (ProfileCell) holder.itemView;
+            } else if (position == rowNotification) {
                 SettingCell cell = (SettingCell) holder.itemView;
                 cell.setIcon(Themp.setting.notification, "Notification");
             } else if (position == rowAccount) {
