@@ -34,6 +34,7 @@ public class Themp {
         public Bitmap remote = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.remote);
         public Bitmap arrow_back_large = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.arrow_back_rounded);
 
+        public Bitmap screen = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.screen);
         public Bitmap cast_large = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.cast_large);
         public Bitmap android_mobile = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.android_mobile);
 

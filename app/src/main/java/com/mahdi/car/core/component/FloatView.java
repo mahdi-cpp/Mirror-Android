@@ -10,12 +10,12 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 
-import com.mahdi.car.core.cell.CellView;
+import com.mahdi.car.core.cell.CellFrameLayout;
 import com.mahdi.car.server.model.User;
 import com.mahdi.car.share.Themp;
 import com.mahdi.car.share.component.ui.LayoutHelper;
 
-public class FloatView extends CellView {
+public class FloatView extends CellFrameLayout {
 
     private static int itemCount = 0;
     private static final int ITEM_BUTTON = itemCount++;
@@ -33,33 +33,28 @@ public class FloatView extends CellView {
     private String[] photos = new String[4];
 
     private int space = dp(16);
-    private int photoSize = dp(30);
-    private int heightSize = dp(40);
 
     private int button_y_shift = screenHeight - dp(200);
     private boolean buttonVisible = true;
 
     private boolean isExpand = false;
 
-    private int bottomToolBar = dp(48);
-    private int headerHeight = dp(54);
-
     public FloatView(Context context) {
 
         super(context);
 
-        setBackgroundColor(0xffffffff);
+        setBackgroundColor(0x00ffffff);
         setLayoutParams(LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP, 0, 0, 0, 0));
 
-        //startStoryRing();
+        startStoryRing();
 
         round = dp(18);
         cellWidth = (width - (space * 3)) / 2;
         space = dp(16);
 
         avatarSize = dp(33);
-        avatarX = dp(15);
-        avatarY = dp(11);
+        avatarX = dp(13);
+        avatarY = dp(12);
 
         setParameters("0", "0");
     }
@@ -94,8 +89,8 @@ public class FloatView extends CellView {
 
         User user = new User();
         userid = user.ID;
-        //user.Avatar = "abednaseri_186760853_942575583255229_2875100642476586962_n.jpg";
-        //setAvatar(user.Avatar);
+        user.Avatar = "abednaseri_186760853_942575583255229_2875100642476586962_n.jpg";
+        setAvatar(user.Avatar);
 
         toolbarNameLayout = new StaticLayout(username, Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[5], dp(200), Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
         toolbarTitleLayout = new StaticLayout(title, Themp.TEXT_PAINT_FILL_GREY[5], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
@@ -115,24 +110,37 @@ public class FloatView extends CellView {
 
         //canvas.drawBitmap(Themp.mainToolBarIcons[1], dp(65), dp(13) , Themp.ICON_PAINT_MULTIPLY_BLACK);
 
-        drawAvatar(avatarX, avatarY);
 
-        drawTextLayout(toolbarNameLayout, dp(65 + 0), dp(7));
-        drawTextLayout(toolbarTitleLayout, dp(65 + 0), dp(27));
 
         //canvas.drawLine(0, dp(0), width, dp(0), Themp.PAINT_GRAY);
 
         //canvas.drawLine(0, screenHeight - bottomToolBar, width, screenHeight - bottomToolBar, Themp.PAINT_GRAY);
 
-        if (isExpand == false) {
-            Themp.drawableToolbar[0].setBounds(0, 0, width, dp(3));
-            Themp.drawableToolbar[0].setAlpha(100);
-            Themp.drawableToolbar[0].draw(canvas);
-        }
-        //shadows
-        Themp.drawableToolbar[0].setBounds(0, 0, width, dp(100));
-        Themp.drawableToolbar[0].setAlpha(100);
-        Themp.drawableToolbar[0].draw(canvas);
+        avatarSize = dp(33);
+        avatarX = dp(14);
+        avatarY = dp(14);
+
+        int round = dp(1);
+
+        canvas.drawRoundRect(new RectF(0, dp(0), getWidth(),  getHeight()), dp(22 + round), dp(22 + round), Themp.PAINT_FFEEEEEE);
+        canvas.drawRoundRect(new RectF(dp(2), dp(2), getWidth() - dp(2),  getHeight() - dp(2)), dp(20 + round), dp(20 + round), Themp.PAINT_WHITE);
+
+//        if (isExpand == false) {
+//            Themp.drawableToolbar[0].setBounds(dp(15), 0, width - dp(15), dp(8));
+//            Themp.drawableToolbar[0].setAlpha(100);
+//            Themp.drawableToolbar[0].draw(canvas);
+//        }
+//        //shadows
+//        Themp.drawableToolbar[0].setBounds(0, 0, width, dp(100));
+//        Themp.drawableToolbar[0].setAlpha(100);
+//        Themp.drawableToolbar[0].draw(canvas);
+
+        //canvas.drawRoundRect(new RectF(0, 0, getWidth(),  dp(60)), dp(40), dp(40), Themp.STROKE_PAINT_30DP_WHITE);
+
+        drawAvatar(avatarX, avatarY);
+
+        drawTextLayout(toolbarNameLayout, dp(65 + 0), dp(9));
+        drawTextLayout(toolbarTitleLayout, dp(65 + 0), dp(29));
 
         //canvas.drawLine(0, dp(54), width, dp(54), Themp.PAINT_GRAY);
         //}

@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
 import com.mahdi.car.core.cell.CellFrameLayout;
@@ -28,12 +29,12 @@ public class FloatViewParent extends CellFrameLayout {
 
 
     private int bottomToolBar = dp(48);
-    private int headerHeight = dp(54);
+    private int headerHeight = dp(57);
+
 
     public FloatViewParent(Context context) {
         super(context);
 
-        setBackgroundColor(0x00ff9800);
         setLayoutParams(LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP));
 
         gestureDetector = new GestureDetector(context, new GestureDetector.OnGestureListener() {
@@ -97,6 +98,7 @@ public class FloatViewParent extends CellFrameLayout {
 
                 if (y > screenHeight - headerHeight - bottomToolBar && y < screenHeight) {
                     isPressed = true;
+                    setBackgroundColor(0x22000000);
                     return true;
                 }
             case MotionEvent.ACTION_MOVE:
@@ -148,6 +150,7 @@ public class FloatViewParent extends CellFrameLayout {
         dX -= distanceX;
         dY -= distanceY;
 
+        setBackgroundColor(0x22000000);
         floatView.setScroll();
 
         if (Math.abs(dY) > Math.abs(dX)) {
@@ -174,6 +177,7 @@ public class FloatViewParent extends CellFrameLayout {
                 dX = 0;
                 dY = 0;
                 floatView.setExpand();
+                setBackgroundColor(0x44000000);
             }
         }).start();
     }
@@ -187,6 +191,7 @@ public class FloatViewParent extends CellFrameLayout {
                 dX = 0;
                 dY = 0;
                 floatView.setCollapse();
+                setBackgroundColor(0x00000000);
             }
         }).start();
     }

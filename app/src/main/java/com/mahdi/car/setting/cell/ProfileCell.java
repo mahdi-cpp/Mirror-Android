@@ -43,6 +43,8 @@ public class ProfileCell extends CellFrameLayout {
         setName(9, "Mahdi Abdolmaleki");
 
         round = dp(4);
+
+        hasStory = false;
         avatarSize = dp(100);
         avatarX = centerX - (avatarSize / 2);
         avatarY = dp(30);

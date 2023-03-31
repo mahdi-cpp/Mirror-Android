@@ -10,7 +10,7 @@ import com.mahdi.car.core.cell.CellView;
 import com.mahdi.car.share.Themp;
 import com.mahdi.car.share.component.ui.LayoutHelper;
 
-public class MirrorView extends CellView {
+public class FeedView extends CellView {
 
     private StaticLayout descriptionLayout;
     private StaticLayout titleLayout;
@@ -20,7 +20,7 @@ public class MirrorView extends CellView {
     private int space = dp(16);
 
 
-    public MirrorView(Context context) {
+    public FeedView(Context context) {
 
         super(context);
 
@@ -40,11 +40,10 @@ public class MirrorView extends CellView {
 
     public void init() {
 
-        titleLayout = new StaticLayout("Screen Mirror On Ubuntu Desktop", Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[11], width, Layout.Alignment.ALIGN_CENTER, 1.2f, 0.2f, false);
-        descriptionLayout = new StaticLayout("Screen is live on display", Themp.TEXT_PAINT_FILL_GREY[8], width, Layout.Alignment.ALIGN_CENTER, 1.2f, 0.2f, false);
-
+        titleLayout = new StaticLayout("Ubuntu Desktop", Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[14], width, Layout.Alignment.ALIGN_CENTER, 1.2f, 0.2f, false);
+        descriptionLayout = new StaticLayout("QmlScrcpy supports displaying and controlling Android devices via USB or WiFi . " +
+                "It does NOT require root privileges.", Themp.TEXT_PAINT_FILL_GREY[8], width - dp(60), Layout.Alignment.ALIGN_CENTER, 1.2f, 0.2f, false);
         connectLayout = new StaticLayout("connected", Themp.TEXT_PAINT_FILL_AND_STROKE_2_WHITE[5], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
-
         invalidate();
     }
 
@@ -72,12 +71,12 @@ public class MirrorView extends CellView {
             canvas.restore();
         }
 
-        canvas.drawBitmap(Themp.toolbar.cast_large, -Themp.toolbar.cast_large.getWidth() / 2, 0, Themp.ICON_PAINT_MULTIPLY_BLACK);
+        canvas.drawBitmap(Themp.toolbar.screen, -Themp.toolbar.screen.getWidth() / 2, 0, Themp.ICON_PAINT_MULTIPLY_BLACK);
         canvas.restore();
 
 
-        drawTextLayout(titleLayout, 0, dp(220 + 70));
-        drawTextLayout(descriptionLayout, 0, dp(260 + 70));
+        drawTextLayout(titleLayout, 0, dp(190 + 40));
+        drawTextLayout(descriptionLayout, dp(30), dp(260 + 40));
 
     }
 

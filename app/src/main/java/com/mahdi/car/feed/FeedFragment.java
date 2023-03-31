@@ -28,7 +28,7 @@ import com.mahdi.car.core.BaseFragment;
 import com.mahdi.car.core.QZoomView;
 import com.mahdi.car.core.RootView;
 import com.mahdi.car.dialog.popup.QDialog;
-import com.mahdi.car.feed.components.MirrorView;
+import com.mahdi.car.feed.components.FeedView;
 import com.mahdi.car.setting.SettingView;
 import com.mahdi.car.library.viewAnimator.ViewAnimator;
 import com.mahdi.car.model.Person;
@@ -69,7 +69,7 @@ public class FeedFragment extends BaseFragment {
     private Button btnDisconnect;
     private Button btnConnection;
 
-    MirrorView mirrorView;
+    FeedView feedView;
 
     @Override
     public View createView(Context context) {
@@ -122,7 +122,7 @@ public class FeedFragment extends BaseFragment {
         btnConnection.setDelegate((Button.Delegate) () -> {
             getParentActivity().websocketStart();
             RootView.instance().showFloatView("Mahdi Abdolmaleki", "start show phone screen on car display");
-            mirrorView.setConnection(true);
+            feedView.setConnection(true);
         });
 
         btnDisconnect = new Button(context);
@@ -130,7 +130,7 @@ public class FeedFragment extends BaseFragment {
         btnDisconnect.setColor(1);
         btnDisconnect.setDelegate((Button.Delegate) () -> {
 
-            mirrorView.setConnection(false);
+            feedView.setConnection(false);
 
             Gson gson = new GsonBuilder().disableHtmlEscaping().create();
             Person person = new Person("12", "Ali", "" + new Date().getTime(), 35);
@@ -139,12 +139,14 @@ public class FeedFragment extends BaseFragment {
             RootView.instance().hideFloatView();
         });
 
-        mirrorView = new MirrorView(context);
+        feedView = new FeedView(context);
 
-        swipe.addView(mirrorView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP, 0, 0, 0, 0));
+        swipe.addView(feedView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP, 0, 0, 0, 0));
 
-        swipe.addView(btnConnection, LayoutHelper.createFrame(220, 40, Gravity.BOTTOM, 100, 0, 0, 170));
-        swipe.addView(btnDisconnect, LayoutHelper.createFrame(220, 40, Gravity.BOTTOM, 100, 0, 0, 100));
+        swipe.addView(btnConnection, LayoutHelper.createFrame(120, 40, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0, 0, 100));
+        //swipe.addView(btnDisconnect, LayoutHelper.createFrame(220, 40, Gravity.BOTTOM, 100, 0, 0, 100));
+
+        RootView.instance().showFloatView("Ali", "Music Play");
 
         parentView.invalidate();
 
