@@ -1,4 +1,4 @@
-package com.mahdi.car.direct;
+package com.mahdi.car.setting;
 
 import android.content.Context;
 
@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mahdi.car.core.BaseFragment;
-import com.mahdi.car.direct.cell.ChatCell;
-import com.mahdi.car.direct.component.ChatAddView;
+import com.mahdi.car.setting.cell.ChatCell;
+import com.mahdi.car.setting.component.ChatAddView;
 import com.mahdi.car.server.dtos.ProfileDTO;
 import com.mahdi.car.server.https.Server;
 import com.mahdi.car.server.model.Post;
@@ -124,7 +124,6 @@ public class ChatFragment extends BaseFragment
                 if (cell == null || post == null) {
                     return;
                 }
-
 
                 cell.setPost(user.Avatar, post, position);
                 cell.setDelegate(post1 -> {

@@ -8,12 +8,14 @@ import android.widget.FrameLayout;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+
+import com.mahdi.car.MyActivity;
 import com.mahdi.car.share.component.ui.LayoutHelper;
 
 public class CoreFragment extends FrameLayout
 {
     private Context context;
-    private Activity parentActivity;
+    private MyActivity parentActivity;
     protected ArrayList<BaseFragment> fragmentsStack;
 
     public CoreFragment(@NonNull Context context)
@@ -23,7 +25,7 @@ public class CoreFragment extends FrameLayout
         setBackgroundColor(0xffffffff);
 
         this.context = context;
-        parentActivity = (Activity) context;
+        parentActivity = (MyActivity) context;
         fragmentsStack = new ArrayList<>();
     }
 
@@ -125,7 +127,7 @@ public class CoreFragment extends FrameLayout
         }
     }
 
-    public Activity getParentActivity()
+    public MyActivity getParentActivity()
     {
         return parentActivity;
     }

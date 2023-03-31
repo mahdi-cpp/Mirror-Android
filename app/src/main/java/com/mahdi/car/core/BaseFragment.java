@@ -6,11 +6,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
-
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,29 +18,26 @@ import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import java.util.HashMap;
-
 import androidx.annotation.NonNull;
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mahdi.car.MyActivity;
 import com.mahdi.car.core.base.Share;
-
-import com.mahdi.car.dialog.ForwardDialog;
-import com.mahdi.car.feed.FeedFragment;
-import com.mahdi.car.share.Themp;
 import com.mahdi.car.core.component.BottomToolBar;
 import com.mahdi.car.core.component.ToolBar;
-
+import com.mahdi.car.dialog.ForwardDialog;
 import com.mahdi.car.messenger.AndroidUtilities;
 import com.mahdi.car.server.model.Post;
-import com.mahdi.car.setting.SettingFragment;
+import com.mahdi.car.share.CustomLinearLayoutManager;
 import com.mahdi.car.share.QMenu;
 import com.mahdi.car.share.RefreshRecyclerView;
-import com.mahdi.car.share.CustomLinearLayoutManager;
+import com.mahdi.car.share.Themp;
 import com.mahdi.car.share.component.ui.LayoutHelper;
+
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -129,7 +124,6 @@ public class BaseFragment implements Share {
 
     protected View createView(Context context) {
         this.context = context;
-        fragmentConfig();
 
         bottomToolBar = new BottomToolBar();
 
@@ -448,33 +442,6 @@ public class BaseFragment implements Share {
         public int animation = 0;
     }
 
-    private void fragmentConfig() {
-        if (this instanceof SettingFragment) {
-            config.hasServerData = false;
-        }
-
-        //        if (this instanceof FeedFragment || this instanceof ExploreFragment) {
-        //            hasBottomToolBar = true;
-        //        }
-        //
-
-
-        if (RootView.instance().getFullScreen() && thisFragment == fragment.profile) {
-            config.animation = 1;
-        }
-
-
-        if (this instanceof FeedFragment) {
-            page = 0;
-            size = 200;
-        }
-
-        if (this instanceof FeedFragment) {
-            config.hasRecyclerViewVideo = true;
-            config.hasServerData = true;
-        }
-
-    }
 
     public boolean onTouchEvent(MotionEvent event) {
         return false;
@@ -556,7 +523,7 @@ public class BaseFragment implements Share {
         return contentView;
     }
 
-    public Activity getParentActivity() {
+    public MyActivity getParentActivity() {
         return coreFragment.getParentActivity();
     }
 
@@ -589,6 +556,10 @@ public class BaseFragment implements Share {
     }
 
     protected void onFragmentDestroy() {
+
+    }
+
+    public void onWebSocketReceive(String jsonString) {
 
     }
 
@@ -784,6 +755,7 @@ public class BaseFragment implements Share {
     protected void onRequestPermissionsResultFragment(int requestCode, String[] permissions, int[] grantResults) {
 
     }
+
     protected String videoGetCurrentUrl() {
         return currentUrl;
     }

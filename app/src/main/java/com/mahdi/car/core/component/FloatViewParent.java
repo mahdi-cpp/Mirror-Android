@@ -22,7 +22,9 @@ public class FloatViewParent extends CellFrameLayout {
 
     private boolean isPressed = false;
     private boolean isSelect = false;
-    private boolean isFullScreen = false;
+    private boolean isExpand = false;
+
+    private boolean isShow = false;
 
 
     private int bottomToolBar = dp(48);
@@ -79,6 +81,10 @@ public class FloatViewParent extends CellFrameLayout {
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
 
+        if (!isShow) {
+            return false;
+        }
+
         float x = event.getX();
         float y = event.getY();
 
@@ -103,7 +109,7 @@ public class FloatViewParent extends CellFrameLayout {
             case MotionEvent.ACTION_POINTER_UP:
 
                 if (y > screenHeight - headerHeight - bottomToolBar && y < screenHeight - bottomToolBar && isPressed == true) {
-                    resetToTop();
+                    setExpand();
                     isPressed = false;
                     isSelect = true;
                     velocityY = -2000;
@@ -115,23 +121,23 @@ public class FloatViewParent extends CellFrameLayout {
 
                 if (floatView.getTranslationY() > screenHeight / 2) {
                     if (velocityY > -1000) {
-                        resetToBottom();
+                        setCollapse();
                     } else {
-                        resetToTop();
+                        setExpand();
                     }
 
                 } else {
                     if (velocityY > -1000) {
-                        resetToBottom();
+                        setCollapse();
                     } else {
-                        resetToTop();
+                        setExpand();
                     }
                 }
 
                 break;
         }
 
-        if (isFullScreen) {
+        if (isExpand) {
             return true;
         }
 
@@ -142,8 +148,10 @@ public class FloatViewParent extends CellFrameLayout {
         dX -= distanceX;
         dY -= distanceY;
 
+        floatView.setScroll();
+
         if (Math.abs(dY) > Math.abs(dX)) {
-            if (isFullScreen) {
+            if (isExpand) {
                 floatView.setTranslationY(dY);
             } else {
                 floatView.setTranslationY(dY + screenHeight - bottomToolBar - headerHeight);
@@ -157,45 +165,54 @@ public class FloatViewParent extends CellFrameLayout {
         cellHeight = getHeight();
     }
 
-    private void resetToTop() {
-        isFullScreen = true;
+    private void setExpand() {
+        isExpand = true;
         ViewAnimator.animate(floatView).setInterpolator(new DecelerateInterpolator()).translationY(0).setDuration(200).addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 dX = 0;
                 dY = 0;
+                floatView.setExpand();
             }
         }).start();
     }
 
-    private void resetToBottom() {
-        isFullScreen = false;
+    private void setCollapse() {
+        isExpand = false;
         ViewAnimator.animate(floatView).setInterpolator(new DecelerateInterpolator()).translationY(screenHeight - bottomToolBar - headerHeight).setDuration(200).addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 dX = 0;
                 dY = 0;
+                floatView.setCollapse();
             }
         }).start();
     }
 
     public void show(String username, String title) {
         floatView.setParameters(username, title);
-        ViewAnimator.animate(floatView).setInterpolator(new DecelerateInterpolator()).translationY(screenHeight - bottomToolBar - headerHeight).setDuration(200).addListener(new AnimatorListenerAdapter() {
+        if (isShow)
+            return;
+
+        ViewAnimator.animate(floatView).setInterpolator(new DecelerateInterpolator()).translationY(screenHeight - bottomToolBar - headerHeight).setDuration(150).addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
+                isShow = true;
             }
         }).start();
     }
 
     public void hide() {
-        ViewAnimator.animate(floatView).setInterpolator(new DecelerateInterpolator()).translationY(screenHeight - bottomToolBar).setDuration(200).addListener(new AnimatorListenerAdapter() {
+        if (isShow == false)
+            return;
+        ViewAnimator.animate(floatView).setInterpolator(new DecelerateInterpolator()).translationY(screenHeight - bottomToolBar).setDuration(150).addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
+                isShow = false;
             }
         }).start();
     }

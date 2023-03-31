@@ -2,58 +2,57 @@ package com.mahdi.car;
 
 
 import android.Manifest;
-import android.app.*;
-import android.content.*;
+import android.app.ActivityManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
-import android.os.*;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.os.StatFs;
 import android.provider.Settings;
-
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.*;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.Window;
 import android.widget.Toast;
 
-//import com.google.android.gms.common.api.ApiException;
-//import com.google.android.gms.location.FusedLocationProviderClient;
-//import com.google.android.gms.location.LocationCallback;
-//import com.google.android.gms.location.LocationRequest;
-//import com.google.android.gms.location.LocationResult;
-//import com.google.android.gms.location.LocationServices;
-//import com.google.android.gms.location.LocationSettingsRequest;
-//import com.google.android.gms.location.LocationSettingsResponse;
-//import com.google.android.gms.location.LocationSettingsStatusCodes;
-//import com.google.android.gms.location.SettingsClient;
-//import com.google.android.gms.maps.CameraUpdate;
-//import com.google.android.gms.maps.CameraUpdateFactory;
-//import com.google.android.gms.maps.model.LatLng;
-//import com.google.android.gms.tasks.OnCompleteListener;
-//import com.google.android.gms.tasks.OnFailureListener;
-//import com.google.android.gms.tasks.OnSuccessListener;
-//import com.google.android.gms.tasks.Task;
+import androidx.core.app.ActivityCompat;
+
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
-
-
-import androidx.core.app.ActivityCompat;
-
 import com.mahdi.car.core.QZoomView;
+import com.mahdi.car.core.RootView;
+import com.mahdi.car.messenger.AndroidUtilities;
+import com.mahdi.car.messenger.FileLoader;
+import com.mahdi.car.messenger.FileLog;
+import com.mahdi.car.messenger.MediaController;
+import com.mahdi.car.messenger.NotificationCenter;
+import com.mahdi.car.messenger.UdpReceiver;
+import com.mahdi.car.messenger.Utilities;
+import com.mahdi.car.messenger.WebSocketReceiver;
 import com.mahdi.car.service.UDPListenerService;
 import com.mahdi.car.service.WebSocketService;
 import com.mahdi.car.share.component.ui.LayoutHelper;
-import com.mahdi.car.core.RootView;
-import com.mahdi.car.messenger.*;
 
 import java.io.File;
 import java.util.ArrayList;
 
-public class MyActivity extends android.app.Activity implements NotificationCenter.NotificationCenterDelegate
-{
+public class MyActivity extends android.app.Activity implements NotificationCenter.NotificationCenterDelegate {
 
     public static final String TAG = "LaunchActivity";
 
@@ -102,8 +101,7 @@ public class MyActivity extends android.app.Activity implements NotificationCent
     IntentFilter webSocketIntentFilter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
@@ -261,11 +259,9 @@ public class MyActivity extends android.app.Activity implements NotificationCent
             }
         }
 
-        receiver = new BroadcastReceiver()
-        {
+        receiver = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context arg0, Intent intent)
-            {
+            public void onReceive(Context arg0, Intent intent) {
 
                 //                boolean isScreenOn = App.pm.isScreenOn();
                 //                if (!isScreenOn) {
@@ -308,7 +304,7 @@ public class MyActivity extends android.app.Activity implements NotificationCent
 
             @Override
             public void onMessage(String message) {
-
+                RootView.instance().onWebSocketReceive(message);
             }
         });
 
@@ -326,12 +322,10 @@ public class MyActivity extends android.app.Activity implements NotificationCent
 
     }
 
-    public class MyBroadCastReciever extends BroadcastReceiver
-    {
+    public class MyBroadCastReciever extends BroadcastReceiver {
 
         @Override
-        public void onReceive(Context context, Intent intent)
-        {
+        public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
                 Log.i("Check", "Screen went OFF");
                 Toast.makeText(context, "screen OFF", Toast.LENGTH_LONG).show();
@@ -343,16 +337,14 @@ public class MyActivity extends android.app.Activity implements NotificationCent
     }
 
     @Override
-    public void onWindowFocusChanged(boolean hasFocus)
-    {
+    public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         //        if (hasFocus) {
         //            hideSystemUI();
         //        }
     }
 
-    private void hideSystemUI()
-    {
+    private void hideSystemUI() {
         // Enables regular immersive mode.
         // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
         // Or for "sticky immersive," replace it with SYSTEM_UI_FLAG_IMMERSIVE_STICKY
@@ -365,10 +357,16 @@ public class MyActivity extends android.app.Activity implements NotificationCent
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
 
+    public void websocketStart() {
+        webSocketService.startServer("192.168.1.113");
+    }
+
+    public void webSocketSend(String json) {
+        webSocketService.send(json);
+    }
 
     @Override
-    protected void onNewIntent(Intent intent)
-    {
+    protected void onNewIntent(Intent intent) {
 
         Bundle extras = intent.getExtras();
         if (extras != null) {
@@ -380,8 +378,7 @@ public class MyActivity extends android.app.Activity implements NotificationCent
         }
     }
 
-    private void createNotificationChannel()
-    {
+    private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -397,8 +394,7 @@ public class MyActivity extends android.app.Activity implements NotificationCent
         }
     }
 
-    private void onFinish()
-    {
+    private void onFinish() {
         if (finished) {
             return;
         }
@@ -414,8 +410,7 @@ public class MyActivity extends android.app.Activity implements NotificationCent
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 3012 && resultCode == RESULT_OK) {
             ArrayList<String> matches = data.getStringArrayListExtra("android.speech.extra.RESULTS");
@@ -439,8 +434,7 @@ public class MyActivity extends android.app.Activity implements NotificationCent
 
     @SuppressWarnings({"ResourceType"})
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
-    {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 3 || requestCode == 4 || requestCode == 5 || requestCode == 19 || requestCode == 20) {
@@ -495,19 +489,16 @@ public class MyActivity extends android.app.Activity implements NotificationCent
     }
 
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
         super.onPause();
 
         RootView.instance().onPause();
 
         //UserConfig.lastAppPauseTime = System.currentTimeMillis();
         App.mainInterfacePaused = true;
-        Utilities.stageQueue.postRunnable(new Runnable()
-        {
+        Utilities.stageQueue.postRunnable(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 App.mainInterfacePausedStageQueue = true;
                 App.mainInterfacePausedStageQueueTime = 0;
             }
@@ -519,22 +510,19 @@ public class MyActivity extends android.app.Activity implements NotificationCent
     }
 
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
 
     }
 
     @Override
-    protected void onStop()
-    {
+    protected void onStop() {
         super.onStop();
 
     }
 
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         RootView.instance().onDestroy();
 
         unregisterReceiver(receiver);
@@ -549,9 +537,9 @@ public class MyActivity extends android.app.Activity implements NotificationCent
         super.onDestroy();
         onFinish();
     }
+
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         if (!RootView.instance().onBackPressed()) {
             return;
         }
@@ -559,9 +547,9 @@ public class MyActivity extends android.app.Activity implements NotificationCent
         //FatherView.instance().clear();
         super.onBackPressed();
     }
+
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
 
         if (webSocketService != null) {
@@ -578,11 +566,9 @@ public class MyActivity extends android.app.Activity implements NotificationCent
 
         //showLanguageAlert(false);
         App.mainInterfacePaused = false;
-        Utilities.stageQueue.postRunnable(new Runnable()
-        {
+        Utilities.stageQueue.postRunnable(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 App.mainInterfacePausedStageQueue = false;
                 App.mainInterfacePausedStageQueueTime = System.currentTimeMillis();
             }
@@ -623,24 +609,21 @@ public class MyActivity extends android.app.Activity implements NotificationCent
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig)
-    {
+    public void onConfigurationChanged(Configuration newConfig) {
         AndroidUtilities.checkDisplaySize(this, newConfig);
         super.onConfigurationChanged(newConfig);
         //checkLayout();
     }
 
     @Override
-    public void onMultiWindowModeChanged(boolean isInMultiWindowMode)
-    {
+    public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
         AndroidUtilities.isInMultiwindow = isInMultiWindowMode;
         //checkLayout();
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public void didReceivedNotification(int id, Object... args)
-    {
+    public void didReceivedNotification(int id, Object... args) {
 
         if (id == NotificationCenter.finishActivity) {
 
@@ -690,17 +673,14 @@ public class MyActivity extends android.app.Activity implements NotificationCent
         }
     }
 
-    private void checkFreeDiscSpace()
-    {
+    private void checkFreeDiscSpace() {
 
         if (Build.VERSION.SDK_INT >= 26) {
             return;
         }
-        Utilities.globalQueue.postRunnable(new Runnable()
-        {
+        Utilities.globalQueue.postRunnable(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
 
                 try {
                     SharedPreferences preferences = App.applicationContext.getSharedPreferences("mainconfig", android.app.Activity.MODE_PRIVATE);
@@ -718,11 +698,9 @@ public class MyActivity extends android.app.Activity implements NotificationCent
                         }
                         preferences.edit().putLong("last_space_check", System.currentTimeMillis()).commit();
                         if (freeSpace < 1024 * 1024 * 100) {
-                            AndroidUtilities.run(new Runnable()
-                            {
+                            AndroidUtilities.run(new Runnable() {
                                 @Override
-                                public void run()
-                                {
+                                public void run() {
                                     try {
                                         //AlertsCreator.createFreeSpaceDialog(LaunchActivity.this).close();
                                     } catch (Throwable ignore) {
@@ -740,8 +718,7 @@ public class MyActivity extends android.app.Activity implements NotificationCent
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
+    protected void onSaveInstanceState(Bundle outState) {
         //        outState.putBoolean("is_requesting_updates", mRequestingLocationUpdates);
         //        outState.putParcelable("last_known_location", mCurrentLocation);
         //        outState.putString("last_updated_on", mLastUpdateTime);
@@ -749,15 +726,13 @@ public class MyActivity extends android.app.Activity implements NotificationCent
 
 
     @Override
-    public void onLowMemory()
-    {
+    public void onLowMemory() {
         super.onLowMemory();
         //actionBarLayout.onLowMemory();
     }
 
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event)
-    {
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_MENU) {
 
             /*else if (ArticleViewer.getInstance().isVisible()) {
@@ -786,8 +761,7 @@ public class MyActivity extends android.app.Activity implements NotificationCent
         return super.onKeyUp(keyCode, event);
     }
 
-    private void init()
-    {
+    private void init() {
 
         //        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         //        mSettingsClient = LocationServices.getSettingsClient(this);
@@ -818,18 +792,15 @@ public class MyActivity extends android.app.Activity implements NotificationCent
         //        mLocationSettingsRequest = builder.build();
 
         // Requesting ACCESS_FINE_LOCATION using Dexter library
-        Dexter.withActivity(this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION).withListener(new PermissionListener()
-        {
+        Dexter.withActivity(this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION).withListener(new PermissionListener() {
             @Override
-            public void onPermissionGranted(PermissionGrantedResponse response)
-            {
+            public void onPermissionGranted(PermissionGrantedResponse response) {
                 mRequestingLocationUpdates = true;
                 //startLocationUpdates();
             }
 
             @Override
-            public void onPermissionDenied(PermissionDeniedResponse response)
-            {
+            public void onPermissionDenied(PermissionDeniedResponse response) {
                 if (response.isPermanentlyDenied()) {
                     // open device settings when the permission is
                     // denied permanently
@@ -838,8 +809,7 @@ public class MyActivity extends android.app.Activity implements NotificationCent
             }
 
             @Override
-            public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token)
-            {
+            public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
                 token.continuePermissionRequest();
             }
         }).check();
@@ -848,8 +818,7 @@ public class MyActivity extends android.app.Activity implements NotificationCent
     /**
      * Restoring values from saved instance state
      */
-    private void restoreValuesFromBundle(Bundle savedInstanceState)
-    {
+    private void restoreValuesFromBundle(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey("is_requesting_updates")) {
                 mRequestingLocationUpdates = savedInstanceState.getBoolean("is_requesting_updates");
@@ -976,8 +945,7 @@ public class MyActivity extends android.app.Activity implements NotificationCent
     //            Toast.makeText(getApplicationContext(), "Last known location is not available!", Toast.LENGTH_SHORT).show();
     //        }
     //    }
-    private void openSettings()
-    {
+    private void openSettings() {
         Intent intent = new Intent();
         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         Uri uri = Uri.fromParts("package", BuildConfig.APPLICATION_ID, null);
@@ -986,8 +954,7 @@ public class MyActivity extends android.app.Activity implements NotificationCent
         startActivity(intent);
     }
 
-    private boolean checkPermissions()
-    {
+    private boolean checkPermissions() {
         int permissionState = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         return permissionState == PackageManager.PERMISSION_GRANTED;
     }

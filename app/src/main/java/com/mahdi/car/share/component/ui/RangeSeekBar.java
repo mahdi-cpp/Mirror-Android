@@ -145,10 +145,12 @@ public class RangeSeekBar extends CellView
         mMax = t.getFloat(R.styleable.RangeSeekBar_max, 0);
         mThumbResId = t.getResourceId(R.styleable.RangeSeekBar_thumbResId, 0);
         mProgressHintBGId = t.getResourceId(R.styleable.RangeSeekBar_progressHintResId, 0);
+
         colorLineSelected = t.getColor(R.styleable.RangeSeekBar_lineColorSelected, Themp.color_Blue);
         colorLineEdge = t.getColor(R.styleable.RangeSeekBar_lineColorEdge, 0xFFD7D7D7);
         colorPrimary = t.getColor(R.styleable.RangeSeekBar_thumbPrimaryColor, 0);
         colorSecondary = t.getColor(R.styleable.RangeSeekBar_thumbSecondaryColor, 0);
+
         mTextArray = t.getTextArray(R.styleable.RangeSeekBar_markTextArray);
         mProgressHintMode = t.getInt(R.styleable.RangeSeekBar_progressHintMode, HINT_MODE_DEFAULT);
         textPadding = (int) t.getDimension(R.styleable.RangeSeekBar_textPadding, dp2px(context, 7));
@@ -238,7 +240,6 @@ public class RangeSeekBar extends CellView
             rightSB.onSizeChanged(lineLeft, lineBottom, mThumbSize, lineWidth, cellsCount > 1, mThumbResId, getContext());
         }
     }
-
 
     @Override
     protected void onDraw(Canvas canvas)

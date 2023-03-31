@@ -141,6 +141,7 @@ public class BottomToolBar {
 
         canvas.drawRect(0, 0, width, viewHeight, Themp.PAINT_WHITE);
 
+
         for (int i = 0; i < count; i++) {
 
             int size = width / count;
@@ -148,19 +149,15 @@ public class BottomToolBar {
             int y = 15;
 
             if (select == i) {
-                if (i == 4) {
-                    canvas.save();
-                    canvas.drawBitmap(Themp.mainToolBarSelectedIcons[i], x, topMargin, Themp.ICON_PAINT_MULTIPLY_WHITE);
-                    canvas.restore();
+                if (i == 3) {
+                    canvas.drawBitmap(Themp.mainToolBarSelectedIcons[i], x, topMargin + dp(1), Themp.ICON_PAINT_MULTIPLY_WHITE);
                 } else {
                     canvas.drawBitmap(Themp.mainToolBarSelectedIcons[i], x, topMargin, Themp.ICON_PAINT_MULTIPLY_WHITE);
                 }
 
             } else {
-                if (i == 4) {
-                    canvas.save();
-                    canvas.drawBitmap(Themp.mainToolBarIcons[i], x, topMargin, Themp.ICON_PAINT_MULTIPLY_WHITE);
-                    canvas.restore();
+                if (i == 3) {
+                    canvas.drawBitmap(Themp.mainToolBarIcons[i], x, topMargin + dp(1), Themp.ICON_PAINT_MULTIPLY_WHITE);
                 } else {
                     canvas.drawBitmap(Themp.mainToolBarIcons[i], x, topMargin, Themp.ICON_PAINT_MULTIPLY_WHITE);
                 }
@@ -170,6 +167,9 @@ public class BottomToolBar {
             Themp.drawableToolbar[0].draw(canvas);
 
         }
+
+        //canvas.drawLine(0,dp(13),width,dp(13),Themp.PAINT_FFAAAAAA);
+        //canvas.drawLine(0,dp(13 + 23),width,dp(13 + 23),Themp.PAINT_FFAAAAAA);
 
         canvas.restore();
         canvas.restore();

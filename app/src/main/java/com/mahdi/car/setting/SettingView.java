@@ -1,48 +1,45 @@
-package com.mahdi.car.direct;
+package com.mahdi.car.setting;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mahdi.car.core.RootView;
 import com.mahdi.car.core.cell.CellFrameLayout;
 import com.mahdi.car.core.cell.CellView;
 import com.mahdi.car.core.component.ToolBar;
-import com.mahdi.car.direct.cell.DirectCell;
-import com.mahdi.car.direct.cell.SearchCell;
+import com.mahdi.car.setting.cell.BitrateView;
+import com.mahdi.car.setting.cell.QualityView;
+import com.mahdi.car.setting.cell.SettingCell;
 import com.mahdi.car.library.viewAnimator.ViewAnimator;
-import com.mahdi.car.server.https.Server;
-import com.mahdi.car.server.model.User;
 import com.mahdi.car.share.CustomGridLayoutManager;
 import com.mahdi.car.share.RefreshRecyclerView;
-import com.mahdi.car.share.cell.LoadingCell;
+import com.mahdi.car.share.Themp;
 import com.mahdi.car.share.component.ui.LayoutHelper;
 
-import java.util.ArrayList;
-import java.util.List;
+public class SettingView extends CellFrameLayout {
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+    private static int rowCount = 0;
+    private static final int rowNotification = rowCount++;
+    private static final int rowAccount = rowCount++;
+    private static final int rowMirrorSeparate = rowCount++;
+    private static final int rowBitrate = rowCount++;
 
-public class DirectView extends CellFrameLayout {
+    private static final int rowResolution = rowCount++;
+    private static final int rowAboutSeparate = rowCount++;
+
+    private static final int rowGithub = rowCount++;
+    private static final int rowEmptyEnd = rowCount++;
+
     private RefreshRecyclerView swipe;
     private CustomGridLayoutManager layoutManager;
     private Adapter adapter;
 
-    private List<User> users = new ArrayList<>();
-
-    private long count;
     private boolean isShow = false;
-
-    private boolean isShow2 = false;
 
     protected ToolBar toolbar;
 
@@ -56,7 +53,7 @@ public class DirectView extends CellFrameLayout {
         this.delegate = delegate;
     }
 
-    public DirectView(Context context) {
+    public SettingView(Context context) {
         super(context);
 
         setTranslationX(width);
@@ -64,6 +61,7 @@ public class DirectView extends CellFrameLayout {
         layoutManager = new CustomGridLayoutManager(context, 1);
 
         swipe = new RefreshRecyclerView(context);
+        swipe.setScrollEnabled(true);
         swipe.recyclerView.setLayoutManager(layoutManager);
         swipe.recyclerView.setHorizontalScrollBarEnabled(false);
         swipe.recyclerView.setVerticalScrollBarEnabled(false);
@@ -79,18 +77,13 @@ public class DirectView extends CellFrameLayout {
                 int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
                 int visibleItemCount = firstVisibleItem == RecyclerView.NO_POSITION ? 0 : Math.abs(layoutManager.findLastVisibleItemPosition() - firstVisibleItem) + 1;
                 int totalItemCount = recyclerView.getAdapter().getItemCount();
-
-                if (visibleItemCount != 0 && firstVisibleItem + visibleItemCount > totalItemCount - 2 && users.size() < count) {
-                    Log.e("onScrolled", "Estate:" + users.size());
-                    refresh();
-                }
             }
         });
 
         swipe.setDelegate(new RefreshRecyclerView.Delegate() {
             @Override
             public void startRefresh() {
-                refresh();
+                //refresh();
             }
 
             @Override
@@ -106,13 +99,11 @@ public class DirectView extends CellFrameLayout {
 
 
         toolbar = new ToolBar(this);
-        toolbar.settDirect("mahdi.abd.1987");
+        toolbar.settDirect("Settings");
         toolbar.setDelegate(new ToolBar.Delegate() {
             @Override
             public void leftPressed() {
                 setShow(false);
-//                resetDirect();
-//                delegate.leftPressed();
             }
 
             @Override
@@ -127,7 +118,6 @@ public class DirectView extends CellFrameLayout {
         });
 
         addView(swipe, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP, 0, 47, 0, 0));
-        //setBackgroundColor(0x44ff9800);
 
         invalidate();
     }
@@ -157,37 +147,32 @@ public class DirectView extends CellFrameLayout {
         toolbar.dispatchDraw(0, 0);
     }
 
-    //    private void processScroll(MotionEvent e1, float distanceX, float distanceY)
-    //    {
-    //        dX -= distanceX;
-    //        dY -= distanceY;
-    //
-    //        if (Math.abs(dX) > Math.abs(dY) && !swipe.isSwipe()) {
-    //
-    //            layoutManager.setScrollEnabled(false);
-    //            swipe.setScrollEnabled(false);
-    //
-    //            containerView.setTranslationX(dX - 1);
-    //            feedContainer.setTranslationX(-width + dX);
-    //        }
-    //    }
+//        private void processScroll(MotionEvent e1, float distanceX, float distanceY) {
+//            dX -= distanceX;
+//            dY -= distanceY;
+//
+//            if (Math.abs(dX) > Math.abs(dY) && !swipe.isSwipe()) {
+//
+//                layoutManager.setScrollEnabled(false);
+//                swipe.setScrollEnabled(false);
+//
+//                containerView.setTranslationX(dX - 1);
+//                feedContainer.setTranslationX(-width + dX);
+//            }
+//        }
 
     public void setDirectTranslationX(float dX) {
         setTranslationX(width + dX - 1);
     }
 
-    public void resetDirect() {
+    public void reset() {
         isShow = false;
         ViewAnimator.animate(this).setInterpolator(new LinearOutSlowInInterpolator()).translationX(width).setDuration(300).start();
     }
 
-    public void showDirect() {
+    public void show() {
         isShow = true;
         ViewAnimator.animate(this).setInterpolator(new LinearOutSlowInInterpolator()).translationX(0).setDuration(300).start();
-
-        if (users.size() == 0) {
-            refresh();
-        }
     }
 
     //    private void resetX()
@@ -230,15 +215,6 @@ public class DirectView extends CellFrameLayout {
         }
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-        adapter.notifyDataSetChanged();
-    }
-
-    public void done() {
-        swipe.done();
-    }
-
     public boolean isShow() {
         return isShow;
     }
@@ -247,121 +223,68 @@ public class DirectView extends CellFrameLayout {
         isShow = show;
     }
 
-    public class Adapter extends RecyclerView.Adapter {
-        private Context context;
+    private class Adapter extends RecyclerView.Adapter {
+        Context context;
 
         public Adapter(Context context) {
             this.context = context;
         }
 
         @Override
+        public int getItemCount() {
+            return rowCount;
+        }
+
+        @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view;
-
-            if (viewType == 1) {
-                view = new SearchCell(context);
-            } else if (viewType == 2) {
-                view = new DirectCell(parent.getContext());
+            if (viewType == rowBitrate) {
+                return new Holder(new BitrateView(context));
+            } else if (viewType == rowResolution) {
+                return new Holder(new QualityView(context));
             } else {
-                view = new LoadingCell(context);
+                return new Holder(new SettingCell(context));
             }
-
-            return new Holder(view);
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if (holder.itemView instanceof SearchCell) {
 
-            } else if (holder.itemView instanceof DirectCell) {
+            if (position == rowNotification) {
+                SettingCell cell = (SettingCell) holder.itemView;
+                cell.setIcon(Themp.setting.notification, "Notification");
+            } else if (position == rowAccount) {
+                SettingCell cell = (SettingCell) holder.itemView;
+                cell.setIcon(Themp.setting.account, "Account");
+            } else if (position == rowMirrorSeparate) {
+                SettingCell cell = (SettingCell) holder.itemView;
+                cell.setColor(0);
+                cell.setEmpty(30);
+            } else if (position == rowBitrate) {
+                BitrateView cell = (BitrateView) holder.itemView;
+                cell.setDelegate(index -> {
 
-                DirectCell cell = (DirectCell) holder.itemView;
-                User user = users.get(position);
+                });
+            } else if (position == rowResolution) {
+                QualityView cell = (QualityView) holder.itemView;
+                cell.setDelegate(index -> {
 
-                if (user != null) {
-                    cell.setUser(user, position);
-                    cell.setLayoutParams(LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 78));
-                    cell.setDelegate(new DirectCell.Delegate() {
-                        @Override
-                        public void click(User user) {
-//                            if (swipe.isSwipe())
-//                                return;
-                            RootView.instance().presentFragment(new ChatFragment(user));
-                        }
-                    });
-                }
-
-            } else {
-
-                LoadingCell loadingCell = (LoadingCell) holder.itemView;
-                FrameLayout.LayoutParams params;
-
-                if (count == users.size() || users.size() == 0)
-                    params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, dp(0));
-                else
-                    params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, dp(0));
-
-                loadingCell.setLayoutParams(params);
-                loadingCell.setVisibility(View.VISIBLE);
+                });
+            } else if (position == rowAboutSeparate) {
+                SettingCell cell = (SettingCell) holder.itemView;
+                cell.setColor(0);
+                cell.setEmpty(30);
+            } else if (position == rowEmptyEnd) {
+                SettingCell cell = (SettingCell) holder.itemView;
+                cell.setEmpty(300);
+            } else if (position == rowGithub) {
+                SettingCell cell = (SettingCell) holder.itemView;
+                cell.setIcon(Themp.setting.github, "www.github.com/mahdi-cpp/Mirror-Android");
             }
-        }
-
-        @Override
-        public int getItemCount() {
-            return users.size() + 2;
         }
 
         @Override
         public int getItemViewType(int position) {
-            if (position == 0) {
-                return 1;
-            } else if (position >= 0 && position < users.size()) {
-                return 2;
-            } else {
-                return 3;
-            }
-        }
-    }
-
-    public void refresh() {
-        if (users.size() > 0)
-            return;
-
-        Call<List<User>> call = Server.user.getAllUsers();
-        if (call != null) {
-
-            call.enqueue(new Callback<List<User>>() {
-                @Override
-                public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                    if (response.isSuccessful()) {
-
-                        List<User> newUsers = response.body();
-
-                        for (int a = 0; a < newUsers.size(); a++) {
-                            User f = newUsers.get(a);
-                            users.add(f);
-                        }
-
-                        if (newUsers.size() > 0) {
-                            //count = newUsers.get(0).count;
-                        } else {
-                            count = users.size();
-                        }
-
-                        adapter.notifyDataSetChanged();
-
-                        done();
-
-                    } else {
-                        done();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<List<User>> call, Throwable t) {
-                    done();
-                }
-            });
+            return position;
         }
     }
 }

@@ -3,24 +3,34 @@ package com.mahdi.car.share;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.RectF;
+import android.text.Layout;
+import android.text.StaticLayout;
 import android.view.MotionEvent;
 
 import com.mahdi.car.core.cell.CellView;
 
 
-public class CircleButton extends CellView {
+public class OvalButton extends CellView {
 
     private Delegate delegate;
 
-    private int edgeSpace = dp(2);
-    private Bitmap icon;
+    private StaticLayout nameLayout;
 
-    public CircleButton(Context context) {
+    private Bitmap icon1;
+    private Bitmap icon2;
+
+    private int edgeSpace = dp(2);
+
+
+    public OvalButton(Context context) {
         super(context);
+        nameLayout = new StaticLayout("CH", Themp.TEXT_PAINT_FILL_BLACK[6], width, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
     }
 
-    public void setIcon(Bitmap icon) {
-        this.icon = icon;
+    public void setIcons(Bitmap icon1, Bitmap icon2) {
+        this.icon1 = icon1;
+        this.icon2 = icon2;
         invalidate();
     }
 
@@ -30,17 +40,18 @@ public class CircleButton extends CellView {
 
         centerX = getWidth() / 2;
 
-        canvas.save();
-        canvas.restore();
-        canvas.drawCircle(centerX, centerX, centerX, Themp.PAINT_WHITE);
+        if (icon1 != null)
+            canvas.drawBitmap(icon1, centerX - (icon1.getWidth() / 2), centerX - (icon1.getWidth() / 2), Themp.ICON_PAINT_MULTIPLY_BLUE);
 
-        canvas.drawCircle(centerX, centerX, centerX, Themp.STROKE_PAINT_PX_WHITE);
+        if (icon2 != null)
+            canvas.drawBitmap(icon2, centerX - (icon2.getWidth() / 2), getHeight() - centerX - dp(17), Themp.ICON_PAINT_MULTIPLY_BLUE);
 
-        if (icon != null)
-            canvas.drawBitmap(icon, centerX - (icon.getWidth() / 2), centerX - (icon.getWidth() / 2), Themp.ICON_PAINT_MULTIPLY_BLUE);
+        //canvas.drawCircle(centerX, centerX, getWidth() / 2 - edgeSpace, Themp.STROKE_PAINT_PX_GREY);
+        //canvas.drawCircle(centerX, getHeight() - centerX, getWidth() / 2 - edgeSpace, Themp.STROKE_PAINT_PX_GREY);
 
+        drawRoundRect(0, 0, new RectF(edgeSpace, edgeSpace, getWidth() - edgeSpace, getHeight() - edgeSpace), centerX, Themp.STROKE_PAINT_PX_GREY);
 
-        canvas.drawCircle(centerX, centerX, centerX - edgeSpace, Themp.STROKE_PAINT_PX_GREY);
+        drawTextLayout(nameLayout, centerX - dp(12), getHeight() / 2 - dp(9));
 
         if (isPressed == 1)
             canvas.drawCircle(centerX, centerX, centerX - edgeSpace, Themp.PAINT_PRESS_BLACK);

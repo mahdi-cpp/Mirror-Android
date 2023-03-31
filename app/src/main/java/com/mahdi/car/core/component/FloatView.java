@@ -39,6 +39,7 @@ public class FloatView extends CellView {
     private int button_y_shift = screenHeight - dp(200);
     private boolean buttonVisible = true;
 
+    private boolean isExpand = false;
 
     private int bottomToolBar = dp(48);
     private int headerHeight = dp(54);
@@ -63,6 +64,21 @@ public class FloatView extends CellView {
         setParameters("0", "0");
     }
 
+    public void setExpand() {
+        isExpand = true;
+        invalidate();
+    }
+
+    public void setCollapse() {
+        isExpand = false;
+        invalidate();
+    }
+
+    public void setScroll() {
+        isExpand = false;
+        invalidate();
+    }
+
     public void setParameters(String username, String title) {
 
         for (int i = 0; i < 4; i++) {
@@ -70,7 +86,7 @@ public class FloatView extends CellView {
             photos[i] = null;
         }
 
-        photos[0] = "mov_15208_24787-m.jpg";
+        photos[0] = "abednaseri_186760853_942575583255229_2875100642476586962_n.jpg";
 
         if (photos[0] != null) {
             setGallery(drawables, 0, photos[0]);
@@ -78,11 +94,11 @@ public class FloatView extends CellView {
 
         User user = new User();
         userid = user.ID;
-        user.Avatar = "00044.jpg";
-        setAvatar(user.Avatar);
+        //user.Avatar = "abednaseri_186760853_942575583255229_2875100642476586962_n.jpg";
+        //setAvatar(user.Avatar);
 
         toolbarNameLayout = new StaticLayout(username, Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[5], dp(200), Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
-        toolbarTitleLayout = new StaticLayout(title, Themp.TEXT_PAINT_FILL_GREY[5], dp(200), Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
+        toolbarTitleLayout = new StaticLayout(title, Themp.TEXT_PAINT_FILL_GREY[5], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
 
         titleLayout = new StaticLayout("Screen Mirror On Ubuntu Desktop", Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[11], width, Layout.Alignment.ALIGN_CENTER, 1.2f, 0.2f, false);
         descriptionLayout = new StaticLayout("Screen is live on display", Themp.TEXT_PAINT_FILL_GREY[8], width, Layout.Alignment.ALIGN_CENTER, 1.2f, 0.2f, false);
@@ -105,12 +121,21 @@ public class FloatView extends CellView {
         drawTextLayout(toolbarTitleLayout, dp(65 + 0), dp(27));
 
         //canvas.drawLine(0, dp(0), width, dp(0), Themp.PAINT_GRAY);
-        canvas.drawLine(0, dp(54), width, dp(54), Themp.PAINT_GRAY);
+
         //canvas.drawLine(0, screenHeight - bottomToolBar, width, screenHeight - bottomToolBar, Themp.PAINT_GRAY);
 
+        if (isExpand == false) {
+            Themp.drawableToolbar[0].setBounds(0, 0, width, dp(3));
+            Themp.drawableToolbar[0].setAlpha(100);
+            Themp.drawableToolbar[0].draw(canvas);
+        }
         //shadows
-        Themp.drawableToolbar[0].setBounds(0, 0, width, dp(54));
+        Themp.drawableToolbar[0].setBounds(0, 0, width, dp(100));
+        Themp.drawableToolbar[0].setAlpha(100);
         Themp.drawableToolbar[0].draw(canvas);
+
+        //canvas.drawLine(0, dp(54), width, dp(54), Themp.PAINT_GRAY);
+        //}
 
 //        Themp.drawableToolbar[1].setBounds(0, getHeight() - dp(60), width, getHeight() -dp(55));
 //        Themp.drawableToolbar[1].draw(canvas);
@@ -154,6 +179,7 @@ public class FloatView extends CellView {
 
                 if (x > dp(70) && x < width - dp(70) && y > button_y_shift && y < button_y_shift + dp(50) && isPressed == ITEM_BUTTON) {
                     Log.e("FloatView", "click");
+                    //RootView.instance().hideFloatView();
                 }
 
                 isPressed = -1;

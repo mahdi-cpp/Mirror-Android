@@ -1,4 +1,4 @@
-package com.mahdi.car.mirror.components;
+package com.mahdi.car.remote.components;
 
 
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.view.MotionEvent;
 
+import com.mahdi.car.core.RootView;
 import com.mahdi.car.core.cell.CellView;
 import com.mahdi.car.messenger.AndroidUtilities;
 import com.mahdi.car.server.model.User;
@@ -136,6 +137,7 @@ public class MirrorPhotoView extends CellView {
 
                 if (x > dp(100) && x < width - dp(100) && y > button_y_shift && y < button_y_shift + dp(50) && isPressed == ITEM_BUTTON) {
                     startWaiting();
+                    RootView.instance().showFloatView("Mahdi", "gg");
                     delegate.button();
                 } else {
                     isPressed = -1;

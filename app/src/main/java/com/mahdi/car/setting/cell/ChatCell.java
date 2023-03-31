@@ -1,4 +1,4 @@
-package com.mahdi.car.direct.cell;
+package com.mahdi.car.setting.cell;
 
 import android.content.Context;
 import android.graphics.Canvas;

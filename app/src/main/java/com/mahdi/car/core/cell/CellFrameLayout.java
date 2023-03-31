@@ -156,7 +156,7 @@ public class CellFrameLayout extends FrameLayout implements Share
         isStoryRing = true;
         storyAnimator.start();
 
-        RootView.instance().showStory(this, userid, username, avatarDrawable, avatarSize);
+        //RootView.instance().showStory(this, userid, username, avatarDrawable, avatarSize);
     }
 
     public int getAvatarPivotX()

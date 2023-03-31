@@ -9,10 +9,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -20,16 +16,18 @@ import android.view.MotionEvent;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-
-import com.mahdi.car.share.Themp;
 import com.mahdi.car.App;
 import com.mahdi.car.messenger.AndroidUtilities;
+import com.mahdi.car.share.Themp;
 
 public class ToolBar {
     private static int itemCount = 0;
@@ -193,15 +191,16 @@ public class ToolBar {
     public void settFeed() {
         hasBackground = false;
 //        setLeftIcon(null);
-        setRightIcon(Themp.toolbar.forward);
+        setRightIcon(Themp.toolbar.setting_78);
         setLeftIcon(Themp.toolbar.camera);
 //        setRightIcon(Themp.toolbar.forward);
 //        setFeedLogoIcon(Themp.toolbar.forward);
 //        parent.invalidate();
     }
+
     public void settMirror() {
         hasBackground = false;
-        setLeftIcon(Themp.toolbar.cast);
+        setLeftIcon(Themp.toolbar.remote);
     }
 
 
@@ -220,10 +219,11 @@ public class ToolBar {
         setLeftIcon(Themp.toolbar.music);
 
     }
-        public void settDirect(String username) {
-        setUsername(dp(75), dp(12), username, transparent ? Themp.TEXT_PAINT_FILL_AND_STROKE_3_WHITE[9] : Themp.TEXT_PAINT_FILL_AND_STROKE_4_BLACK[10]);
-        setRightIcon(Themp.bitmapChat[9]);
-        setCenterIcon(Themp.bitmapChat[1]);
+
+    public void settDirect(String username) {
+        setUsername(dp(60), dp(13), username, transparent ? Themp.TEXT_PAINT_FILL_AND_STROKE_3_WHITE[9] : Themp.TEXT_PAINT_FILL_AND_STROKE_4_BLACK[10]);
+//        setRightIcon(Themp.bitmapChat[9]);
+//        setCenterIcon(Themp.bitmapChat[1]);
         parent.invalidate();
     }
 
@@ -371,6 +371,8 @@ public class ToolBar {
     }
 
     public void setName(String name) {
+        if (name == null)
+            return;
         nameLayout = new StaticLayout(name, Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[10], dp(400), Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
         parent.invalidate();
     }

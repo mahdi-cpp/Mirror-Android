@@ -1,4 +1,4 @@
-package com.mahdi.car.mirror.cell;
+package com.mahdi.car.remote.cell;
 
 import android.content.Context;
 import android.graphics.Canvas;

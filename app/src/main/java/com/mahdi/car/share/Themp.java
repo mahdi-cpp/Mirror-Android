@@ -20,12 +20,20 @@ import com.mahdi.car.App;
 import com.mahdi.car.R;
 import com.mahdi.car.messenger.AndroidUtilities;
 
-public class Themp
-{
-    public static class Toolbar
-    {
-//        public Bitmap logo = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.d0x);
+public class Themp {
+    public static class Toolbar {
+        //        public Bitmap logo = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.d0x);
+
+        public Bitmap menu = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.menu);
+        public Bitmap mute = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.mute);
+        public Bitmap keyboard_arrow_down = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.down2);
+        public Bitmap keyboard_arrow_up = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.keyboard_arrow_up_120);
+        public Bitmap play_pause_78 = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.play_pause_78);
+        public Bitmap setting_78 = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.setting_78);
         public Bitmap cast = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.cast);
+        public Bitmap remote = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.remote);
+        public Bitmap arrow_back_large = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.arrow_back_rounded);
+
         public Bitmap cast_large = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.cast_large);
         public Bitmap android_mobile = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.android_mobile);
 
@@ -61,26 +69,24 @@ public class Themp
     }
 
 
-    public static class Setting
-    {
+    public static class Setting {
+        public Bitmap github = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.github_72);
+        public Bitmap cast = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.cast_setting);
         public Bitmap notification = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.c4t);
         public Bitmap account = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.dgh);
         public Bitmap about = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.bql);
         public Bitmap help = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.k9);
         public Bitmap cash = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.c55);
-
     }
 
-    public static class Loading
-    {
+    public static class Loading {
         public static Bitmap big = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.bqi);
         public static Bitmap medium = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.loading);
         public static Bitmap small = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ka);
 
     }
 
-    public static class Gallery
-    {
+    public static class Gallery {
         public static Bitmap multiSelect = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.sidecar_icon);
         public static Bitmap scale = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.b9q);
         public static Bitmap smallClose = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.close72);
@@ -206,8 +212,6 @@ public class Themp
     public static Paint PAINT_OPACITY_22000000 = new Paint(TextPaint.ANTI_ALIAS_FLAG);
 
 
-
-
     private static int[] colors = new int[10];
     public static Paint PAINT_RING = new Paint(TextPaint.ANTI_ALIAS_FLAG);
     public static Paint PAINT_STORY_DASH = new Paint(TextPaint.ANTI_ALIAS_FLAG);
@@ -226,6 +230,7 @@ public class Themp
     public static Paint STROKE_PAINT_2DP_WHITE = new Paint(Paint.ANTI_ALIAS_FLAG);
     public static Paint STROKE_PAINT_8DP_WHITE = new Paint(Paint.ANTI_ALIAS_FLAG);
     public static Paint STROKE_PAINT_18DP_WHITE = new Paint(Paint.ANTI_ALIAS_FLAG);
+    public static Paint STROKE_PAINT_30DP_WHITE = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     public static Paint STROKE_PAINT_1DP_BLACK = new Paint(Paint.ANTI_ALIAS_FLAG);
     public static Paint STROKE_PAINT_2DP_BLACK = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -319,7 +324,7 @@ public class Themp
     public static TextPaint TEXT_PAINT_FILL_HASHTAG = new TextPaint(Paint.ANTI_ALIAS_FLAG);
 
     public static TextPaint SHADER_TEXT_PAINT_FILL_AND_STROKE_2 = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-    public static TextPaint SHADER_TEXT_PAINT_FILL_AND_STROKE_STORY_TAG = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+    //public static TextPaint SHADER_TEXT_PAINT_FILL_AND_STROKE_STORY_TAG = new TextPaint(Paint.ANTI_ALIAS_FLAG);
 
     //public static int hashtagColor = 0xffdddddd;
 
@@ -333,8 +338,7 @@ public class Themp
     public static Toolbar toolbar = new Toolbar();
     public static Setting setting = new Setting();
 
-    public static void createMahdiResources(Context context)
-    {
+    public static void createMahdiResources(Context context) {
 
         //------------------------------------------------
         colors[0] = 0xfff77d4c;
@@ -447,12 +451,11 @@ public class Themp
         PAINT_OPACITY_DD222222.setColor(0xDD222222);
         PAINT_OPACITY_DD222222.setStyle(Paint.Style.FILL);
 
-                PAINT_OPACITY_DD222222.setColor(0xDD222222);
+        PAINT_OPACITY_DD222222.setColor(0xDD222222);
         PAINT_OPACITY_DD222222.setStyle(Paint.Style.FILL);
 
         PAINT_OPACITY_EE222222.setColor(0xEE222222);
         PAINT_OPACITY_EE222222.setStyle(Paint.Style.FILL);
-
 
 
         PAINT_OPACITY_66000000.setColor(0x66000000);
@@ -544,6 +547,11 @@ public class Themp
         STROKE_PAINT_18DP_WHITE.setColor(0xFFFFFFFF);
         STROKE_PAINT_18DP_WHITE.setStyle(Paint.Style.STROKE);
         STROKE_PAINT_18DP_WHITE.setStrokeWidth(dp(15));
+
+        STROKE_PAINT_30DP_WHITE.setColor(0xFFffffff);
+        STROKE_PAINT_30DP_WHITE.setStyle(Paint.Style.STROKE);
+        STROKE_PAINT_30DP_WHITE.setStrokeWidth(dp(30));
+
 
         STROKE_PAINT_1DP_BLACK.setColor(0xff000000);
         STROKE_PAINT_1DP_BLACK.setStyle(Paint.Style.STROKE);
@@ -748,8 +756,8 @@ public class Themp
         SHADER_TEXT_PAINT_FILL_AND_STROKE_2.setColor(0xffD81B60);
 
 
-        SHADER_TEXT_PAINT_FILL_AND_STROKE_STORY_TAG.setTextSize(dp(37));
-        SHADER_TEXT_PAINT_FILL_AND_STROKE_STORY_TAG.setTypeface(App.avenyTypeface);
+        //SHADER_TEXT_PAINT_FILL_AND_STROKE_STORY_TAG.setTextSize(dp(37));
+        //SHADER_TEXT_PAINT_FILL_AND_STROKE_STORY_TAG.setTypeface(App.avenyTypeface);
 
         igtv_seriesPaint.setColor(0x66000000);
 
@@ -839,39 +847,22 @@ public class Themp
         notificationCursor = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.notification_coursor);
 
 
-
-
-
-
-
         mainToolBarIcons[0] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.home_b);
-        mainToolBarIcons[1] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.cast);
+        mainToolBarIcons[1] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.music);
         mainToolBarIcons[2] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.movies);
-        mainToolBarIcons[3] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.music);
+        mainToolBarIcons[3] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.remote);
 
 
         mainToolBarSelectedIcons[0] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.home_blue);
-        mainToolBarSelectedIcons[1] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.cast_blue);
+        mainToolBarSelectedIcons[1] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.music_blue);
         mainToolBarSelectedIcons[2] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.movies_blue);
-        mainToolBarSelectedIcons[3] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.music_blue);
-
-
-
-
-
-
-
-
-
-
+        mainToolBarSelectedIcons[3] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.remote_blue);
 
 
         bitmapsHandListGrid[0] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.grid);
         bitmapsHandListGrid[1] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.b7f);
         bitmapsHandListGrid[2] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.shop72);
         bitmapsHandListGrid[3] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.igtv_category);
-
-
 
 
         postCell[2] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.bdx);
@@ -994,8 +985,7 @@ public class Themp
 
 
     //Utility functions----------------------------------------------------------
-    public static int dp(float value)
-    {
+    public static int dp(float value) {
         if (value == 0) {
             return 0;
         }

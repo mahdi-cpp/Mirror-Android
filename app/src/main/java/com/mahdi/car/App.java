@@ -56,7 +56,7 @@ public class App extends android.app.Application implements Application.Activity
     public static Context context;
     public static Context applicationContext;
 
-    public static Typeface avenyTypeface;
+    //public static Typeface avenyTypeface;
     //    public static Typeface typeface2;
 
     public static volatile Handler applicationHandler;
@@ -108,7 +108,7 @@ public class App extends android.app.Application implements Application.Activity
         //userid = 382;
         //userid = 364; //homegram
 
-        avenyTypeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "AvenyTRegular.otf");
+        //avenyTypeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "AvenyTRegular.otf");
         //        typeface2 = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/persianMuharam.ttf");
 
         AndroidUtilities.checkDisplaySize(context, null);

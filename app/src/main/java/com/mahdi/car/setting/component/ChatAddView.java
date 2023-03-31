@@ -1,4 +1,4 @@
-package com.mahdi.car.direct.component;
+package com.mahdi.car.setting.component;
 
 import android.content.Context;
 import android.graphics.Canvas;

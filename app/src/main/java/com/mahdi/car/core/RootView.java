@@ -4,7 +4,6 @@ package com.mahdi.car.core;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -12,11 +11,9 @@ import android.widget.FrameLayout;
 
 import com.mahdi.car.core.component.FloatViewParent;
 import com.mahdi.car.feed.FeedFragment;
-import com.mahdi.car.library.autolinklibrary.AutoLinkMode;
-import com.mahdi.car.mirror.MirrorScreenFragment;
+import com.mahdi.car.remote.RemoteControlFragment;
 import com.mahdi.car.movie.MovieFragment;
 import com.mahdi.car.music.MusicFragment;
-import com.mahdi.car.server.model.Post;
 import com.mahdi.car.server.model.User;
 import com.mahdi.car.share.component.ui.LayoutHelper;
 
@@ -43,8 +40,6 @@ public class RootView {
 
     private boolean isKeyboardShowing = false;
 
-    private AutoLinkMode[] autoLinkModes;
-    private boolean isUnderLineEnabled;
     public User owner;
 
     @SuppressLint("StaticFieldLeak")
@@ -65,10 +60,6 @@ public class RootView {
 
     public boolean getFullScreen() {
         return isFullScreen;
-    }
-
-    public void setFullScreen(boolean isFullScreen) {
-        this.isFullScreen = isFullScreen;
     }
 
     public void setOwner(User owner) {
@@ -161,13 +152,13 @@ public class RootView {
                     coreFragments[index].presentFragment(new FeedFragment());
                     break;
                 case PAGE_EXPLORE:
-                    coreFragments[index].presentFragment(new MirrorScreenFragment());
+                    coreFragments[index].presentFragment(new MusicFragment());
                     break;
                 case PAGE_MOVIES:
                     coreFragments[index].presentFragment(new MovieFragment());
                     break;
                 case PAGE_PROFILE:
-                    coreFragments[index].presentFragment(new MusicFragment());
+                    coreFragments[index].presentFragment(new RemoteControlFragment());
                     break;
             }
         }
@@ -208,14 +199,6 @@ public class RootView {
         showPage(position, false);
     }
 
-    public void showStory(View cell, int userid, String username, Drawable avatarDrawable, int avatarSize) {
-        BaseFragment fragment = getCurrentFragment();
-        if (fragment == null)
-            return;
-
-//        fragment.showStory(cell, userid, username, avatarDrawable, avatarSize);
-    }
-
     private BaseFragment getCurrentFragment() {
         if (isFullScreen && fullCoreFragment.fragmentsStack.size() > 0)
             return fullCoreFragment.fragmentsStack.get(fullCoreFragment.fragmentsStack.size() - 1);
@@ -241,6 +224,22 @@ public class RootView {
             return fullCoreFragment.fragmentsStack.get(fullCoreFragment.fragmentsStack.size() - 1);
 
         return null;
+    }
+
+    public void onWebSocketReceive(String jsonString) {
+
+        if (fullCoreFragment.fragmentsStack.size() > 0) {
+            BaseFragment fragment = getTopFragmentFullScreen();
+            if (fragment == null)
+                return;
+            fragment.onWebSocketReceive(jsonString);
+        }
+
+        BaseFragment fragment = getCurrentFragment();
+        if (fragment == null)
+            return;
+
+        fragment.onWebSocketReceive(jsonString);
     }
 
     public void onPause() {
@@ -322,8 +321,6 @@ public class RootView {
         if (fragment == null)
             return;
 
-//        fragment.VideoRelease();
-
         for (int i = 0; i < 4; i++) {
             if (coreFragments[i] != null) {
                 for (int j = 0; j < coreFragments[i].fragmentsStack.size(); j++) {
@@ -338,39 +335,9 @@ public class RootView {
         contentView = null;
     }
 
-    public void showBookmark(Drawable bookmarkDrawable) {
-        //bottomToolBar.showBookmark(bookmarkDrawable);
-    }
-
     public void setBackgroundColor(int color) {
         this.color = color;
         contentView.setBackgroundColor(color);
-    }
-
-    //PostCell-------------------------------------------------------------
-    public boolean getMute() {
-        BaseFragment fragment = getCurrentFragment();
-        if (fragment == null)
-            return false;
-
-//        return fragment.getMute();
-        return false;
-    }
-
-    public void setMute(boolean value) {
-        BaseFragment fragment = getCurrentFragment();
-        if (fragment == null)
-            return;
-
-//        fragment.setMute(value);
-    }
-
-    public void permissionSwipe(boolean enabled) {
-        BaseFragment fragment = getCurrentFragment();
-        if (fragment == null)
-            return;
-
-        fragment.permissionSwipe(enabled);
     }
 
     public void setX(int dX) {
@@ -381,60 +348,16 @@ public class RootView {
         fragment.setX(dX);
     }
 
+    public void floatViewVisible(int visible) {
+        floatViewParent.setVisibility(visible);
+    }
+
     public void showFloatView(String username, String title) {
         floatViewParent.show(username, title);
     }
 
     public void hideFloatView() {
         floatViewParent.hide();
-    }
-
-    public void forward() {
-        BaseFragment fragment = getCurrentFragment();
-        if (fragment == null)
-            return;
-
-        fragment.forward();
-    }
-
-    public void videoPause() {
-        BaseFragment fragment = getCurrentFragment();
-        if (fragment == null)
-            return;
-
-//        fragment.videoPause();
-    }
-
-    public void videoPlay() {
-        BaseFragment fragment = getCurrentFragment();
-        if (fragment == null)
-            return;
-
-//        fragment.videoPlay();
-    }
-
-    public void setTranslationX(int position, float translationX) {
-        BaseFragment fragment = getCurrentFragment();
-        if (fragment == null)
-            return;
-
-//        fragment.videoTranslationX(position, translationX);
-    }
-
-    public void updatePlayer() {
-        BaseFragment fragment = getCurrentFragment();
-        if (fragment == null)
-            return;
-
-//        fragment.videoUpdate();
-    }
-
-    public void zoomParent(FrameLayout zoomParent) {
-        BaseFragment fragment = getCurrentFragment();
-        if (fragment == null)
-            return;
-
-//        fragment.zoomParent(zoomParent);
     }
 
     public void zoomClear(FrameLayout zoomParent) {
@@ -451,24 +374,6 @@ public class RootView {
             return;
 
 //        fragment.zoom(dX, dY, pivotX, pivotY, scale);
-    }
-
-    //-------------------------------------------------------------
-
-    public void menu(Post post) {
-//        presentFragment(new EditPostFragment(post));
-    }
-
-    public void profile(String username) {
-//        presentFragment(new ProfileFragment(username));
-    }
-
-    public void comment(Post post) {
-//        presentFragment(new CommentFragment(post));
-    }
-
-    public void bookmarks() {
-//        presentFragment(new BookmarkCollectionFragment());
     }
 
 }
