@@ -328,6 +328,7 @@ public class CellFrameLayout extends FrameLayout implements Share
             avatarDrawable.setBounds(0, 0, avatarSize, avatarSize);
             avatarDrawable.draw(canvas);
         }
+
         canvas.drawCircle(avatarSize / 2, avatarSize / 2, (avatarSize / 2), Themp.STROKE_PAINT_PX_GREY);
 
         canvas.restore();

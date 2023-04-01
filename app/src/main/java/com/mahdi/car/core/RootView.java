@@ -378,18 +378,6 @@ public class RootView {
         fragment.setX(dX);
     }
 
-    public void floatViewVisible(int visible) {
-        //floatViewParent.setVisibility(visible);
-    }
-
-    public void showFloatView(String username, String title) {
-        floatViewParent.show(username, title);
-    }
-
-    public void hideFloatView() {
-        floatViewParent.hide();
-    }
-
     public void zoomClear(FrameLayout zoomParent) {
         BaseFragment fragment = getCurrentFragment();
         if (fragment == null)

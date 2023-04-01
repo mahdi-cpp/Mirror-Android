@@ -9,11 +9,13 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mahdi.car.core.BaseFragment;
+import com.mahdi.car.core.RootView;
 import com.mahdi.car.music.cell.CollectionCell;
 import com.mahdi.car.server.dtos.BookmarkDTO;
 import com.mahdi.car.server.https.Server;
 import com.mahdi.car.server.model.BookmarkCollection;
 import com.mahdi.car.server.model.Post;
+import com.mahdi.car.service.ServiceManager;
 import com.mahdi.car.share.CustomGridLayoutManager;
 
 import java.util.ArrayList;
@@ -52,31 +54,6 @@ public class MusicFragment extends BaseFragment {
     public void serverSend() {
         super.serverSend();
         server(Server.bookmark.getAllCollections());
-    }
-
-    @Override
-    public <T> void serverOnResponse(Call<T> call, Response<T> response) {
-        super.serverOnResponse(call, response);
-
-        BookmarkDTO bookmarkDTO = (BookmarkDTO) response.body();
-
-        if (bookmarkDTO != null) {
-
-            collections.clear();
-
-            allPosts = bookmarkDTO.allPosts;
-            allShops = bookmarkDTO.shops;
-            for (BookmarkCollection post : bookmarkDTO.collections) {
-                collections.add(post);
-            }
-
-            if (collections.size() == 0) {
-                //emptyStateView.setVisibility(View.VISIBLE);
-            }
-
-            adapter.notifyDataSetChanged();
-        }
-
     }
 
     private class Adapter extends RecyclerView.Adapter {
@@ -129,6 +106,27 @@ public class MusicFragment extends BaseFragment {
             }
         }
 
+    }
+
+    @Override
+    public void onWebSocketOpened() {
+        super.onWebSocketOpened();
+    }
+
+    @Override
+    public void onWebSocketClosed() {
+        super.onWebSocketClosed();
+        RootView.instance().floatViewParent.hide();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (ServiceManager.instance().webSocketIsOpen()) {
+        } else {
+            RootView.instance().floatViewParent.hide();
+        }
     }
 }
 

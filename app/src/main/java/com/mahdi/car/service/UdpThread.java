@@ -1,4 +1,4 @@
-package com.mahdi.car.Thread;
+package com.mahdi.car.service;
 
 import android.content.Context;
 import android.content.Intent;
@@ -62,7 +62,7 @@ public class UdpThread {
         String senderIP = packet.getAddress().getHostAddress();
         String message = new String(packet.getData()).trim();
 
-        Log.d("UDP", senderIP + "  message: " + message);
+        //Log.d("UDP", senderIP + "  message: " + message);
 
         sendUdpBroadcast(senderIP, message);
         socket.close();

@@ -13,18 +13,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
-import com.mahdi.car.Thread.UdpThread;
-import com.mahdi.car.Thread.WebSocketThread;
 import com.mahdi.car.core.QZoomView;
 import com.mahdi.car.core.RootView;
 import com.mahdi.car.messenger.AndroidUtilities;
@@ -32,28 +28,16 @@ import com.mahdi.car.messenger.FileLog;
 import com.mahdi.car.messenger.MediaController;
 import com.mahdi.car.messenger.NotificationCenter;
 import com.mahdi.car.messenger.Utilities;
-import com.mahdi.car.messenger.WebSocketReceiver;
-import com.mahdi.car.messenger.UdpReceiver;
+import com.mahdi.car.service.ServiceManager;
 import com.mahdi.car.share.component.ui.LayoutHelper;
 
 import java.util.ArrayList;
 
 public class MainActivity extends android.app.Activity implements NotificationCenter.NotificationCenterDelegate {
 
-    public static final String TAG = "MainActivity";
-
     private boolean finished;
     private int currentConnectionState;
     private boolean checkPermission = true;
-
-    UdpReceiver udpReceiver = null;
-    WebSocketReceiver webSocketReceiver = null;
-    IntentFilter udpIntentFilter;
-    IntentFilter webSocketIntentFilter;
-
-
-    private UdpThread udpThread;
-    private WebSocketThread webSocketThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,42 +103,7 @@ public class MainActivity extends android.app.Activity implements NotificationCe
         AndroidUtilities.hideStatusBar();
         AndroidUtilities.showStatusBar();
 
-        webSocketThread = new WebSocketThread(getApplicationContext());
-        udpThread = new UdpThread(getApplicationContext());
-        udpThread.start();
-
-        udpReceiver = new UdpReceiver();
-        udpReceiver.setDelegate((senderIP, message) -> {
-            Log.e("udpReceiver", "udp receiver senderIP:" + senderIP);
-            if (webSocketThread != null && !webSocketThread.isOpened()) {
-                Log.e("udpReceiver", "webSocketThread.open()");
-                webSocketThread.open(senderIP);
-            }
-        });
-
-        webSocketReceiver = new WebSocketReceiver();
-        webSocketReceiver.setDelegate(new WebSocketReceiver.Delegate() {
-            @Override
-            public void onOpened() {
-                RootView.instance().onWebSocketOpened();
-            }
-
-            @Override
-            public void onClose() {
-                RootView.instance().onWebSocketClosed();
-            }
-
-            @Override
-            public void onMessage(String message) {
-                RootView.instance().onWebSocketReceive(message);
-            }
-        });
-
-        udpIntentFilter = new IntentFilter("udp.mahdi");
-        webSocketIntentFilter = new IntentFilter("mahdi.websocket");
-
-        registerReceiver(udpReceiver, udpIntentFilter);
-        registerReceiver(webSocketReceiver, webSocketIntentFilter);
+        ServiceManager.instance().init(this);
     }
 
 
@@ -191,19 +140,6 @@ public class MainActivity extends android.app.Activity implements NotificationCe
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 // Hide the nav bar and status bar
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN);
-    }
-
-
-    public boolean webSocketIsOpen() {
-        if (webSocketThread != null) {
-            return webSocketThread.isOpened();
-        }
-
-        return false;
-    }
-
-    public void webSocketSend(String json) {
-        ///webSocketService.send(json);
     }
 
     @Override
@@ -260,7 +196,6 @@ public class MainActivity extends android.app.Activity implements NotificationCe
 
         RootView.instance().onPause();
 
-        //UserConfig.lastAppPauseTime = System.currentTimeMillis();
         App.mainInterfacePaused = true;
         Utilities.stageQueue.postRunnable(new Runnable() {
             @Override
@@ -270,7 +205,6 @@ public class MainActivity extends android.app.Activity implements NotificationCe
             }
         });
 
-        //actionBarLayout.onPause();
         AndroidUtilities.unregisterUpdates();
     }
 
@@ -298,7 +232,6 @@ public class MainActivity extends android.app.Activity implements NotificationCe
 
         AndroidUtilities.checkForCrashes(this);
         AndroidUtilities.checkForUpdates(this);
-
     }
 
     @Override
@@ -310,14 +243,13 @@ public class MainActivity extends android.app.Activity implements NotificationCe
     protected void onDestroy() {
 
         RootView.instance().onDestroy();
-
-        unregisterReceiver(udpReceiver);
-        unregisterReceiver(webSocketReceiver);
-
-        udpThread.stop();
-        webSocketThread.destroy();
+        ServiceManager.instance().onDestroy();
 
         super.onDestroy();
+
+
+
+
         onFinish();
     }
 
@@ -329,7 +261,6 @@ public class MainActivity extends android.app.Activity implements NotificationCe
 
         super.onBackPressed();
     }
-
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -395,7 +326,6 @@ public class MainActivity extends android.app.Activity implements NotificationCe
         }
     }
 
-
     @SuppressWarnings({"ResourceType"})
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -424,11 +354,8 @@ public class MainActivity extends android.app.Activity implements NotificationCe
 
             }
         }
-
-        if (AndroidUtilities.isTablet()) {
-
-        }
     }
+
     public void onRequestPermissionsResultFragment(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == 1) {
             for (int a = 0; a < permissions.length; a++) {

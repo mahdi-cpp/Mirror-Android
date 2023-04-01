@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
 import com.mahdi.car.core.cell.CellFrameLayout;
@@ -153,7 +152,7 @@ public class FloatViewParent extends CellFrameLayout {
         dY -= distanceY;
 
         setBackgroundColor(0x22000000);
-        floatView.setScroll();
+        floatView.setScroll(true);
 
         if (Math.abs(dY) > Math.abs(dX)) {
             if (isExpand) {
@@ -193,6 +192,7 @@ public class FloatViewParent extends CellFrameLayout {
                 dX = 0;
                 dY = 0;
                 floatView.setCollapse();
+                floatView.setScroll(false);
                 setBackgroundColor(0x00000000);
             }
         }).start();
@@ -203,11 +203,16 @@ public class FloatViewParent extends CellFrameLayout {
         if (isShow)
             return;
 
-        ViewAnimator.animate(floatView).setInterpolator(new DecelerateInterpolator()).translationY(screenHeight - bottomToolBar - headerHeight).setDuration(150).addListener(new AnimatorListenerAdapter() {
+        ViewAnimator.animate(floatView).setInterpolator(new DecelerateInterpolator()).translationY(screenHeight - bottomToolBar - headerHeight).setDuration(200).addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 isShow = true;
+                dX = 0;
+                dY = 0;
+                floatView.setCollapse();
+                floatView.setScroll(false);
+                setBackgroundColor(0x00000000);
             }
         }).start();
     }
@@ -215,11 +220,16 @@ public class FloatViewParent extends CellFrameLayout {
     public void hide() {
         if (isShow == false)
             return;
-        ViewAnimator.animate(floatView).setInterpolator(new DecelerateInterpolator()).translationY(screenHeight - bottomToolBar).setDuration(150).addListener(new AnimatorListenerAdapter() {
+        ViewAnimator.animate(floatView).setInterpolator(new DecelerateInterpolator()).translationY(screenHeight - bottomToolBar).setDuration(isExpand ? 250 : 150).addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 isShow = false;
+                dX = 0;
+                dY = 0;
+                floatView.setCollapse();
+                floatView.setScroll(false);
+                setBackgroundColor(0x00000000);
             }
         }).start();
     }

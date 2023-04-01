@@ -99,7 +99,7 @@ public class QMenu {
                     } else if (index == 2) {
                         QDialog.getInstance().hide();
                         if (post != null) {
-                            //MyActivity.actionBarLayout.presentFragment(new TicketFragment(post.postid));
+
                         }
                     } else if (index == 3) {
 
@@ -257,7 +257,7 @@ public class QMenu {
 
                         } else if (index == 1) {
                             if (post != null) {
-                                //MyActivity.actionBarLayout.presentFragment(new TicketFragment(post.postid));
+
                             }
                             QDialog.getInstance().hide();
                         } else if (index == 2) {

@@ -120,7 +120,6 @@ public class ProfileCell extends CellFrameLayout {
 
                 if (x > dp(100) && x < width - dp(100) && y > button_y_shift && y < button_y_shift + dp(50) && isPressed == ITEM_BUTTON) {
                     startWaiting();
-                    RootView.instance().showFloatView("Mahdi", "gg");
                     delegate.button();
                 } else {
                     isPressed = -1;

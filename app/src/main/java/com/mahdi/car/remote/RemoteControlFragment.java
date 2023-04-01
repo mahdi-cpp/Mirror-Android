@@ -7,8 +7,10 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.mahdi.car.core.BaseFragment;
+import com.mahdi.car.core.RootView;
 import com.mahdi.car.remote.components.TouchView;
 import com.mahdi.car.server.https.Server;
+import com.mahdi.car.service.ServiceManager;
 import com.mahdi.car.share.CircleButton;
 import com.mahdi.car.share.OvalButton;
 import com.mahdi.car.share.Themp;
@@ -97,9 +99,24 @@ public class RemoteControlFragment extends BaseFragment {
     }
 
     @Override
-    public void serverSend() {
-        super.serverSend();
-        server(Server.bookmark.getAllCollections());
+    public void onWebSocketOpened() {
+        super.onWebSocketOpened();
+    }
+
+    @Override
+    public void onWebSocketClosed() {
+        super.onWebSocketClosed();
+        RootView.instance().floatViewParent.hide();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (ServiceManager.instance().webSocketIsOpen()) {
+        } else {
+            RootView.instance().floatViewParent.hide();
+        }
     }
 }
 

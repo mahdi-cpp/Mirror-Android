@@ -34,17 +34,17 @@ public class Themp {
         public Bitmap remote = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.remote);
         public Bitmap arrow_back_large = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.arrow_back_rounded);
 
+        public Bitmap android = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.android);
         public Bitmap screen = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.screen);
         public Bitmap cast_large = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.cast_large);
-        public Bitmap android_mobile = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.android_mobile);
 
         public Bitmap movies = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.movies);
         public Bitmap music = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.music);
         public Bitmap finish = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.dor);
         public Bitmap camera = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ar);
-        public Bitmap cameraFill = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.b0g);
-        public Bitmap igtv = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.igtv_w);
-        public Bitmap forward = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.cjn);
+        //public Bitmap cameraFill = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.b0g);
+        //public Bitmap igtv = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.igtv_w);
+        //public Bitmap forward = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.cjn);
         public Bitmap search = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.nav_search);
         public Bitmap microphone = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ic_microphone_24dp);
         public Bitmap more = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.bt1);
@@ -787,29 +787,29 @@ public class Themp {
 
 
         drawableEmptyState[0] = context.getResources().getDrawable(R.drawable.empty_state_plus);
-        drawableEmptyState[1] = context.getResources().getDrawable(R.drawable.empty_state_gallery);
-        drawableEmptyState[2] = context.getResources().getDrawable(R.drawable.nux_main_feed_empty_icon);
+        //drawableEmptyState[1] = context.getResources().getDrawable(R.drawable.empty_state_gallery);
+        //drawableEmptyState[2] = context.getResources().getDrawable(R.drawable.nux_main_feed_empty_icon);
         drawableEmptyState[3] = context.getResources().getDrawable(R.drawable.empty_state_plus);
-        drawableEmptyState[4] = context.getResources().getDrawable(R.drawable.empty_state_polygon);
+        //drawableEmptyState[4] = context.getResources().getDrawable(R.drawable.empty_state_polygon);
         drawableEmptyState[5] = context.getResources().getDrawable(R.drawable.empty_state_save);
         drawableEmptyState[6] = context.getResources().getDrawable(R.drawable.empty_state_private);
         drawableEmptyState[7] = context.getResources().getDrawable(R.drawable.empty_state_follow);
         drawableEmptyState[8] = context.getResources().getDrawable(R.drawable.empty_state_follow);
 
-        drawableEmptyState[9] = context.getResources().getDrawable(R.drawable.empty_state_cart);
+        //drawableEmptyState[9] = context.getResources().getDrawable(R.drawable.empty_state_cart);
         drawableEmptyState[10] = context.getResources().getDrawable(R.drawable.empty_state_heart);
-        drawableEmptyState[11] = context.getResources().getDrawable(R.drawable.empty_state_location);
+        //drawableEmptyState[11] = context.getResources().getDrawable(R.drawable.empty_state_location);
         drawableEmptyState[12] = context.getResources().getDrawable(R.drawable.empty_state_follow);
 
         bitmapEmptyProfile = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.profile_anonymous_user);
-        drawableEmptyProfile = context.getResources().getDrawable(R.drawable.profile_anonymous_user);
+        //drawableEmptyProfile = context.getResources().getDrawable(R.drawable.profile_anonymous_user);
 
         bitmapCheck = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.nav_check);
         bitmapMoreMenuToolBar = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ced);
 
         bitmapDelete = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.trash_72);
         bitmapCloseCircle = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ic_close_white_24dp);
-        bitmapHand = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ic_hand_default);
+        //bitmapHand = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ic_hand_default);
         bitmapLocation_56 = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.location_56);
         bitmapTick = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.checkbig);
         bitmapClose24 = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ic_close_white_24dp);
@@ -867,8 +867,8 @@ public class Themp {
 
         bitmapsHandListGrid[0] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.grid);
         bitmapsHandListGrid[1] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.b7f);
-        bitmapsHandListGrid[2] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.shop72);
-        bitmapsHandListGrid[3] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.igtv_category);
+       // bitmapsHandListGrid[2] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.shop72);
+       // bitmapsHandListGrid[3] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.igtv_category);
 
 
         postCell[2] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.bdx);
@@ -900,7 +900,7 @@ public class Themp {
         searchFilters[1] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.slider_72);
         searchFilters[2] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.location_72);
         searchFilters[3] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.place_x);
-        searchFilters[4] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ic_nothing_24dp);
+        //searchFilters[4] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ic_nothing_24dp);
 
         drawableMap[0] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.list_60);
         drawableMap[1] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ios_search);
@@ -908,12 +908,12 @@ public class Themp {
         drawableMap[3] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.map_51);
         drawableMap[4] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.gps_me);
         drawableMap[5] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.livepin);
-        drawableMap[7] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ic_hand_default);
+        //drawableMap[7] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ic_hand_default);
         drawableMap[8] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ic_close_white_24dp);
         drawableMap[9] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ic_draw_active);
 
 
-        map_polygon_toolbar[1] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ic_hand_default);
+        //map_polygon_toolbar[1] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.ic_hand_default);
         map_polygon_toolbar[0] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.list_60);
 
         iconFilters[0] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.tool_adjust_straighten_whiteout);
@@ -934,7 +934,7 @@ public class Themp {
         homegramSmallCell[0] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.filled_grid_album_icon);
         homegramSmallCell[1] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.grid_camera_icon);
         homegramSmallCell[2] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.grid_camera_icon);
-        homegramSmallCell[3] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.igtv5);
+        //homegramSmallCell[3] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.igtv5);
         //homegramSmallCell[2] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.igtv3);
 
         videoPlayer[0] = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.b4v);

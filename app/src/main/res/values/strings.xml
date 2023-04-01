@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">Car App</string>
+    <string name="app_name">QmlScrcpy</string>
 
     <!--FCM CHANNEL-->
 

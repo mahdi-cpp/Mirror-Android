@@ -31,7 +31,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="homegram.ir"
+                    android:host="test.ir"
                     android:scheme="https" />
             </intent-filter>
 
@@ -73,10 +73,6 @@
 
 
         </activity>
-
-        <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBbQPZkUPkYiajxP1F3fYId4X093UHy84I" />
 
 
         <meta-data
@@ -209,25 +205,7 @@
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="false" />
-    <uses-feature
-        android:name="android.hardware.location.gps"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.location.network"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.location"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.LOCATION"
-        android:required="false" />
 
-
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="ir.small.estate.permission.MAPS_RECEIVE" />
-    <uses-permission android:name="ir.small.estate.permission.C2D_MESSAGE" />
-
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -235,15 +213,10 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    //<uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
 
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
