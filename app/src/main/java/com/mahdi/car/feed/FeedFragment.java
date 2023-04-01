@@ -29,13 +29,11 @@ import com.mahdi.car.core.QZoomView;
 import com.mahdi.car.core.RootView;
 import com.mahdi.car.dialog.popup.QDialog;
 import com.mahdi.car.feed.components.FeedView;
-import com.mahdi.car.setting.SettingView;
 import com.mahdi.car.library.viewAnimator.ViewAnimator;
 import com.mahdi.car.model.Person;
 import com.mahdi.car.model.State;
 import com.mahdi.car.server.https.Server;
-import com.mahdi.car.server.model.Post;
-import com.mahdi.car.server.model.User;
+import com.mahdi.car.setting.SettingView;
 import com.mahdi.car.share.Button;
 import com.mahdi.car.share.CustomLinearLayoutManager;
 import com.mahdi.car.share.component.ui.LayoutHelper;
@@ -44,8 +42,6 @@ import com.mahdi.car.story.camera.StoryCameraView;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 public class FeedFragment extends BaseFragment {
 
@@ -55,9 +51,6 @@ public class FeedFragment extends BaseFragment {
 
     private CustomLinearLayoutManager layoutManager;
 
-    private List<User> stories = new ArrayList<>();
-    private List<Post> posts = new ArrayList<>();
-    private HashMap<Integer, Integer> hashMap = new HashMap<>();
 
     private boolean checkPermission = true;
 
@@ -70,6 +63,7 @@ public class FeedFragment extends BaseFragment {
     private Button btnConnection;
 
     FeedView feedView;
+
 
     @Override
     public View createView(Context context) {
@@ -117,36 +111,36 @@ public class FeedFragment extends BaseFragment {
         //contentView.addView(rangeSeekBar, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 100, Gravity.TOP, 20, 200, 20, 0));
 
         btnConnection = new Button(context);
-        btnConnection.setTitle("Connect");
+        btnConnection.setTitle("Movies");
         btnConnection.setColor(1);
         btnConnection.setDelegate((Button.Delegate) () -> {
-            getParentActivity().websocketStart();
-            RootView.instance().showFloatView("Mahdi Abdolmaleki", "start show phone screen on car display");
-            feedView.setConnection(true);
+
+            //RootView.instance().showFloatView("Mahdi Abdolmaleki", "start show phone screen on car display");
         });
 
         btnDisconnect = new Button(context);
-        btnDisconnect.setTitle("Disconnect");
+        btnDisconnect.setTitle("Music");
         btnDisconnect.setColor(1);
         btnDisconnect.setDelegate((Button.Delegate) () -> {
 
+            Log.e("gggggggggggg", "Disconnect");
             feedView.setConnection(false);
 
             Gson gson = new GsonBuilder().disableHtmlEscaping().create();
             Person person = new Person("12", "Ali", "" + new Date().getTime(), 35);
             getParentActivity().webSocketSend(gson.toJson(person, Person.class));
 
-            RootView.instance().hideFloatView();
+            //RootView.instance().hideFloatView();
         });
 
         feedView = new FeedView(context);
 
         swipe.addView(feedView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP, 0, 0, 0, 0));
 
-        swipe.addView(btnConnection, LayoutHelper.createFrame(120, 40, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0, 0, 100));
-        //swipe.addView(btnDisconnect, LayoutHelper.createFrame(220, 40, Gravity.BOTTOM, 100, 0, 0, 100));
+        swipe.addView(btnConnection, LayoutHelper.createFrame(200, 40, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0, 0, 170));
+        swipe.addView(btnDisconnect, LayoutHelper.createFrame(200, 40, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0, 0, 100));
 
-        RootView.instance().showFloatView("Ali", "Music Play");
+        //RootView.instance().showFloatView("Ali", "Music Play");
 
         parentView.invalidate();
 
@@ -157,6 +151,7 @@ public class FeedFragment extends BaseFragment {
 
         return contentView;
     }
+
 
     @Override
     public void toolbarLeftPressed() {
@@ -174,6 +169,23 @@ public class FeedFragment extends BaseFragment {
     @Override
     public void toolbarRightPressed() {
         showSettingView();
+    }
+
+
+    @Override
+    public void onWebSocketOpened() {
+        super.onWebSocketOpened();
+
+        feedView.setConnection(true);
+        RootView.instance().floatViewParent.show("WebSocket", "opened");
+    }
+
+    @Override
+    public void onWebSocketClosed() {
+        super.onWebSocketClosed();
+
+        feedView.setConnection(false);
+        RootView.instance().floatViewParent.hide();
     }
 
     @Override
@@ -228,13 +240,6 @@ public class FeedFragment extends BaseFragment {
 
         velocity = 0;
         permissionSwipe = false;
-    }
-
-    @Override
-    public void serverSend() {
-        super.serverSend();
-        //Toast.makeText(contentView.getContext(), "mahdi error ", Toast.LENGTH_LONG).show();
-        server(Server.post.getFeed(page * size, size));
     }
 
     @Override
@@ -320,8 +325,6 @@ public class FeedFragment extends BaseFragment {
     @Override
     protected void onFragmentDestroy() {
         super.onFragmentDestroy();
-
-
     }
 
     @Override
@@ -401,7 +404,6 @@ public class FeedFragment extends BaseFragment {
             }
         }
     }
-
 
 }
 

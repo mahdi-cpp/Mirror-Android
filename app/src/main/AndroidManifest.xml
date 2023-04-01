@@ -14,7 +14,7 @@
         android:theme="@style/Theme.TMessages.Start">
 
         <activity
-            android:name="com.mahdi.car.MyActivity"
+            android:name="com.mahdi.car.MainActivity"
 
             android:configChanges="keyboard|keyboardHidden|screenSize"
             android:hardwareAccelerated="@bool/useHardwareAcceleration"

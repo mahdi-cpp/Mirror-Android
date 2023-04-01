@@ -7,7 +7,7 @@ import android.content.Intent;
 public class UdpReceiver extends BroadcastReceiver {
 
     public interface Delegate {
-        void receive(String sender, String message);
+        void receive(String senderIP, String message);
     }
 
     private Delegate delegate = null;
@@ -22,10 +22,10 @@ public class UdpReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        String senderIP = intent.getStringExtra("senderIP");
         String message = intent.getStringExtra("message");
-        String sender = intent.getStringExtra("sender");
 
         if (delegate != null)
-            delegate.receive(sender, message);
+            delegate.receive(senderIP, message);
     }
 }

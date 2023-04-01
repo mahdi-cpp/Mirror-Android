@@ -1,5 +1,7 @@
 package com.mahdi.car.server.https;
 
+import com.mahdi.car.App;
+
 import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.util.concurrent.TimeUnit;
@@ -11,8 +13,10 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import com.mahdi.car.App;
-import okhttp3.*;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class UnsafeOkHttpClient {
 

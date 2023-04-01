@@ -13,7 +13,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -198,7 +197,7 @@ public class App extends android.app.Application implements Application.Activity
     public void sendNotification(String title, String messageBody, Bitmap bitmap)
     {
 
-        Intent intent = new Intent(this, MyActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("postid", 20);
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

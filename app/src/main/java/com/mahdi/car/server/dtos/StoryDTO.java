@@ -1,10 +1,10 @@
 package com.mahdi.car.server.dtos;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.mahdi.car.server.model.Post;
 import com.mahdi.car.server.model.story.Story;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StoryDTO
 {

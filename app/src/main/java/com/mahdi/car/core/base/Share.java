@@ -6,7 +6,6 @@ import java.util.Date;
 
 import com.mahdi.car.core.RootView;
 import com.mahdi.car.messenger.AndroidUtilities;
-import com.mahdi.car.server.model.User;
 
 public interface Share
 {
@@ -58,10 +57,5 @@ public interface Share
     default void modeIGTV()
     {
         AndroidUtilities.modeIGTV();
-    }
-
-    default User owner()
-    {
-        return RootView.instance().owner;
     }
 }

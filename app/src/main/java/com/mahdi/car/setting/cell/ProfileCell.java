@@ -68,8 +68,8 @@ public class ProfileCell extends CellFrameLayout {
         User user = new User();
         userid = user.ID;
         username = user.Username;
-        user.Avatar = "0044.jpg";
-        setAvatar(user.Avatar);
+        //user.Avatar = null;
+        //setAvatar(user.Avatar);
     }
 
     @Override

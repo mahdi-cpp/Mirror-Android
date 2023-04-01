@@ -26,8 +26,6 @@ public class SettingView extends CellFrameLayout {
 
     private static int rowCount = 0;
     private static final int rowProfile = rowCount++;
-    private static final int rowNotification = rowCount++;
-    private static final int rowAccount = rowCount++;
     private static final int rowMirrorSeparate = rowCount++;
     private static final int rowBitrate = rowCount++;
 
@@ -255,13 +253,7 @@ public class SettingView extends CellFrameLayout {
 
             if (position == rowProfile) {
                 ProfileCell cell = (ProfileCell) holder.itemView;
-            } else if (position == rowNotification) {
-                SettingCell cell = (SettingCell) holder.itemView;
-                cell.setIcon(Themp.setting.notification, "Notification");
-            } else if (position == rowAccount) {
-                SettingCell cell = (SettingCell) holder.itemView;
-                cell.setIcon(Themp.setting.account, "Account");
-            } else if (position == rowMirrorSeparate) {
+            }  else if (position == rowMirrorSeparate) {
                 SettingCell cell = (SettingCell) holder.itemView;
                 cell.setColor(0);
                 cell.setEmpty(30);

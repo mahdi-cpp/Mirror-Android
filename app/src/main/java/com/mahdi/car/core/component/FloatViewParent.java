@@ -80,7 +80,7 @@ public class FloatViewParent extends CellFrameLayout {
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent(MotionEvent event) {
 
         if (!isShow) {
             return false;
@@ -89,8 +89,10 @@ public class FloatViewParent extends CellFrameLayout {
         float x = event.getX();
         float y = event.getY();
 
-        gestureDetector.onTouchEvent(event);
         floatView.onTouchEvent(event);
+
+        gestureDetector.onTouchEvent(event);
+
 
         switch (event.getAction()) {
 

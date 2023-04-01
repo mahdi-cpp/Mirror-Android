@@ -3,22 +3,19 @@ package com.mahdi.car.core.component;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.text.Layout;
 import android.text.StaticLayout;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 
 import com.mahdi.car.core.cell.CellFrameLayout;
 import com.mahdi.car.server.model.User;
+import com.mahdi.car.share.Button;
 import com.mahdi.car.share.Themp;
 import com.mahdi.car.share.component.ui.LayoutHelper;
 
 public class FloatView extends CellFrameLayout {
-
-    private static int itemCount = 0;
-    private static final int ITEM_BUTTON = itemCount++;
 
     private StaticLayout toolbarTitleLayout;
     private StaticLayout toolbarNameLayout;
@@ -29,24 +26,44 @@ public class FloatView extends CellFrameLayout {
     private StaticLayout videoBitrateLayout;
     private StaticLayout videoSizeLayout;
 
-    private Drawable[] drawables = new Drawable[4];
-    private String[] photos = new String[4];
-
     private int space = dp(16);
 
-    private int button_y_shift = screenHeight - dp(200);
-    private boolean buttonVisible = true;
-
     private boolean isExpand = false;
+
+    private Button buttonPlay;
+    private Button buttonPause;
 
     public FloatView(Context context) {
 
         super(context);
+        hasStory = false;
 
         setBackgroundColor(0x00ffffff);
         setLayoutParams(LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP, 0, 0, 0, 0));
 
-        startStoryRing();
+        buttonPlay = new Button(context);
+        buttonPlay.setColor(1);
+        buttonPlay.setTitle("Play Music");
+        buttonPlay.setDelegate(new Button.Delegate() {
+            @Override
+            public void onClick() {
+                setParameters("Maryam", "Music Player");
+            }
+        });
+
+        buttonPause = new Button(context);
+        buttonPause.setColor(1);
+        buttonPause.setTitle("Pause Music");
+        buttonPause.setDelegate(new Button.Delegate() {
+            @Override
+            public void onClick() {
+                setParameters("Sara", "Movies Stream");
+            }
+        });
+
+
+        addView(buttonPlay, LayoutHelper.createFrame(150, 40, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0, 0, 100));
+        addView(buttonPause, LayoutHelper.createFrame(150, 40, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0, 0, 50));
 
         round = dp(18);
         cellWidth = (width - (space * 3)) / 2;
@@ -76,20 +93,9 @@ public class FloatView extends CellFrameLayout {
 
     public void setParameters(String username, String title) {
 
-        for (int i = 0; i < 4; i++) {
-            drawables[i] = null;
-            photos[i] = null;
-        }
-
-        photos[0] = "abednaseri_186760853_942575583255229_2875100642476586962_n.jpg";
-
-        if (photos[0] != null) {
-            setGallery(drawables, 0, photos[0]);
-        }
-
         User user = new User();
         userid = user.ID;
-        user.Avatar = "abednaseri_186760853_942575583255229_2875100642476586962_n.jpg";
+        user.Avatar = "2019-11-29_19-03-34_UTC.jpg";
         setAvatar(user.Avatar);
 
         toolbarNameLayout = new StaticLayout(username, Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[5], dp(200), Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
@@ -99,7 +105,7 @@ public class FloatView extends CellFrameLayout {
         descriptionLayout = new StaticLayout("Screen is live on display", Themp.TEXT_PAINT_FILL_GREY[8], width, Layout.Alignment.ALIGN_CENTER, 1.2f, 0.2f, false);
 
         videoBitrateLayout = new StaticLayout("Bit Rate Quality         2  Mbit/s", Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[6], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
-        videoSizeLayout =    new StaticLayout("Resolution                  488x1080", Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[6], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
+        videoSizeLayout = new StaticLayout("Resolution                  488x1080", Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[6], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
 
         invalidate();
     }
@@ -108,101 +114,61 @@ public class FloatView extends CellFrameLayout {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        //canvas.drawBitmap(Themp.mainToolBarIcons[1], dp(65), dp(13) , Themp.ICON_PAINT_MULTIPLY_BLACK);
-
-
-
-        //canvas.drawLine(0, dp(0), width, dp(0), Themp.PAINT_GRAY);
-
-        //canvas.drawLine(0, screenHeight - bottomToolBar, width, screenHeight - bottomToolBar, Themp.PAINT_GRAY);
-
         avatarSize = dp(33);
         avatarX = dp(14);
         avatarY = dp(14);
 
         int round = dp(1);
 
-        canvas.drawRoundRect(new RectF(0, dp(0), getWidth(),  getHeight()), dp(22 + round), dp(22 + round), Themp.PAINT_FFEEEEEE);
-        canvas.drawRoundRect(new RectF(dp(2), dp(2), getWidth() - dp(2),  getHeight() - dp(2)), dp(20 + round), dp(20 + round), Themp.PAINT_WHITE);
-
-//        if (isExpand == false) {
-//            Themp.drawableToolbar[0].setBounds(dp(15), 0, width - dp(15), dp(8));
-//            Themp.drawableToolbar[0].setAlpha(100);
-//            Themp.drawableToolbar[0].draw(canvas);
-//        }
-//        //shadows
-//        Themp.drawableToolbar[0].setBounds(0, 0, width, dp(100));
-//        Themp.drawableToolbar[0].setAlpha(100);
-//        Themp.drawableToolbar[0].draw(canvas);
-
-        //canvas.drawRoundRect(new RectF(0, 0, getWidth(),  dp(60)), dp(40), dp(40), Themp.STROKE_PAINT_30DP_WHITE);
+        canvas.drawRoundRect(new RectF(0, dp(0), getWidth(), getHeight()), dp(22 + round), dp(22 + round), Themp.PAINT_FFEEEEEE);
+        canvas.drawRoundRect(new RectF(dp(2), dp(2), getWidth() - dp(2), getHeight() - dp(2)), dp(20 + round), dp(20 + round), Themp.PAINT_WHITE);
 
         drawAvatar(avatarX, avatarY);
 
         drawTextLayout(toolbarNameLayout, dp(65 + 0), dp(9));
         drawTextLayout(toolbarTitleLayout, dp(65 + 0), dp(29));
 
-        //canvas.drawLine(0, dp(54), width, dp(54), Themp.PAINT_GRAY);
-        //}
-
-//        Themp.drawableToolbar[1].setBounds(0, getHeight() - dp(60), width, getHeight() -dp(55));
-//        Themp.drawableToolbar[1].draw(canvas);
-
         canvas.drawBitmap(Themp.toolbar.cast_large, centerX - 100, dp(100), Themp.ICON_PAINT_MULTIPLY_BLACK);
 
         drawTextLayout(titleLayout, 0, dp(180));
         drawTextLayout(descriptionLayout, 0, dp(230));
 
-
         drawTextLayout(videoBitrateLayout, dp(60), dp(350));
         drawTextLayout(videoSizeLayout, dp(60), dp(350 + 25));
-
-        if (buttonVisible) {
-            drawRoundRect(dp(70), button_y_shift, new RectF(0, 0, width - dp(140), dp(40)), dp(5), isPressed == ITEM_BUTTON ? Themp.PAINT_BLACK : Themp.PAINT_BLUE);
-            StaticLayout layout = new StaticLayout("Finish Screen Mirror", Themp.TEXT_PAINT_FILL_AND_STROKE_3_WHITE[8], getWidth(), Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
-            drawTextLayout(layout, 0, button_y_shift + dp(9));
-        }
-
     }
 
 
     public boolean onTouchEvent(MotionEvent event) {
-
         float x = event.getX();
         float y = event.getY();
 
         switch (event.getAction()) {
 
-            case MotionEvent.ACTION_POINTER_DOWN:
             case MotionEvent.ACTION_DOWN:
 
-                if (x > dp(70) && x < width - dp(70) && y > button_y_shift && y < button_y_shift + dp(50) && buttonVisible) {
-                    isPressed = ITEM_BUTTON;
-                } else {
-                    isPressed = -1;
-                }
-                invalidate();
-                break;
-            case MotionEvent.ACTION_UP:
+                if (x > 0 && x < getWidth() && y > 0 && y < getHeight()) {
+                    isPressed = 1;
 
-                if (x > dp(70) && x < width - dp(70) && y > button_y_shift && y < button_y_shift + dp(50) && isPressed == ITEM_BUTTON) {
-                    Log.e("FloatView", "click");
-                    //RootView.instance().hideFloatView();
+                    new Handler().postDelayed(() -> invalidate(), 100);
                 }
 
-                isPressed = -1;
-                invalidate();
                 break;
             case MotionEvent.ACTION_MOVE:
                 break;
+            case MotionEvent.ACTION_UP:
 
-            case MotionEvent.ACTION_CANCEL:
-            case MotionEvent.ACTION_POINTER_UP:
-                isPressed = -1;
+                if (x > 0 && x < getWidth() && isPressed == 1 && delegate != null && y > 0 && y < getHeight() && delegate != null) {
+                    delegate.click();
+                }
+
+                isPressed = 0;
                 invalidate();
                 break;
-        }
 
-        return true;
+            default:
+                isPressed = 0;
+                invalidate();
+        }
+        return false;
     }
 }

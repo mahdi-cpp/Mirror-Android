@@ -1,10 +1,13 @@
 package com.mahdi.car.server;
 
 import com.mahdi.car.server.dtos.LoginResponseDTO;
-import retrofit2.Call;
-import retrofit2.http.*;
 
 import java.math.BigInteger;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 
 public interface LoginController {

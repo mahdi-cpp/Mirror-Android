@@ -1,10 +1,11 @@
 package com.mahdi.car.server;
 
 
-import java.util.List;
-
 import com.mahdi.car.server.dtos.BookmarkDTO;
 import com.mahdi.car.server.model.Post;
+
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.POST;

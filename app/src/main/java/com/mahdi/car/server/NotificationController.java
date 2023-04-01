@@ -2,11 +2,12 @@ package com.mahdi.car.server;
 
 
 import com.mahdi.car.server.model.Notification;
+
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-
-import java.util.List;
 
 
 public interface NotificationController {

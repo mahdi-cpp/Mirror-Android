@@ -226,6 +226,36 @@ public class RootView {
         return null;
     }
 
+    public void onWebSocketOpened() {
+
+        if (fullCoreFragment.fragmentsStack.size() > 0) {
+            BaseFragment fragment = getTopFragmentFullScreen();
+            if (fragment == null)
+                return;
+            fragment.onWebSocketOpened();
+        }
+
+        BaseFragment fragment = getCurrentFragment();
+        if (fragment == null)
+            return;
+
+        fragment.onWebSocketOpened();
+    }
+    public void onWebSocketClosed() {
+
+        if (fullCoreFragment.fragmentsStack.size() > 0) {
+            BaseFragment fragment = getTopFragmentFullScreen();
+            if (fragment == null)
+                return;
+            fragment.onWebSocketClosed();
+        }
+
+        BaseFragment fragment = getCurrentFragment();
+        if (fragment == null)
+            return;
+
+        fragment.onWebSocketClosed();
+    }
     public void onWebSocketReceive(String jsonString) {
 
         if (fullCoreFragment.fragmentsStack.size() > 0) {

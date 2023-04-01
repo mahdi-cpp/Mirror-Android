@@ -6,23 +6,17 @@ import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.os.StatFs;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
@@ -35,24 +29,22 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+import com.mahdi.car.Thread.UdpThread;
+import com.mahdi.car.Thread.WebSocketThread;
 import com.mahdi.car.core.QZoomView;
 import com.mahdi.car.core.RootView;
 import com.mahdi.car.messenger.AndroidUtilities;
-import com.mahdi.car.messenger.FileLoader;
 import com.mahdi.car.messenger.FileLog;
 import com.mahdi.car.messenger.MediaController;
 import com.mahdi.car.messenger.NotificationCenter;
 import com.mahdi.car.messenger.UdpReceiver;
 import com.mahdi.car.messenger.Utilities;
 import com.mahdi.car.messenger.WebSocketReceiver;
-import com.mahdi.car.service.UDPListenerService;
-import com.mahdi.car.service.WebSocketService;
 import com.mahdi.car.share.component.ui.LayoutHelper;
 
-import java.io.File;
 import java.util.ArrayList;
 
-public class MyActivity extends android.app.Activity implements NotificationCenter.NotificationCenterDelegate {
+public class MainActivity extends android.app.Activity implements NotificationCenter.NotificationCenterDelegate {
 
     public static final String TAG = "MyActivity";
 
@@ -69,15 +61,26 @@ public class MyActivity extends android.app.Activity implements NotificationCent
     public static int height;
 
     //BoundService class Objet
-    WebSocketService webSocketService;
+//    private UDPListenerService udpListenerService;
+//    private WebSocketService webSocketService;
 
     //boolean variable to keep a check on service bind and unbind event
-    boolean isBound = false;
+    boolean isBoundWebSocket = false;
+    boolean isBoundUDP = false;
 
     UdpReceiver udpReceiver = null;
     WebSocketReceiver webSocketReceiver = null;
     IntentFilter udpIntentFilter;
     IntentFilter webSocketIntentFilter;
+
+    private UdpThread udpThread;
+    private WebSocketThread webSocketThread;
+
+    //TimerTask timerTask = null;
+    //running timer task as daemon thread
+    //Timer timer = null;
+
+    //Boolean shouldListenForUDPBroadcast = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,11 +224,14 @@ public class MyActivity extends android.app.Activity implements NotificationCent
 
         //-------------------------------------
 
-        udpReceiver = new UdpReceiver();
-        udpReceiver.setDelegate(new UdpReceiver.Delegate() {
-            @Override
-            public void receive(String sender, String message) {
+        webSocketThread = new WebSocketThread(getApplicationContext());
 
+        udpReceiver = new UdpReceiver();
+        udpReceiver.setDelegate((senderIP, message) -> {
+            Log.e("udpReceiver", "udp receiver senderIP:" + senderIP);
+            if (webSocketThread != null && !webSocketThread.isOpened()) {
+                Log.e("udpReceiver", "webSocketThread.open()");
+                webSocketThread.open(senderIP);
             }
         });
 
@@ -233,12 +239,12 @@ public class MyActivity extends android.app.Activity implements NotificationCent
         webSocketReceiver.setDelegate(new WebSocketReceiver.Delegate() {
             @Override
             public void onOpened() {
-                //toolbar.setName("connected");
+                RootView.instance().onWebSocketOpened();
             }
 
             @Override
             public void onClose() {
-                //toolbar.setName("closed");
+                RootView.instance().onWebSocketClosed();
             }
 
             @Override
@@ -253,13 +259,36 @@ public class MyActivity extends android.app.Activity implements NotificationCent
         registerReceiver(udpReceiver, udpIntentFilter);
         registerReceiver(webSocketReceiver, webSocketIntentFilter);
 
-        startService(new Intent(this, UDPListenerService.class));
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            startForegroundService(new Intent(this, UDPListenerService.class));
+//        } else {
 
-        Intent webSocketIntent = new Intent(this, WebSocketService.class);
-        startService(webSocketIntent);
-        bindService(webSocketIntent, boundServiceConnection, BIND_AUTO_CREATE);
+        //}
+
+
+
+
+//        timerTask = new ProcessTimerTask();
+//        //running timer task as daemon thread
+//        timer = new Timer(true);
+//        timer.scheduleAtFixedRate(timerTask, 0, 5000);
+
+
+        udpThread = new UdpThread(getApplicationContext());
+        udpThread.start();
 
     }
+
+//    public class ProcessTimerTask extends TimerTask {
+//        @Override
+//        public void run() {
+//            Log.e("111", "Timer task");
+//            if (webSocketService != null && !webSocketService.isOpened()) {
+//                //websocketStart();
+//            }
+//        }
+//    }
+
 
     public class MyBroadCastReciever extends BroadcastReceiver {
 
@@ -296,12 +325,9 @@ public class MyActivity extends android.app.Activity implements NotificationCent
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
 
-    public void websocketStart() {
-        webSocketService.startServer("192.168.1.113");
-    }
 
     public void webSocketSend(String json) {
-        webSocketService.send(json);
+        ///webSocketService.send(json);
     }
 
     @Override
@@ -422,27 +448,40 @@ public class MyActivity extends android.app.Activity implements NotificationCent
     @Override
     protected void onStart() {
         super.onStart();
-
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
     }
 
     @Override
     protected void onDestroy() {
+
         RootView.instance().onDestroy();
 
         unregisterReceiver(receiver);
         unregisterReceiver(udpReceiver);
         unregisterReceiver(webSocketReceiver);
 
-        if (isBound) {
-            unbindService(boundServiceConnection);
-            isBound = false;
-        }
+//        if (isBoundWebSocket) {
+//            unbindService(boundServiceConnection);
+//            isBoundWebSocket = false;
+//        }
+//
+//        if (isBoundUDP) {
+//            unbindService(boundUDP);
+//            isBoundUDP = false;
+//        }
+
+
+        udpThread.stop();
+        webSocketThread.destroy();
+
+//        if (timer != null) {
+//            timer.cancel();
+//            timer = null;
+//        }
 
         super.onDestroy();
         onFinish();
@@ -462,13 +501,13 @@ public class MyActivity extends android.app.Activity implements NotificationCent
     protected void onResume() {
         super.onResume();
 
-        if (webSocketService != null) {
-            if (webSocketService.isOpened()) {
-                Log.d("WebSocket:", "opened");
-            } else {
-                Log.d("WebSocket:", "closed");
-            }
-        }
+//        if (webSocketService != null) {
+//            if (webSocketService.isOpened()) {
+//                Log.d("WebSocket:", "opened");
+//            } else {
+//                Log.d("WebSocket:", "closed");
+//            }
+//        }
 
         //FatherView.instance().init(this);
         RootView.instance().onResume();
@@ -521,34 +560,10 @@ public class MyActivity extends android.app.Activity implements NotificationCent
 
         if (id == NotificationCenter.finishActivity) {
 
-            //            for (BaseFragment fragment : actionBarLayout.fragmentsStack) {
-            //                fragment.onFragmentDestroy();
-            //            }
-            //            actionBarLayout.fragmentsStack.clear();
-            //            fragments.clear();
-            //
-            //            onFinish();
-            //            finish();
 
         } else if (id == NotificationCenter.appDidLogout) {
 
-            //if (drawerLayoutAdapter != null) {
-            //drawerLayoutAdapter.notifyDataSetChanged();
-            //}
 
-            //            for (BaseFragment fragment : actionBarLayout.fragmentsStack) {
-            //                fragment.onFragmentDestroy();
-            //            }
-            //            actionBarLayout.fragmentsStack.clear();
-            //            if (U.isTablet()) {
-            //
-            //            }
-            /*
-            Intent intent2 = new Intent(this, IntroActivity.class);
-            startActivity(intent2);
-            onFinish();
-            finish();
-            */
         } else if (id == NotificationCenter.closeOtherAppActivities) {
             if (args[0] != this) {
                 onFinish();
@@ -641,25 +656,45 @@ public class MyActivity extends android.app.Activity implements NotificationCent
         return permissionState == PackageManager.PERMISSION_GRANTED;
     }
 
-
-    private ServiceConnection boundServiceConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-
-            WebSocketService.MyBinder binderBridge = (WebSocketService.MyBinder) service;
-            webSocketService = binderBridge.getService();
-            isBound = true;
-
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-
-            isBound = false;
-            webSocketService = null;
-
-        }
-    };
+//
+//    private ServiceConnection boundServiceConnection = new ServiceConnection() {
+//
+//        @Override
+//        public void onServiceConnected(ComponentName name, IBinder service) {
+//
+//            WebSocketService.MyBinder binderBridge = (WebSocketService.MyBinder) service;
+//            webSocketService = binderBridge.getService();
+//            isBoundWebSocket = true;
+//
+//        }
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName name) {
+//
+//            isBoundWebSocket = false;
+//            webSocketService = null;
+//
+//        }
+//    };
+//
+//    private ServiceConnection boundUDP = new ServiceConnection() {
+//
+//        @Override
+//        public void onServiceConnected(ComponentName name, IBinder service) {
+//
+//            UDPListenerService.MyBinder binderBridge = (UDPListenerService.MyBinder) service;
+//            udpListenerService = binderBridge.getService();
+//            isBoundUDP = true;
+//
+//        }
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName name) {
+//
+//            isBoundUDP = false;
+//            udpListenerService = null;
+//
+//        }
+//    };
 
 }

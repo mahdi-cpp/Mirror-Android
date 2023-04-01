@@ -1,6 +1,7 @@
 package com.mahdi.car.server.https;
 
 import com.mahdi.car.App;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -36,7 +37,7 @@ public class ServerClientInstance {
         client = UnsafeOkHttpClient.getUnsafeOkHttpClient();
 
         if (retrofit == null) {
-            retrofit = new retrofit2.Retrofit.Builder()
+            retrofit = new Retrofit.Builder()
                     .baseUrl(App.server)
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create())

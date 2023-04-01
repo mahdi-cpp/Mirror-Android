@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mahdi.car.MyActivity;
+import com.mahdi.car.MainActivity;
 import com.mahdi.car.core.base.Share;
 import com.mahdi.car.core.component.BottomToolBar;
 import com.mahdi.car.core.component.ToolBar;
@@ -523,7 +523,7 @@ public class BaseFragment implements Share {
         return contentView;
     }
 
-    public MyActivity getParentActivity() {
+    public MainActivity getParentActivity() {
         return coreFragment.getParentActivity();
     }
 
@@ -559,6 +559,12 @@ public class BaseFragment implements Share {
 
     }
 
+    public void onWebSocketOpened() {
+
+    }
+    public void onWebSocketClosed() {
+
+    }
     public void onWebSocketReceive(String jsonString) {
 
     }

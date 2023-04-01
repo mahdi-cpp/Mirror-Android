@@ -5,10 +5,15 @@ import com.mahdi.car.server.dtos.FeedDTO;
 import com.mahdi.car.server.dtos.PostDTO;
 import com.mahdi.car.server.dtos.ProfileDTO;
 import com.mahdi.car.server.model.Post;
-import retrofit2.Call;
-import retrofit2.http.*;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.http.DELETE;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Query;
 
 public interface PostController
 {

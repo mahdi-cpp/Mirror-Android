@@ -106,7 +106,7 @@ public class ChatAddView extends CellFrameLayout
         });
 
 
-        setAvatar(owner().Avatar);
+        //setAvatar(owner().Avatar);
         round = dp(50);
 
         addView(messageTextView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.CENTER_VERTICAL, 68, 0, 48, 0));

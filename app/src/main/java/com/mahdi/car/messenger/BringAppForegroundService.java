@@ -3,7 +3,7 @@ package com.mahdi.car.messenger;
 import android.app.IntentService;
 import android.content.Intent;
 
-import com.mahdi.car.MyActivity;
+import com.mahdi.car.MainActivity;
 
 
 public class BringAppForegroundService extends IntentService
@@ -16,7 +16,7 @@ public class BringAppForegroundService extends IntentService
 
     @Override protected void onHandleIntent(Intent intent)
     {
-        Intent intent2 = new Intent(this, MyActivity.class);
+        Intent intent2 = new Intent(this, MainActivity.class);
         intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent2);
     }
