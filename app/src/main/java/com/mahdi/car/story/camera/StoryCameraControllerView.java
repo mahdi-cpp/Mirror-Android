@@ -81,23 +81,23 @@ public class StoryCameraControllerView extends CellFrameLayout implements Notifi
             @Override
             public void tackPicture()
             {
-                takePhoto();
+                //takePhoto();
             }
 
             @Override
             public void startRecord()
             {
-                if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.RECORD_AUDIO}, 0);
-                } else {
-                    StoryCameraControllerView.this.startRecord();
-                }
+//                if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+//                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.RECORD_AUDIO}, 0);
+//                } else {
+//                    StoryCameraControllerView.this.startRecord();
+//                }
             }
 
             @Override
             public void cancelRecord()
             {
-                StoryCameraControllerView.this.cancelRecord();
+                //StoryCameraControllerView.this.cancelRecord();
             }
         });
 

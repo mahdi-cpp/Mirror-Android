@@ -37,7 +37,7 @@ public class StoryCameraView extends CellFrameLayout implements NotificationCent
 //    private RecyclerView recyclerView;
     private GestureDetector gestureDetector;
 
-    private ArrayList<MediaController.PhotoEntry> photos = new ArrayList<>();
+    //private ArrayList<MediaController.PhotoEntry> photos = new ArrayList<>();
 //    private Adapter adapter;
 
     private boolean busyAnimation = false;
@@ -365,7 +365,7 @@ public class StoryCameraView extends CellFrameLayout implements NotificationCent
                 }
             }
 
-            photos = MediaController.allMediaAlbumEntry.photos;
+            //photos = MediaController.allMediaAlbumEntry.photos;
 
             ValueAnimator animator = new ValueAnimator();
             animator.setValues(PropertyValuesHolder.ofInt("value", 0, 100));

@@ -412,7 +412,7 @@ public class MediaController
                 broadcastPhotosRunnable = null;
                 allPhotosAlbumEntry = allPhotosAlbumFinal;
                 allMediaAlbumEntry = allMediaAlbumFinal;
-                NotificationCenter.getInstance().postNotificationName(NotificationCenter.albumsDidLoaded, guid, mediaAlbumsSorted, photoAlbumsSorted, cameraAlbumIdFinal);
+                //NotificationCenter.getInstance().postNotificationName(NotificationCenter.albumsDidLoaded, guid, mediaAlbumsSorted, photoAlbumsSorted, cameraAlbumIdFinal);
 
 //                if (delegate != null) {
 //                    //delegate.albumsDidLoaded();

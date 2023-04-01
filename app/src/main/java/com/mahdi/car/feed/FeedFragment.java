@@ -12,7 +12,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -29,10 +28,8 @@ import com.mahdi.car.core.QZoomView;
 import com.mahdi.car.core.RootView;
 import com.mahdi.car.dialog.popup.QDialog;
 import com.mahdi.car.feed.components.FeedView;
-import com.mahdi.car.library.viewAnimator.ViewAnimator;
 import com.mahdi.car.model.Person;
 import com.mahdi.car.model.State;
-import com.mahdi.car.server.https.Server;
 import com.mahdi.car.setting.SettingView;
 import com.mahdi.car.share.Button;
 import com.mahdi.car.share.CustomLinearLayoutManager;
@@ -50,9 +47,6 @@ public class FeedFragment extends BaseFragment {
     private StoryCameraView storyCameraView;
 
     private CustomLinearLayoutManager layoutManager;
-
-
-    private boolean checkPermission = true;
 
     private boolean isAnimation = false;
     private boolean isSettingShow = false;
@@ -102,7 +96,7 @@ public class FeedFragment extends BaseFragment {
         settingView.setDelegate(new SettingView.Delegate() {
             @Override
             public void leftPressed() {
-                hide(0);
+                hideSettingView(0);
             }
         });
         contentView.addView(settingView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
@@ -137,18 +131,15 @@ public class FeedFragment extends BaseFragment {
 
         swipe.addView(feedView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP, 0, 0, 0, 0));
 
-        swipe.addView(btnConnection, LayoutHelper.createFrame(200, 40, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0, 0, 170));
-        swipe.addView(btnDisconnect, LayoutHelper.createFrame(200, 40, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0, 0, 100));
+//        swipe.addView(btnConnection, LayoutHelper.createFrame(200, 40, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0, 0, 170));
+//        swipe.addView(btnDisconnect, LayoutHelper.createFrame(200, 40, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0, 0, 100));
 
         //RootView.instance().showFloatView("Ali", "Music Play");
 
         parentView.invalidate();
-
         //Log.e("Gson", "json:" + gson.toJson(obj, Person.class));
-
 //        Person person = gson.fromJson("{\"age\":35,\"name\":\"Ali\",\"phone\":\"09355512619\"}", Person.class);
 //        Log.e("Gson", "person:" + person.age);
-
         return contentView;
     }
 
@@ -156,7 +147,7 @@ public class FeedFragment extends BaseFragment {
     @Override
     public void toolbarLeftPressed() {
         if (settingView.isShow()) {
-            hide(0);
+            hideSettingView(0);
         } else {
             if (storyCameraView == null) {
                 storyCameraView = new StoryCameraView(App.context, getParentActivity(), contentView);
@@ -208,53 +199,6 @@ public class FeedFragment extends BaseFragment {
         }
     }
 
-    private void processScroll(MotionEvent e1, float distanceX, float distanceY) {
-        dX -= distanceX;
-        dY -= distanceY;
-
-        if (Math.abs(dX) > Math.abs(dY) && !swipe.isSwipe()) {
-
-            layoutManager.setScrollEnabled(false);
-            swipe.setScrollEnabled(false);
-
-            swipe.recyclerView.setTranslationX(dX);
-            //RootView.instance().floatViewParent.setTranslationX(dX);
-        }
-    }
-
-    private void resetX() {
-        if (!permissionSwipe) {
-            return;
-        }
-
-        layoutManager.setScrollEnabled(true);
-        swipe.setScrollEnabled(true);
-
-        if (dX < -centerX || velocity < -1000) {
-            ViewAnimator.animate(swipe.recyclerView).setInterpolator(new LinearOutSlowInInterpolator()).translationX(-width).setDuration(300).start();
-            settingView.show();
-        } else {
-            settingView.reset();
-            ViewAnimator.animate(swipe.recyclerView).setInterpolator(new LinearOutSlowInInterpolator()).translationX(0).setDuration(300).start();
-        }
-
-        velocity = 0;
-        permissionSwipe = false;
-    }
-
-    @Override
-    public void swipeScrolled() {
-        for (int i = 0; i < swipe.recyclerView.getChildCount(); i++) {
-
-            View view = swipe.recyclerView.getChildAt(i);
-
-//            if (view instanceof PostCell) {
-//                PostCell cell = (PostCell) view;
-//                cell.setSwipe(swipe.isSwipe());
-//            }
-        }
-    }
-
     @Override
     public void endStoryShow() {
         super.endStoryShow();
@@ -293,7 +237,7 @@ public class FeedFragment extends BaseFragment {
         animatorSet.start();
     }
 
-    public void hide(int delay) {
+    public void hideSettingView(int delay) {
         if (isAnimation) {
             return;
         }
@@ -323,26 +267,24 @@ public class FeedFragment extends BaseFragment {
     }
 
     @Override
-    protected void onFragmentDestroy() {
-        super.onFragmentDestroy();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
+
+        if (getParentActivity().webSocketIsOpen()) {
+            feedView.setConnection(true);
+        } else {
+            feedView.setConnection(false);
+            RootView.instance().floatViewParent.hide();
+        }
 
         if (storyCameraView != null)
             storyCameraView.onResume();
 
-        if (checkPermission && Build.VERSION.SDK_INT >= 23) {
+    }
 
-            Activity activity = getParentActivity();
-
-            if (activity != null) {
-                checkPermission = false;
-                askForPermissons();
-            }
-        }
+    @Override
+    protected void onFragmentDestroy() {
+        super.onFragmentDestroy();
     }
 
     @Override
@@ -350,7 +292,7 @@ public class FeedFragment extends BaseFragment {
         super.onBackPressed();
 
         if (settingView.isShow()) {
-            hide(0);
+            hideSettingView(0);
             return false;
         }
 
@@ -365,44 +307,6 @@ public class FeedFragment extends BaseFragment {
         }
 
         return true;
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    private void askForPermissons() {
-        Activity activity = getParentActivity();
-        if (activity == null) {
-            return;
-        }
-        ArrayList<String> permissons = new ArrayList<>();
-
-        if (activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            permissons.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-            permissons.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-        String[] items = permissons.toArray(new String[permissons.size()]);
-        try {
-            activity.requestPermissions(items, 1);
-        } catch (Exception ignore) {
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResultFragment(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == 1) {
-            for (int a = 0; a < permissions.length; a++) {
-                if (grantResults.length <= a || grantResults[a] != PackageManager.PERMISSION_GRANTED) {
-                    continue;
-                }
-                switch (permissions[a]) {
-                    case Manifest.permission.CAMERA:
-                        //ContactsController.getInstance().forceImportContacts();
-                        break;
-                    case Manifest.permission.WRITE_EXTERNAL_STORAGE:
-                        //ImageUtils.getInstance().checkMediaPaths();
-                        break;
-                }
-            }
-        }
     }
 
 }
