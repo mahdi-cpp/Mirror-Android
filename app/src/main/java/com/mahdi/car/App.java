@@ -19,44 +19,32 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
-
 import android.util.Log;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-
 import androidx.core.app.NotificationCompat;
-import com.mahdi.car.share.Themp;
-import com.mahdi.car.messenger.*;
 
-
+import com.bumptech.glide.Glide;
+import com.mahdi.car.messenger.AndroidUtilities;
+import com.mahdi.car.messenger.FileLog;
+import com.mahdi.car.messenger.LocaleController;
+import com.mahdi.car.messenger.NativeLoader;
+import com.mahdi.car.messenger.ScreenReceiver;
 import com.mahdi.car.server.https.Server;
 import com.mahdi.car.server.https.UnsafeOkHttpGlideModule;
+import com.mahdi.car.share.Themp;
 
-public class App extends android.app.Application implements Application.ActivityLifecycleCallbacks
-{
-    // adb tcpip 5555
-    // adb connect 192.168.1.171:5555
-
-    public static boolean isLocal = true;
+public class App extends android.app.Application implements Application.ActivityLifecycleCallbacks {
 
     public static String server;
     public static String files;
 
     public static int userid;
     public static String authorization;
-    public static long cartCount = 0;
-
-    //public static String videos = "http://192.168.1.155:8080/homegram-videos/videos/";
-    //public static String videos = "http://homegram.ir:8181/homegram-videos/videos/";
     public static String videos;
-    public static String videos8;
 
     public static Context context;
     public static Context applicationContext;
-
-    //public static Typeface avenyTypeface;
-    //    public static Typeface typeface2;
 
     public static volatile Handler applicationHandler;
     public static volatile boolean isScreenOn = false;
@@ -70,8 +58,7 @@ public class App extends android.app.Application implements Application.Activity
     public static PowerManager pm;
 
     @Override
-    public void onCreate()
-    {
+    public void onCreate() {
 
         //enableStrictMode();
         context = getApplicationContext();
@@ -80,35 +67,19 @@ public class App extends android.app.Application implements Application.Activity
 
         NativeLoader.initNativeLibs(App.applicationContext);
 
-        if (isLocal) {
-            server = "http://192.168.1.113:8080/";
-            videos = "http://192.168.1.113:8081/";
-        } else {
-            server = "http://homegram.ir:54271/homegram-0.0.2/";
-            videos = "http://homegram.ir/files/";
-        }
+
+        server = "http://192.168.1.113:8080/";
+        videos = "http://192.168.1.113:8081/";
 
         pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-
-        files = videos ;
-
+        files = videos;
 
         Glide glide = Glide.get(getApplicationContext());
         UnsafeOkHttpGlideModule unsafeOkHttpGlideModule = new UnsafeOkHttpGlideModule();
         unsafeOkHttpGlideModule.registerComponents(glide.getContext(), glide, glide.getRegistry());
 
-        SharedPreferences preferences = App.applicationContext.getSharedPreferences("user", android.app.Activity.MODE_PRIVATE);
-        authorization = preferences.getString("authorization", null);
-
-        //Log.i("userid is", " " + userid);
-
-        //userid = 389; //mahdiabdolmaleki.ir
-        //userid = 356;
-        //userid = 382;
-        //userid = 364; //homegram
-
-        //avenyTypeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "AvenyTRegular.otf");
-        //        typeface2 = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/persianMuharam.ttf");
+        //SharedPreferences preferences = App.applicationContext.getSharedPreferences("user", android.app.Activity.MODE_PRIVATE);
+        //authorization = preferences.getString("authorization", null);
 
         AndroidUtilities.checkDisplaySize(context, null);
         applicationHandler = new Handler(context.getMainLooper());
@@ -121,13 +92,11 @@ public class App extends android.app.Application implements Application.Activity
         super.onCreate();
     }
 
-    public static Context getContext()
-    {
+    public static Context getContext() {
         return context;
     }
 
-    public static void postInitApplication()
-    {
+    public static void postInitApplication() {
 
         if (applicationInite) {
             return;
@@ -159,14 +128,12 @@ public class App extends android.app.Application implements Application.Activity
         }
     }
 
-    public static App getApplication()
-    {
+    public static App getApplication() {
         return application;
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig)
-    {
+    public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
         try {
@@ -187,15 +154,13 @@ public class App extends android.app.Application implements Application.Activity
 
 
     @Override
-    public void onTerminate()
-    {
+    public void onTerminate() {
         super.onTerminate();
 
         application = null;
     }
 
-    public void sendNotification(String title, String messageBody, Bitmap bitmap)
-    {
+    public void sendNotification(String title, String messageBody, Bitmap bitmap) {
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("postid", 20);
@@ -221,44 +186,37 @@ public class App extends android.app.Application implements Application.Activity
     }
 
     @Override
-    public void onActivityCreated(Activity activity, Bundle savedInstanceState)
-    {
+    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
 
     }
 
     @Override
-    public void onActivityStarted(Activity activity)
-    {
+    public void onActivityStarted(Activity activity) {
 
     }
 
     @Override
-    public void onActivityResumed(Activity activity)
-    {
+    public void onActivityResumed(Activity activity) {
 
     }
 
     @Override
-    public void onActivityPaused(Activity activity)
-    {
+    public void onActivityPaused(Activity activity) {
         //QVideo.getInstance().pause();
     }
 
     @Override
-    public void onActivityStopped(Activity activity)
-    {
+    public void onActivityStopped(Activity activity) {
         //QVideo.getInstance().pause();
     }
 
     @Override
-    public void onActivitySaveInstanceState(Activity activity, Bundle outState)
-    {
+    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
 
     }
 
     @Override
-    public void onActivityDestroyed(Activity activity)
-    {
+    public void onActivityDestroyed(Activity activity) {
         //QVideo.getInstance().pause();
     }
 }

@@ -23,7 +23,7 @@ public class CollectionCell extends CellView {
 
     private Drawable[] drawables = new Drawable[4];
     private String[] photos = new String[4];
-    private List<Post> allPosts;
+    private Post post;
     private int space = dp(16);
     private int space2 = dp(1.2f);
     private int photoSize = (width / 2) - (space + (space / 2));
@@ -40,8 +40,8 @@ public class CollectionCell extends CellView {
         space = dp(16);
     }
 
-    public void setAllPosts(List<Post> allPosts, String name, int position) {
-        this.allPosts = new ArrayList<>(allPosts);
+    public void setAllPosts(Post post, String name, int position) {
+        this.post = post;
         this.position = position;
 
         for (int i = 0; i < 4; i++) {
@@ -49,14 +49,9 @@ public class CollectionCell extends CellView {
             photos[i] = null;
         }
 
-        for (int i = 0; i < allPosts.size(); i++) {
-            photos[i] = allPosts.get(i).Medias.get(0).Thumbnail;
+        for (int i = 0; i < post.Medias.size(); i++) {
+            photos[i] = post.Medias.get(i).Thumbnail;
         }
-
-        photos[0] = "mov_15208_24787-m.jpg";
-        photos[1] = "mov_94071_35736-m.jpg";
-        photos[2] = "mov_16669_1-m.jpg";
-        photos[3] = "mov_24841_1-m.jpg";
 
         if (photos[0] != null) {
             setGallery(drawables, 0, photos[0]);
@@ -84,7 +79,7 @@ public class CollectionCell extends CellView {
             return;
         }
 
-        allPosts = null;
+        post = null;
         this.position = position;
 
         drawables[0] = null;
@@ -114,7 +109,7 @@ public class CollectionCell extends CellView {
         canvas.save();
         canvas.translate(space, topSpace);
 
-        if (allPosts != null) {
+        if (post != null) {
 
             if (drawables[0] != null) {
                 drawables[0].setBounds(0, 0, widthSize - space2, heightSize - space2);

@@ -41,7 +41,7 @@ public class RemoteControlFragment extends BaseFragment {
 
         android_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        toolbar.setName("Remote Control");
+        toolbar.setName("Remote Control Soon");
         toolbar.settMirror();
 
 //        User user = new User();

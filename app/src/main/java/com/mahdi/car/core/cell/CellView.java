@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Handler;
 
 import androidx.annotation.NonNull;
@@ -433,7 +434,7 @@ public class CellView extends View implements Share
 
     protected void setGallery(Drawable[] drawable, int index, String url, DrawableEvent event)
     {
-        Glide.with(this).load(App.files + url).into(new Target<Drawable>()
+        Glide.with(this).load(Uri.parse("file:///android_asset/covers/" + url)).into(new Target<Drawable>()
         {
 
             @Override

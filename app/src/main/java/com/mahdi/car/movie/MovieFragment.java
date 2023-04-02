@@ -13,6 +13,7 @@ import com.mahdi.car.movie.cell.CollectionCell;
 import com.mahdi.car.server.dtos.BookmarkDTO;
 import com.mahdi.car.server.https.Server;
 import com.mahdi.car.server.model.BookmarkCollection;
+import com.mahdi.car.server.model.Media;
 import com.mahdi.car.server.model.Post;
 import com.mahdi.car.service.ServiceManager;
 import com.mahdi.car.share.CustomGridLayoutManager;
@@ -29,7 +30,6 @@ public class MovieFragment extends BaseFragment {
 
     private List<BookmarkCollection> collections = new ArrayList<>();
     private List<Post> allPosts = new ArrayList<>();
-    private List<Post> allShops = new ArrayList<>();
 
 
     @SuppressLint("HardwareIds")
@@ -42,8 +42,66 @@ public class MovieFragment extends BaseFragment {
         super.linearLayoutManager = new CustomGridLayoutManager(context, 2);
         super.createView(context);
 
-        toolbar.setName("Movies");
+        toolbar.setName("Movies Soon");
         toolbar.setMovie();
+
+        Media[] mediaAlbums1 = new Media[4];
+        Media[] mediaAlbums2 = new Media[4];
+        Media[] mediaAlbums3 = new Media[4];
+        Media[] mediaAlbums4 = new Media[4];
+
+        for (int i = 0; i < 4; i++) {
+            mediaAlbums1[i] = new Media();
+            mediaAlbums2[i] = new Media();
+            mediaAlbums3[i] = new Media();
+            mediaAlbums4[i] = new Media();
+        }
+
+
+        Post post = new Post();
+
+        mediaAlbums1[0].Thumbnail = "movie_1.jpg";
+        mediaAlbums1[1].Thumbnail = "movie_2.jpg";
+        mediaAlbums1[2].Thumbnail = "movie_3.jpg";
+        mediaAlbums1[3].Thumbnail = "movie_4.jpg";
+        post.Medias.add(mediaAlbums1[0]);
+        post.Medias.add(mediaAlbums1[1]);
+        post.Medias.add(mediaAlbums1[2]);
+        post.Medias.add(mediaAlbums1[3]);
+        allPosts.add(post);
+
+        mediaAlbums2[0].Thumbnail = "series_1.jpg";
+        mediaAlbums2[1].Thumbnail = "series_2.jpg";
+        mediaAlbums2[2].Thumbnail = "series_3.jpg";
+        mediaAlbums2[3].Thumbnail = "series_4.jpg";
+        post = new Post();
+        post.Medias.add(mediaAlbums2[0]);
+        post.Medias.add(mediaAlbums2[1]);
+        post.Medias.add(mediaAlbums2[2]);
+        post.Medias.add(mediaAlbums2[3]);
+        allPosts.add(post);
+
+        mediaAlbums3[0].Thumbnail = "Theatre_1.jpg";
+        mediaAlbums3[1].Thumbnail = "Theatre_2.jpg";
+        mediaAlbums3[2].Thumbnail = "Theatre_3.jpg";
+        mediaAlbums3[3].Thumbnail = "Theatre_4.jpg";
+        post = new Post();
+        post.Medias.add(mediaAlbums3[0]);
+        post.Medias.add(mediaAlbums3[1]);
+        post.Medias.add(mediaAlbums3[2]);
+        post.Medias.add(mediaAlbums3[3]);
+        allPosts.add(post);
+
+        mediaAlbums4[0].Thumbnail = "animation_1.jpg";
+        mediaAlbums4[1].Thumbnail = "animation_2.jpg";
+        mediaAlbums4[2].Thumbnail = "animation_3.jpg";
+        mediaAlbums4[3].Thumbnail = "animation_4.jpg";
+        post = new Post();
+        post.Medias.add(mediaAlbums4[0]);
+        post.Medias.add(mediaAlbums4[1]);
+        post.Medias.add(mediaAlbums4[2]);
+        post.Medias.add(mediaAlbums4[3]);
+        allPosts.add(post);
 
         return contentView;
     }
@@ -76,40 +134,18 @@ public class MovieFragment extends BaseFragment {
 
                 if (position == 0) {
                     name = "Movies";
-                    cell.setAllPosts(allPosts, name, position);
-
+                    cell.setAllPosts(allPosts.get(position), name, position);
                 } else if (position == 1) {
                     name = "Series";
-                    cell.setAllPosts(allShops, name, position);
+                    cell.setAllPosts(allPosts.get(position), name, position);
                 } else if (position == 2) {
-                    name = "Iran TV";
-                    cell.setAllPosts(allPosts, name, position);
+                    name = "Theatre";
+                    cell.setAllPosts(allPosts.get(position), name, position);
 
                 } else if (position == 3) {
                     name = "Animations";
-                    cell.setAllPosts(allShops, name, position);
-                } else if (position == 4) {
-                    name = "Iran TV";
-                    cell.setAllPosts(allPosts, name, position);
-
-                } else if (position == 5) {
-                    name = "Animations";
-                    cell.setAllPosts(allShops, name, position);
-                } else if (position == 6) {
-                    name = "Iran TV";
-                    cell.setAllPosts(allPosts, name, position);
-
-                } else if (position == 7) {
-                    name = "Animations";
-                    cell.setAllPosts(allShops, name, position);
-                } else if (position == 8) {
-                    name = "Iran TV";
-                    cell.setAllPosts(allPosts, name, position);
-
-                } else if (position == 9) {
-                    name = "Animations";
-                    cell.setAllPosts(allShops, name, position);
-                } else {
+                    cell.setAllPosts(allPosts.get(position), name, position);
+                }  else {
                     BookmarkCollection collection = collections.get(position - 2);
                     cell.setCollection(collection, position);
                     name = collection.name;

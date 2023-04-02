@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mahdi.car.core.BaseFragment;
 import com.mahdi.car.core.RootView;
 import com.mahdi.car.music.cell.CollectionCell;
-import com.mahdi.car.server.dtos.BookmarkDTO;
 import com.mahdi.car.server.https.Server;
 import com.mahdi.car.server.model.BookmarkCollection;
+import com.mahdi.car.server.model.Media;
 import com.mahdi.car.server.model.Post;
 import com.mahdi.car.service.ServiceManager;
 import com.mahdi.car.share.CustomGridLayoutManager;
@@ -21,16 +21,13 @@ import com.mahdi.car.share.CustomGridLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Response;
-
 public class MusicFragment extends BaseFragment {
 
     private Adapter adapter;
 
     private List<BookmarkCollection> collections = new ArrayList<>();
     private List<Post> allPosts = new ArrayList<>();
-    private List<Post> allShops = new ArrayList<>();
+
 
     @SuppressLint("HardwareIds")
     @Override
@@ -43,8 +40,66 @@ public class MusicFragment extends BaseFragment {
         super.createView(context);
 
 
-        toolbar.setName("Musics");
+        toolbar.setName("Musics Soon");
         toolbar.setMusic();
+
+        Media[] mediaAlbums1 = new Media[4];
+        Media[] mediaAlbums2 = new Media[4];
+        Media[] mediaAlbums3 = new Media[4];
+        Media[] mediaAlbums4 = new Media[4];
+
+        for (int i = 0; i < 4; i++) {
+            mediaAlbums1[i] = new Media();
+            mediaAlbums2[i] = new Media();
+            mediaAlbums3[i] = new Media();
+            mediaAlbums4[i] = new Media();
+        }
+
+
+        Post post = new Post();
+
+        mediaAlbums1[0].Thumbnail = "album_1.jpeg";
+        mediaAlbums1[1].Thumbnail = "album_2.jpeg";
+        mediaAlbums1[2].Thumbnail = "album_3.jpeg";
+        mediaAlbums1[3].Thumbnail = "album_4.jpeg";
+        post.Medias.add(mediaAlbums1[0]);
+        post.Medias.add(mediaAlbums1[1]);
+        post.Medias.add(mediaAlbums1[2]);
+        post.Medias.add(mediaAlbums1[3]);
+        allPosts.add(post);
+
+        mediaAlbums2[0].Thumbnail = "track_1.jpg";
+        mediaAlbums2[1].Thumbnail = "track_2.jpg";
+        mediaAlbums2[2].Thumbnail = "track_3.jpg";
+        mediaAlbums2[3].Thumbnail = "track_4.jpg";
+        post = new Post();
+        post.Medias.add(mediaAlbums2[0]);
+        post.Medias.add(mediaAlbums2[1]);
+        post.Medias.add(mediaAlbums2[2]);
+        post.Medias.add(mediaAlbums2[3]);
+        allPosts.add(post);
+
+        mediaAlbums3[0].Thumbnail = "like_1.jpeg";
+        mediaAlbums3[1].Thumbnail = "like_2.jpeg";
+        mediaAlbums3[2].Thumbnail = "like_3.jpeg";
+        mediaAlbums3[3].Thumbnail = "like_4.jpeg";
+        post = new Post();
+        post.Medias.add(mediaAlbums3[0]);
+        post.Medias.add(mediaAlbums3[1]);
+        post.Medias.add(mediaAlbums3[2]);
+        post.Medias.add(mediaAlbums3[3]);
+        allPosts.add(post);
+
+        mediaAlbums4[0].Thumbnail = "podcast_1.jpeg";
+        mediaAlbums4[1].Thumbnail = "podcast_2.jpeg";
+        mediaAlbums4[2].Thumbnail = "podcast_3.jpeg";
+        mediaAlbums4[3].Thumbnail = "podcast_4.jpeg";
+        post = new Post();
+        post.Medias.add(mediaAlbums4[0]);
+        post.Medias.add(mediaAlbums4[1]);
+        post.Medias.add(mediaAlbums4[2]);
+        post.Medias.add(mediaAlbums4[3]);
+        allPosts.add(post);
 
 
         return contentView;
@@ -83,19 +138,19 @@ public class MusicFragment extends BaseFragment {
                 String name;
 
                 if (position == 0) {
-                    name = "All Likes";
-                    cell.setAllPosts(allPosts, name, position);
+                    name = "New Albums";
+                    cell.setPost(allPosts.get(position), name, position);
 
                 } else if (position == 1) {
-                    name = "Wish Playlist";
-                    cell.setAllPosts(allShops, name, position);
-                }else if (position == 2) {
-                    name = "Albums";
-                    cell.setAllPosts(allPosts, name, position);
+                    name = "New Tracks";
+                    cell.setPost(allPosts.get(position), name, position);
+                } else if (position == 2) {
+                    name = "Likes";
+                    cell.setPost(allPosts.get(position), name, position);
 
                 } else if (position == 3) {
-                    name = "Overview";
-                    cell.setAllPosts(allShops, name, position);
+                    name = "Podcasts";
+                    cell.setPost(allPosts.get(position), name, position);
                 } else {
                     BookmarkCollection collection = collections.get(position - 2);
                     cell.setCollection(collection, position);

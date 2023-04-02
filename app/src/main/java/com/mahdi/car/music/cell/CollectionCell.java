@@ -15,16 +15,13 @@ import com.mahdi.car.server.model.Post;
 import com.mahdi.car.share.Themp;
 import com.mahdi.car.share.component.ui.LayoutHelper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class CollectionCell extends CellView
 {
     private StaticLayout nameLayout;
 
     private Drawable[] drawables = new Drawable[4];
     private String[] photos = new String[4];
-    private List<Post> allPosts;
+    private Post post;
     private int space = dp(16);
     private int space2 = dp(1.2f);
     private int photoSize = (width / 2) - (space + (space / 2));
@@ -40,9 +37,9 @@ public class CollectionCell extends CellView
         space = dp(16);
     }
 
-    public void setAllPosts(List<Post> allPosts, String name, int position)
+    public void setPost(Post post, String name, int position)
     {
-        this.allPosts = new ArrayList<>(allPosts);
+        this.post = post;
         this.position = position;
 
         for (int i = 0; i < 4; i++) {
@@ -50,14 +47,9 @@ public class CollectionCell extends CellView
             photos[i] = null;
         }
 
-        for (int i = 0; i < allPosts.size(); i++) {
-            photos[i] = allPosts.get(i).Medias.get(0).Thumbnail;
+        for (int i = 0; i < 4; i++) {
+            photos[i] = post.Medias.get(i).Thumbnail;
         }
-
-        photos[0] = "music-cover.jpg";
-        photos[1] = "Ragheb-Delbari.jpg";
-        photos[2] = "aa45.jpg";
-        photos[3] = "Moein-Z-Male-Mani-500x500.jpg";
 
         if (photos[0] != null) {
             setGallery(drawables, 0, photos[0]);
@@ -75,7 +67,7 @@ public class CollectionCell extends CellView
             setGallery(drawables, 3, photos[3]);
         }
 
-        nameLayout = new StaticLayout(name, Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[4], photoSize, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
+        nameLayout = new StaticLayout(name, Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[6], photoSize, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
 
         invalidate();
     }
@@ -86,7 +78,7 @@ public class CollectionCell extends CellView
             return;
         }
 
-        allPosts = null;
+        post = null;
         this.position = position;
 
         drawables[0] = null;
@@ -101,7 +93,7 @@ public class CollectionCell extends CellView
         }
         setGallery(drawables, 0, collection.photo);
 
-        nameLayout = new StaticLayout(name, Themp.TEXT_PAINT_FILL_BLACK[4], photoSize, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
+        nameLayout = new StaticLayout(name, Themp.TEXT_PAINT_FILL_BLACK[8], photoSize, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
 
         invalidate();
     }
@@ -117,7 +109,7 @@ public class CollectionCell extends CellView
         canvas.save();
         canvas.translate(space, topSpace);
 
-        if (allPosts != null) {
+        if (post != null) {
 
             if (drawables[0] != null) {
                 drawables[0].setBounds(0, 0, miniSize - space2, miniSize - space2);
@@ -167,13 +159,13 @@ public class CollectionCell extends CellView
         canvas.drawRoundRect(new RectF(0, 0, photoSize, photoSize), round, round, Themp.STROKE_PAINT_PX_FFDDDDDD);
         canvas.restore();
 
-        if (position == 0) {
-            canvas.drawBitmap(Themp.favourit36, space, photoSize + dp(24), Themp.ICON_PAINT_SRC_IN_RED);
-        }else if (position == 1) {
-            canvas.drawBitmap(Themp.shop36, space, photoSize + dp(24), Themp.ICON_PAINT_SRC_IN_BLACK);
-        }
+//        if (position == 0) {
+//            canvas.drawBitmap(Themp.favourit36, space, photoSize + dp(24), Themp.ICON_PAINT_SRC_IN_RED);
+//        }else if (position == 1) {
+//            canvas.drawBitmap(Themp.shop36, space, photoSize + dp(24), Themp.ICON_PAINT_SRC_IN_BLACK);
+//        }
 
-        int shift = AndroidUtilities.isOdd(position) ? dp(25) : dp(35);
+        int shift = AndroidUtilities.isOdd(position) ? dp(15) : dp(25);
         drawTextLayout(nameLayout, shift, photoSize + dp(22));
     }
 }

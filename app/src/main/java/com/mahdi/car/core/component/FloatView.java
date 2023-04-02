@@ -58,10 +58,10 @@ public class FloatView extends CellFrameLayout {
 
         titleLayout = new StaticLayout("Screen Mirror On Ubuntu Desktop", Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[8], width, Layout.Alignment.ALIGN_CENTER, 1.2f, 0.2f, false);
 
-        usernameLayout = new StaticLayout("Owner                                 " + username, Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[6], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
-        connectionTypeLayout = new StaticLayout("Connection Type            Wi-Fi", Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[6], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
-        bitrateLayout = new StaticLayout("Bit Rate Quality          2  Mbit/s", Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[6], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
-        resolutionLayout = new StaticLayout("Resolution                  488x1080", Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[6], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
+        usernameLayout = new StaticLayout("Owner                             " + username, Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[6], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
+        connectionTypeLayout = new StaticLayout("Connection Type          Wi-Fi", Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[6], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
+        bitrateLayout = new StaticLayout("Bit Rate Quality            2  Mbit/s", Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[6], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
+        resolutionLayout = new StaticLayout("Resolution                    488x1080", Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[6], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
 
         mirrorLayout = new StaticLayout("Mirror", Themp.TEXT_PAINT_FILL_AND_STROKE_2_WHITE[5], dp(60), Layout.Alignment.ALIGN_CENTER, 1.2f, 0.2f, false);
 
@@ -176,7 +176,7 @@ public class FloatView extends CellFrameLayout {
                 canvas.drawRoundRect(0, 0, phoneWidth, phoneHeight, round1, round1, Themp.STROKE_PAINT_1DP_BLACK);
 
                 canvas.drawRoundRect(inside3, inside3 + dp(10), phoneWidth - inside3, phoneHeight - inside3 - dp(11), round3, round3, Themp.PAINT_RING);
-                canvas.drawRoundRect(inside3 + dp(2), inside3 + dp(10 + 2), phoneWidth - inside3 - dp(2), phoneHeight - inside3 - dp(11) - dp(2), round3 -dp(1), round3 -dp(1), Themp.PAINT_WHITE);
+                canvas.drawRoundRect(inside3 + dp(2), inside3 + dp(10 + 2), phoneWidth - inside3 - dp(2), phoneHeight - inside3 - dp(11) - dp(2), round3 -dp(2), round3 -dp(1), Themp.PAINT_WHITE);
 
                 canvas.save(); // cell phone Home Speaker and Camera
                 canvas.translate(phoneWidth / 2 - dp(20), dp(8));
@@ -212,7 +212,7 @@ public class FloatView extends CellFrameLayout {
                 }
 
                 drawTextLayout(usernameLayout, offsetX, offsetY + dp(20));
-                drawAvatar(offsetX + dp(145), offsetY + dp(19));
+                //drawAvatar(offsetX + dp(145), offsetY + dp(19));
 
                 drawTextLayout(connectionTypeLayout, offsetX, offsetY + dp(50));
                 drawTextLayout(bitrateLayout, offsetX, offsetY + dp(80));
