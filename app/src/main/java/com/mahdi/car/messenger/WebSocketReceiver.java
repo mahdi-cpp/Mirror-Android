@@ -11,7 +11,7 @@ public class WebSocketReceiver extends BroadcastReceiver {
 
         void onClose();
 
-        void onMessage(String message);
+        void onMessage(String jsonString);
     }
 
     private Delegate delegate = null;

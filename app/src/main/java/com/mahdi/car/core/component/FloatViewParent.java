@@ -11,6 +11,7 @@ import android.view.animation.DecelerateInterpolator;
 
 import com.mahdi.car.core.cell.CellFrameLayout;
 import com.mahdi.car.library.viewAnimator.ViewAnimator;
+import com.mahdi.car.model.Mirror;
 import com.mahdi.car.share.component.ui.LayoutHelper;
 
 public class FloatViewParent extends CellFrameLayout {
@@ -25,6 +26,10 @@ public class FloatViewParent extends CellFrameLayout {
     private boolean isExpand = false;
 
     private boolean isShow = false;
+
+    private boolean isShow() {
+        return isShow;
+    }
 
 
     private int bottomToolBar = dp(48);
@@ -198,8 +203,8 @@ public class FloatViewParent extends CellFrameLayout {
         }).start();
     }
 
-    public void show(String username, String title) {
-        floatView.setParameters(username, title);
+    public void show(Mirror mirror) {
+        floatView.setParameters(mirror);
         if (isShow)
             return;
 
@@ -224,6 +229,7 @@ public class FloatViewParent extends CellFrameLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
+                isExpand = false;
                 isShow = false;
                 dX = 0;
                 dY = 0;

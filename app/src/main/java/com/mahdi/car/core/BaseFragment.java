@@ -568,6 +568,9 @@ public class BaseFragment implements Share {
     public void onWebSocketReceive(String jsonString) {
 
     }
+    public void onServerEvents(int serverResult) {
+
+    }
 
     public void onResume() {
         isPause = false;

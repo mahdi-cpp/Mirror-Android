@@ -242,12 +242,12 @@ public class MainActivity extends android.app.Activity implements NotificationCe
     @Override
     protected void onDestroy() {
 
+        Log.e("QmlScrcpy", "onDestroy");
+
         RootView.instance().onDestroy();
         ServiceManager.instance().onDestroy();
 
         super.onDestroy();
-
-
 
 
         onFinish();
@@ -274,6 +274,7 @@ public class MainActivity extends android.app.Activity implements NotificationCe
         AndroidUtilities.isInMultiwindow = isInMultiWindowMode;
         //checkLayout();
     }
+
 
     @Override
     @SuppressWarnings("unchecked")

@@ -9,12 +9,21 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.mahdi.car.core.component.FloatViewParent;
 import com.mahdi.car.feed.FeedFragment;
-import com.mahdi.car.remote.RemoteControlFragment;
+import com.mahdi.car.model.Mirror;
 import com.mahdi.car.movie.MovieFragment;
 import com.mahdi.car.music.MusicFragment;
+import com.mahdi.car.remote.RemoteControlFragment;
 import com.mahdi.car.server.model.User;
+import com.mahdi.car.service.ClientPacket;
+import com.mahdi.car.service.ClientRequest;
+import com.mahdi.car.service.ServerResponse;
+import com.mahdi.car.service.ServiceManager;
 import com.mahdi.car.share.component.ui.LayoutHelper;
 
 
@@ -33,7 +42,7 @@ public class RootView {
     private boolean isFullScreen = false;
     private FrameLayout fullContentView;
     private CoreFragment fullCoreFragment;
-    public  FloatViewParent floatViewParent = null;
+    public FloatViewParent floatViewParent = null;
 
     public int currentPage = PAGE_HOME;
     private int color = 0xffeeeeee;
@@ -226,7 +235,23 @@ public class RootView {
         return null;
     }
 
+    public void requestUpdate() {
+        ClientPacket clientRequest = new ClientPacket(); // request of server for update user interface
+        clientRequest.clientRequest = ClientRequest.CLIENT_REQUEST_UPDATE;
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+        ServiceManager.instance().webSocketSend(gson.toJson(clientRequest, ClientPacket.class));
+    }
+
     public void onWebSocketOpened() {
+
+        ClientPacket clientRequest = new ClientPacket(); //send WiFi ip for adb connection
+        clientRequest.clientRequest = ClientRequest.CLIENT_REQUEST_ADB_CONNECT;
+        clientRequest.wifiIp = ServiceManager.instance().getWifiIp();
+
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+        ServiceManager.instance().webSocketSend(gson.toJson(clientRequest, ClientPacket.class));
+
+        requestUpdate();
 
         if (fullCoreFragment.fragmentsStack.size() > 0) {
             BaseFragment fragment = getTopFragmentFullScreen();
@@ -241,6 +266,7 @@ public class RootView {
 
         fragment.onWebSocketOpened();
     }
+
     public void onWebSocketClosed() {
 
         if (fullCoreFragment.fragmentsStack.size() > 0) {
@@ -256,20 +282,50 @@ public class RootView {
 
         fragment.onWebSocketClosed();
     }
-    public void onWebSocketReceive(String jsonString) {
 
-        if (fullCoreFragment.fragmentsStack.size() > 0) {
-            BaseFragment fragment = getTopFragmentFullScreen();
+    public void webSocketReceive(String jsonString) {
+        try {
+            JsonObject jsonObject = new Gson().fromJson(jsonString, JsonObject.class);
+            int serverResult = jsonObject.get("SERVER_RESPONSE").getAsInt();
+
+            if (serverResult == ServerResponse.MIRROR_SUCCESS_START) {
+
+                Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+                Mirror mirror = gson.fromJson(jsonString, Mirror.class);
+                floatViewParent.show(mirror);
+            } else if (serverResult == ServerResponse.MIRROR_ERROR_START) {
+                floatViewParent.hide();
+            } else if (serverResult == ServerResponse.MIRROR_FINISHED) {
+                floatViewParent.hide();
+            } else if (serverResult == ServerResponse.UPDATE_MIRROR_DATA) {
+
+                String username = jsonObject.get("username").toString();
+                if (username.contains("nothing")) {// no mirror
+                    floatViewParent.hide();
+                } else {
+                    Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+                    Mirror mirror = gson.fromJson(jsonString, Mirror.class);
+                    floatViewParent.show(mirror);
+                }
+            }
+
+            if (fullCoreFragment.fragmentsStack.size() > 0) {
+                BaseFragment fragment = getTopFragmentFullScreen();
+                if (fragment == null)
+                    return;
+                fragment.onServerEvents(serverResult);
+            }
+            BaseFragment fragment = getCurrentFragment();
             if (fragment == null)
                 return;
-            fragment.onWebSocketReceive(jsonString);
+
+            fragment.onServerEvents(serverResult);
+
+        } catch (JsonSyntaxException e) {
+            Log.e("ServiceManager", "JsonSyntaxException: " + e.getMessage());
+        } catch (NullPointerException e) {
+            Log.e("onWebSocketReceive", "NullPointerException: " + e.getMessage());
         }
-
-        BaseFragment fragment = getCurrentFragment();
-        if (fragment == null)
-            return;
-
-        fragment.onWebSocketReceive(jsonString);
     }
 
     public void onPause() {

@@ -115,7 +115,7 @@ public class MovieFragment extends BaseFragment {
 
         @Override
         public int getItemCount() {
-            return collections.size() + 10;
+            return 4;
         }
 
         @Override
@@ -145,11 +145,12 @@ public class MovieFragment extends BaseFragment {
                 } else if (position == 3) {
                     name = "Animations";
                     cell.setAllPosts(allPosts.get(position), name, position);
-                }  else {
-                    BookmarkCollection collection = collections.get(position - 2);
-                    cell.setCollection(collection, position);
-                    name = collection.name;
                 }
+//                }  else {
+//                    BookmarkCollection collection = collections.get(position - 2);
+//                    cell.setCollection(collection, position);
+//                    name = collection.name;
+//                }
 
 //                cell.setDelegate(() -> presentFragment(new BookmarkFragment(name)));
             }

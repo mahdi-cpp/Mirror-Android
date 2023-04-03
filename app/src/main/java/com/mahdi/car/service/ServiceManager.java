@@ -1,19 +1,19 @@
 package com.mahdi.car.service;
 
+import static android.content.Context.WIFI_SERVICE;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.IntentFilter;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.text.format.Formatter;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
 import com.mahdi.car.core.RootView;
 import com.mahdi.car.messenger.UdpReceiver;
 import com.mahdi.car.messenger.WebSocketReceiver;
 import com.mahdi.car.model.Mirror;
-import com.mahdi.car.model.Music;
-import com.mahdi.car.model.Resource;
 
 public class ServiceManager {
 
@@ -25,20 +25,16 @@ public class ServiceManager {
     private UdpThread udpThread;
     private WebSocketThread webSocketThread;
 
-    private Resource resource;
+    private Mirror mirror;
 
     private Activity activity;
 
-    private Resource getResource() {
-        return resource;
+    private Mirror getMirror() {
+        return mirror;
     }
 
     private void setMirror(Mirror mirror) {
-        resource.mirror = mirror;
-    }
-
-    private void setMusic(Music music) {
-        resource.music = music;
+        this.mirror = mirror;
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -91,23 +87,9 @@ public class ServiceManager {
             }
 
             @Override
-            public void onMessage(String message) {
-                try {
-                    Log.d("webSocketReceiver", message);
-
-                    Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-                    Resource resource = gson.fromJson(message, Resource.class);
-
-                    if (resource.mirror.username.length() > 3) {
-                        RootView.instance().floatViewParent.show(resource.mirror.username, resource.mirror.title);
-                    }
-
-                } catch (JsonSyntaxException e) {
-
-                } catch (NullPointerException e) {
-                    Log.e("onWebSocketReceive", "NullPointerException: " + e.getMessage());
-                }
-                RootView.instance().onWebSocketReceive(message);
+            public void onMessage(String jsonString) {
+                Log.d("ServiceManager", "webSocketReceiver:" + jsonString);
+                RootView.instance().webSocketReceive(jsonString);
             }
         });
 
@@ -127,7 +109,9 @@ public class ServiceManager {
     }
 
     public void webSocketSend(String json) {
-        ///webSocketService.send(json);
+        if (webSocketThread != null && webSocketThread.isOpened()) {
+            webSocketThread.send(json);
+        }
     }
 
     public void onDestroy() {
@@ -143,5 +127,14 @@ public class ServiceManager {
         }
     }
 
+    public String getWifiIp() {
+        WifiManager wifiMgr = (WifiManager) activity.getApplicationContext().getSystemService(WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
+        int ip = wifiInfo.getIpAddress();
+        String ipAddress = Formatter.formatIpAddress(ip);
+
+        Log.e("WiFi ip", "ip:" + ipAddress);
+        return ipAddress;
+    }
 
 }

@@ -14,7 +14,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 
 import com.mahdi.car.core.cell.CellFrameLayout;
-import com.mahdi.car.server.model.User;
+import com.mahdi.car.model.Mirror;
 import com.mahdi.car.share.Button;
 import com.mahdi.car.share.Themp;
 import com.mahdi.car.share.component.ui.LayoutHelper;
@@ -28,6 +28,8 @@ public class FloatView extends CellFrameLayout {
 
     private StaticLayout titleLayout;
     private StaticLayout mirrorLayout;
+
+    private StaticLayout shareLayout;
 
     private StaticLayout usernameLayout;
     private StaticLayout connectionTypeLayout;
@@ -46,22 +48,33 @@ public class FloatView extends CellFrameLayout {
     private boolean isExpand = false;
     private boolean isScroll = false;
 
-    public void setParameters(String username, String title) {
+    private String[] str = new String[3];
 
-        User user = new User();
-        userid = user.ID;
-        user.Avatar = "2019-02-02_18-57-04_UTC_profile_pic.jpg";
-        setAvatar(user.Avatar);
+    public void setParameters(Mirror mirror) {
 
-        toolbarNameLayout = new StaticLayout(username, Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[6], dp(200), Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
-        toolbarTitleLayout = new StaticLayout(title, Themp.TEXT_PAINT_FILL_GREY[5], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
+        if (mirror == null) {
+            return;
+        }
+
+        str[0] = mirror.connectionType;
+        str[1] = mirror.bitrate;
+        str[2] = mirror.resolution;
+
+        //User user = new User();
+        //userid = user.ID;
+        //user.Avatar = "2019-02-02_18-57-04_UTC_profile_pic.jpg";
+        //setAvatar(user.Avatar);
+
+        toolbarNameLayout = new StaticLayout(mirror.username, Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[6], dp(200), Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
+        toolbarTitleLayout = new StaticLayout(mirror.title, Themp.TEXT_PAINT_FILL_GREY[5], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
 
         titleLayout = new StaticLayout("Screen Mirror On Ubuntu Desktop", Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[8], width, Layout.Alignment.ALIGN_CENTER, 1.2f, 0.2f, false);
 
-        usernameLayout = new StaticLayout("Owner                             " + username, Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[6], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
-        connectionTypeLayout = new StaticLayout("Connection Type          Wi-Fi", Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[6], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
-        bitrateLayout = new StaticLayout("Bit Rate Quality            2  Mbit/s", Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[6], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
-        resolutionLayout = new StaticLayout("Resolution                    488x1080", Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[6], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
+        usernameLayout = new StaticLayout("Owner", Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[6], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
+
+        connectionTypeLayout = new StaticLayout("Connection", Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[5], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
+        bitrateLayout = new StaticLayout("Bit Rate", Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[5], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
+        resolutionLayout = new StaticLayout("Resolution", Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[5], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
 
         mirrorLayout = new StaticLayout("Mirror", Themp.TEXT_PAINT_FILL_AND_STROKE_2_WHITE[5], dp(60), Layout.Alignment.ALIGN_CENTER, 1.2f, 0.2f, false);
 
@@ -176,7 +189,7 @@ public class FloatView extends CellFrameLayout {
                 canvas.drawRoundRect(0, 0, phoneWidth, phoneHeight, round1, round1, Themp.STROKE_PAINT_1DP_BLACK);
 
                 canvas.drawRoundRect(inside3, inside3 + dp(10), phoneWidth - inside3, phoneHeight - inside3 - dp(11), round3, round3, Themp.PAINT_RING);
-                canvas.drawRoundRect(inside3 + dp(2), inside3 + dp(10 + 2), phoneWidth - inside3 - dp(2), phoneHeight - inside3 - dp(11) - dp(2), round3 -dp(2), round3 -dp(1), Themp.PAINT_WHITE);
+                canvas.drawRoundRect(inside3 + dp(2), inside3 + dp(10 + 2), phoneWidth - inside3 - dp(2), phoneHeight - inside3 - dp(11) - dp(2), round3 - dp(2), round3 - dp(1), Themp.PAINT_WHITE);
 
                 canvas.save(); // cell phone Home Speaker and Camera
                 canvas.translate(phoneWidth / 2 - dp(20), dp(8));
@@ -195,28 +208,23 @@ public class FloatView extends CellFrameLayout {
                 canvas.restore();
             }
 
-            drawTextLayout(titleLayout, 0, dp(470));
+            drawTextLayout(titleLayout, 0, dp(620));
 
             canvas.save();
             {
-                canvas.translate(dp(45), dp(460));
+                canvas.translate(dp(0), dp(430));
                 int offsetX = dp(10);
                 int offsetY = dp(50);
 
-                for (int i = 0; i < 4; i++) {
-                    //canvas.drawCircle(0, i * dp(30) + offsetY, dp(3), Themp.PAINT_BLACK);
-                    canvas.save();
-                    canvas.translate(dp(0), i * dp(30) + offsetY + dp(17));
-                    canvas.drawRoundRect(0, 0, dp(330), dp(24), dp(20), dp(20), Themp.PAINT_FFEEEEEE);
-                    canvas.restore();
+                for (int i = 0; i < 3; i++) {
+                    canvas.drawCircle(width / 4 + (i * (width / 4)), offsetY + dp(30), dp(35), Themp.PAINT_FFEEEEEE);
+                    shareLayout = new StaticLayout(str[i], Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[7], dp(70), Layout.Alignment.ALIGN_CENTER, 1.2f, 0.2f, false);
+                    drawTextLayout(shareLayout, width / 4 + (i * (width / 4)) - dp(35), offsetY + dp(20));
                 }
 
-                drawTextLayout(usernameLayout, offsetX, offsetY + dp(20));
-                //drawAvatar(offsetX + dp(145), offsetY + dp(19));
-
-                drawTextLayout(connectionTypeLayout, offsetX, offsetY + dp(50));
-                drawTextLayout(bitrateLayout, offsetX, offsetY + dp(80));
-                drawTextLayout(resolutionLayout, offsetX, offsetY + dp(110));
+                drawTextLayout(connectionTypeLayout, width / 7 + dp(5), dp(120));
+                drawTextLayout(bitrateLayout, width / 2 - dp(27), dp(120));
+                drawTextLayout(resolutionLayout, width / 2 + dp(69), dp(120));
 
 
                 canvas.restore();

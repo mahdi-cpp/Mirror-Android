@@ -68,11 +68,11 @@ public class App extends android.app.Application implements Application.Activity
         NativeLoader.initNativeLibs(App.applicationContext);
 
 
-        server = "http://192.168.1.113:8080/";
-        videos = "http://192.168.1.113:8081/";
+        //server = "http://192.168.1.113:8080/yy";
+        //videos = "http://192.168.1.113:8081/yy";
 
         pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        files = videos;
+        //files = videos;
 
         Glide glide = Glide.get(getApplicationContext());
         UnsafeOkHttpGlideModule unsafeOkHttpGlideModule = new UnsafeOkHttpGlideModule();
@@ -84,7 +84,7 @@ public class App extends android.app.Application implements Application.Activity
         AndroidUtilities.checkDisplaySize(context, null);
         applicationHandler = new Handler(context.getMainLooper());
 
-        Server.init();
+        //Server.init();
         registerActivityLifecycleCallbacks(this);
 
         Themp.createMahdiResources(this);

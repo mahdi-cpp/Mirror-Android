@@ -6,20 +6,21 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mahdi.car.App;
 import com.mahdi.car.core.BaseFragment;
 import com.mahdi.car.core.QZoomView;
 import com.mahdi.car.core.RootView;
 import com.mahdi.car.feed.components.FeedView;
 import com.mahdi.car.model.Mirror;
-import com.mahdi.car.model.Resource;
+import com.mahdi.car.service.ClientRequest;
+import com.mahdi.car.service.ServerResponse;
 import com.mahdi.car.service.ServiceManager;
 import com.mahdi.car.setting.SettingView;
 import com.mahdi.car.share.Button;
@@ -33,7 +34,6 @@ public class FeedFragment extends BaseFragment {
 
     private boolean isAnimation = false;
 
-    private Button btnDisconnect;
     private Button btnConnection;
 
     FeedView feedView;
@@ -60,39 +60,35 @@ public class FeedFragment extends BaseFragment {
         contentView.addView(settingView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
         btnConnection = new Button(context);
-        btnConnection.setTitle("Movies");
+        btnConnection.setTitle("Start Screen Mirror");
         btnConnection.setColor(1);
         btnConnection.setDelegate((Button.Delegate) () -> {
-
-            //RootView.instance().showFloatView("Mahdi Abdolmaleki", "start show phone screen on car display");
-        });
-
-        btnDisconnect = new Button(context);
-        btnDisconnect.setTitle("Start Screen Mirror");
-        btnDisconnect.setColor(1);
-        btnDisconnect.setDelegate((Button.Delegate) () -> {
             if (ServiceManager.instance().webSocketIsOpen()) {
-                //Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 
                 Mirror mirror = new Mirror();
-                mirror.username = "Mahdi abdolmaleki";
+                //String androidId = Settings.Secure.getString(getParentActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 
-                //getParentActivity().webSocketSend(gson.toJson(mirror, Mirror.class));
+                mirror.clientRequest = ClientRequest.CLIENT_REQUEST_MIRROR;
+                mirror.wifiIp = ServiceManager.instance().getWifiIp();
+                mirror.username = "Mahdi Abdolmaleki";
+                mirror.title = "Start Screen Mirror ...";
+                mirror.bitrate = "2 Mbit";
+                mirror.resolution = "Full HD";
+                mirror.connectionType = "WiFi";
+
+                Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+                ServiceManager.instance().webSocketSend(gson.toJson(mirror, Mirror.class));
             }
         });
 
+
         feedView = new FeedView(context);
 
-        //swipe.addView(btnConnection, LayoutHelper.createFrame(200, 200, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0, 0, 170));
         swipe.addView(feedView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP, 0, 0, 0, 0));
-
-        swipe.addView(btnDisconnect, LayoutHelper.createFrame(220, 40, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0, 0, 100));
+        swipe.addView(btnConnection, LayoutHelper.createFrame(300, 40, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0, 0, 170));
 
 
         parentView.invalidate();
-        //Log.e("Gson", "json:" + gson.toJson(obj, Person.class));
-//        Person person = gson.fromJson("{\"age\":35,\"name\":\"Ali\",\"phone\":\"09355512619\"}", Person.class);
-//        Log.e("Gson", "person:" + person.age);
         return contentView;
     }
 
@@ -113,6 +109,23 @@ public class FeedFragment extends BaseFragment {
     @Override
     public void onWebSocketReceive(String jsonString) {
         super.onWebSocketReceive(jsonString);
+    }
+
+    @Override
+    public void onServerEvents(int serverResult) {
+        super.onServerEvents(serverResult);
+
+        if (serverResult == ServerResponse.MIRROR_SUCCESS_START) {
+            btnConnection.setVisibility(View.INVISIBLE);
+        } else if (serverResult == ServerResponse.MIRROR_FINISHED) {
+            btnConnection.setTitle("Mirror Finished");
+            btnConnection.setEnabled(true);
+            btnConnection.setVisibility(View.VISIBLE);
+        }else if (serverResult == ServerResponse.MIRROR_ERROR_START) {
+            btnConnection.setTitle("MIRROR_ERROR_START");
+            btnConnection.setEnabled(true);
+            btnConnection.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -223,6 +236,7 @@ public class FeedFragment extends BaseFragment {
     public void toolbarRightPressed() {
         showSettingView();
     }
+
 
 }
 

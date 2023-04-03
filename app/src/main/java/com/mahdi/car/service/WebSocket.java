@@ -41,7 +41,7 @@ public class WebSocket extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake handshakedata) {
-        send("Galaxy A50 Connected");
+        //send("Galaxy A50 Connected");
         System.out.println("opened connection");
         if(delegate != null)
             delegate.onOpen();
@@ -50,7 +50,7 @@ public class WebSocket extends WebSocketClient {
 
     @Override
     public void onMessage(String message) {
-        System.out.println("received: " + message);
+        //System.out.println("received: " + message);
         if(delegate != null)
             delegate.onMessage(message);
     }

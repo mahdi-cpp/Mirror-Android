@@ -123,7 +123,7 @@ public class FeedView extends CellView {
             }
         }
 
-        drawTextLayout(descriptionLayout, 0, dp(550));
+        //drawTextLayout(descriptionLayout, 0, dp(550));
 
     }
 
