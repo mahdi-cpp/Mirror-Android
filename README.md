@@ -1,6 +1,6 @@
 # Mirror-Android
 
-This application is android part of [Qmlscrcpy](https://github.com/mahdi-cpp/QmlScrcpy) project for manage of users ara connected via USB or over Wi-Fi.
+This application is android part of [Qmlscrcpy](https://github.com/mahdi-cpp/QmlScrcpy) project for manage users are connected by USB or over Wi-Fi.
 
 
 * Multi user
