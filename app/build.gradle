@@ -12,8 +12,8 @@ configurations {
 
 android {
     namespace 'com.mahdi.car'
-    compileSdk 30
-    buildToolsVersion '30.0.2'
+    compileSdk 33
+    buildToolsVersion '33.0.0'
 
     defaultConfig {
         applicationId "com.mahdi.car"
