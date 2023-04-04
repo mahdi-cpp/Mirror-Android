@@ -293,6 +293,7 @@ public class RootView {
                 Gson gson = new GsonBuilder().disableHtmlEscaping().create();
                 Mirror mirror = gson.fromJson(jsonString, Mirror.class);
                 floatViewParent.show(mirror);
+
             } else if (serverResult == ServerResponse.MIRROR_ERROR_START) {
                 floatViewParent.hide();
             } else if (serverResult == ServerResponse.MIRROR_FINISHED) {

@@ -17,13 +17,13 @@ import com.mahdi.car.App;
 import com.mahdi.car.core.BaseFragment;
 import com.mahdi.car.core.QZoomView;
 import com.mahdi.car.core.RootView;
+import com.mahdi.car.feed.components.CastButton;
 import com.mahdi.car.feed.components.FeedView;
 import com.mahdi.car.model.Mirror;
 import com.mahdi.car.service.ClientRequest;
 import com.mahdi.car.service.ServerResponse;
 import com.mahdi.car.service.ServiceManager;
 import com.mahdi.car.setting.SettingView;
-import com.mahdi.car.share.Button;
 import com.mahdi.car.share.component.ui.LayoutHelper;
 import com.mahdi.car.story.camera.StoryCameraView;
 
@@ -34,7 +34,7 @@ public class FeedFragment extends BaseFragment {
 
     private boolean isAnimation = false;
 
-    private Button btnConnection;
+    private CastButton mirrorButton;
 
     FeedView feedView;
 
@@ -59,10 +59,15 @@ public class FeedFragment extends BaseFragment {
         });
         contentView.addView(settingView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
-        btnConnection = new Button(context);
-        btnConnection.setTitle("Start Screen Mirror");
-        btnConnection.setColor(1);
-        btnConnection.setDelegate((Button.Delegate) () -> {
+        mirrorButton = new CastButton(context);
+        mirrorButton.setVisibility(View.INVISIBLE);
+        mirrorButton.setTitle("Screen Mirror");
+        mirrorButton.setDelegate((CastButton.Delegate) () -> {
+
+            if (mirrorButton.isConnected()) {
+                return;
+            }
+
             if (ServiceManager.instance().webSocketIsOpen()) {
 
                 Mirror mirror = new Mirror();
@@ -85,7 +90,7 @@ public class FeedFragment extends BaseFragment {
         feedView = new FeedView(context);
 
         swipe.addView(feedView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP, 0, 0, 0, 0));
-        swipe.addView(btnConnection, LayoutHelper.createFrame(300, 40, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0, 0, 170));
+        swipe.addView(mirrorButton, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 90, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 40, 0, 40, 170));
 
 
         parentView.invalidate();
@@ -96,6 +101,7 @@ public class FeedFragment extends BaseFragment {
     public void onWebSocketOpened() {
         super.onWebSocketOpened();
         feedView.setConnection(true);
+        mirrorButton.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -104,6 +110,8 @@ public class FeedFragment extends BaseFragment {
 
         feedView.setConnection(false);
         RootView.instance().floatViewParent.hide();
+        mirrorButton.disconnect();
+        mirrorButton.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -115,16 +123,20 @@ public class FeedFragment extends BaseFragment {
     public void onServerEvents(int serverResult) {
         super.onServerEvents(serverResult);
 
+        mirrorButton.setVisibility(View.VISIBLE);
+
         if (serverResult == ServerResponse.MIRROR_SUCCESS_START) {
-            btnConnection.setVisibility(View.INVISIBLE);
+            mirrorButton.setTitle("Mirror Started");
         } else if (serverResult == ServerResponse.MIRROR_FINISHED) {
-            btnConnection.setTitle("Mirror Finished");
-            btnConnection.setEnabled(true);
-            btnConnection.setVisibility(View.VISIBLE);
-        }else if (serverResult == ServerResponse.MIRROR_ERROR_START) {
-            btnConnection.setTitle("MIRROR_ERROR_START");
-            btnConnection.setEnabled(true);
-            btnConnection.setVisibility(View.VISIBLE);
+            mirrorButton.setTitle("Mirror Finished");
+        } else if (serverResult == ServerResponse.MIRROR_ERROR_START) {
+            mirrorButton.setTitle("MIRROR_ERROR_START");
+        }
+
+        if (RootView.instance().floatViewParent.isShow()) {
+            mirrorButton.connect(RootView.instance().floatViewParent.mirror.connectionType);
+        } else {
+            mirrorButton.disconnect();
         }
     }
 
@@ -221,6 +233,7 @@ public class FeedFragment extends BaseFragment {
 
     @Override
     public void toolbarLeftPressed() {
+
         if (settingView.isShow()) {
             hideSettingView(0);
         } else {

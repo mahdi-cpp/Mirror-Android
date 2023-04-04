@@ -27,7 +27,9 @@ public class FloatViewParent extends CellFrameLayout {
 
     private boolean isShow = false;
 
-    private boolean isShow() {
+    public Mirror mirror;
+
+    public boolean isShow() {
         return isShow;
     }
 
@@ -204,10 +206,11 @@ public class FloatViewParent extends CellFrameLayout {
     }
 
     public void show(Mirror mirror) {
+        this.mirror = mirror;
         floatView.setParameters(mirror);
         if (isShow)
             return;
-
+        isShow = true;
         ViewAnimator.animate(floatView).setInterpolator(new DecelerateInterpolator()).translationY(screenHeight - bottomToolBar - headerHeight).setDuration(200).addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -225,6 +228,7 @@ public class FloatViewParent extends CellFrameLayout {
     public void hide() {
         if (isShow == false)
             return;
+        isShow = false;
         ViewAnimator.animate(floatView).setInterpolator(new DecelerateInterpolator()).translationY(screenHeight - bottomToolBar).setDuration(isExpand ? 250 : 150).addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {

@@ -21,11 +21,14 @@ import com.mahdi.car.R;
 import com.mahdi.car.messenger.AndroidUtilities;
 
 public class Themp {
+
     public static class Toolbar {
         //        public Bitmap logo = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.d0x);
-
+        public Bitmap usb_50 = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.usb_50);
+        public Bitmap wifi_50 = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.wifi_50);
         public Bitmap menu = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.menu);
         public Bitmap mute = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.mute);
+        public Bitmap arrow_forward = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.arrow_forward);
         public Bitmap keyboard_arrow_down = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.down2);
         public Bitmap keyboard_arrow_up = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.keyboard_arrow_up_120);
         public Bitmap play_pause_78 = BitmapFactory.decodeResource(App.context.getResources(), R.drawable.play_pause_78);
@@ -317,6 +320,7 @@ public class Themp {
     public static TextPaint[] TEXT_PAINT_FILL_AND_STROKE_1_BLUE = new TextPaint[TEXT_PAINT_COUNT];
     public static TextPaint[] TEXT_PAINT_FILL_AND_STROKE_2_BLUE = new TextPaint[TEXT_PAINT_COUNT];
     public static TextPaint[] TEXT_PAINT_FILL_AND_STROKE_3_BLUE = new TextPaint[TEXT_PAINT_COUNT];
+    public static TextPaint[] TEXT_PAINT_FILL_AND_STROKE_3_GREEN = new TextPaint[TEXT_PAINT_COUNT];
 
 
     public static TextPaint TEXT_PAINT_FILL_30_BLACK = new TextPaint(Paint.ANTI_ALIAS_FLAG);
@@ -741,6 +745,12 @@ public class Themp {
             TEXT_PAINT_FILL_AND_STROKE_3_BLUE[i].setTextSize(dp(10 + i));
             TEXT_PAINT_FILL_AND_STROKE_3_BLUE[i].setStyle(Paint.Style.FILL_AND_STROKE);
             TEXT_PAINT_FILL_AND_STROKE_3_BLUE[i].setStrokeWidth(0.3f);
+
+            TEXT_PAINT_FILL_AND_STROKE_3_GREEN[i] = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+            TEXT_PAINT_FILL_AND_STROKE_3_GREEN[i].setColor(0xFF00c853);
+            TEXT_PAINT_FILL_AND_STROKE_3_GREEN[i].setTextSize(dp(10 + i));
+            TEXT_PAINT_FILL_AND_STROKE_3_GREEN[i].setStyle(Paint.Style.FILL_AND_STROKE);
+            TEXT_PAINT_FILL_AND_STROKE_3_GREEN[i].setStrokeWidth(0.3f);
 
         }
 

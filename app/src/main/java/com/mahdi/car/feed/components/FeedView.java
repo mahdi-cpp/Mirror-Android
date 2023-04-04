@@ -21,16 +21,18 @@ public class FeedView extends CellView {
 
     private int space = dp(16);
 
-
     public FeedView(Context context) {
 
         super(context);
 
         setLayoutParams(LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP, 0, 0, 0, 0));
+        setBackgroundColor(0xffffffff);
 
         round = dp(18);
         cellWidth = (width - (space * 3)) / 2;
         space = dp(16);
+
+
 
         init();
     }

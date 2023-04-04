@@ -88,6 +88,7 @@ public class FloatView extends CellFrameLayout {
 
         int round = dp(1);
 
+
         canvas.drawRoundRect(new RectF(0, dp(0), getWidth(), getHeight()), dp(22 + round), dp(22 + round), Themp.PAINT_FFEEEEEE);
         canvas.drawRoundRect(new RectF(dp(2), dp(2), getWidth() - dp(2), getHeight() - dp(2)), dp(20 + round), dp(20 + round), Themp.PAINT_WHITE);
 
@@ -198,8 +199,8 @@ public class FloatView extends CellFrameLayout {
                 canvas.restore();
 
                 canvas.save(); // cell phone Home button
-                canvas.translate(phoneWidth / 2 - dp(20), phoneHeight - dp(12));
-                canvas.drawRoundRect(0, 0, dp(35), dp(7), dp(3), dp(3), Themp.STROKE_PAINT_1DP_BLACK);
+                canvas.translate(phoneWidth / 2 - dp(15), phoneHeight - dp(12));
+                canvas.drawRoundRect(0, 0, dp(30), dp(7), dp(3), dp(3), Themp.STROKE_PAINT_1DP_BLACK);
                 canvas.restore();
 
                 int iconCast = Themp.toolbar.cast.getWidth() / 2;
@@ -230,6 +231,8 @@ public class FloatView extends CellFrameLayout {
                 canvas.restore();
             }
         }
+
+        //canvas.drawLine(centerX, 0, centerX, getHeight(), Themp.PAINT_BLACK);
     }
 
     public FloatView(Context context) {
