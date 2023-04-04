@@ -8,7 +8,7 @@ This application is android part of [Qmlscrcpy](https://github.com/mahdi-cpp/Qml
 * Show Who is that connect to Qmlscrcpy
 * Show Who is that Used Screen Mirror
 * Music: control music play on desktop
-: Movies: Cast Movie on desktop
+* Movies: Cast Movie on desktop
 * Remote control: control desktop application by phone
 
 

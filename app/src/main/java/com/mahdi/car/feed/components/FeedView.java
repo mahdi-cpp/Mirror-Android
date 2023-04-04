@@ -12,7 +12,8 @@ import com.mahdi.car.share.component.ui.LayoutHelper;
 
 public class FeedView extends CellView {
 
-    private StaticLayout descriptionLayout;
+    private StaticLayout layout;
+
     private StaticLayout titleLayout;
     private StaticLayout connectLayout;
 
@@ -20,6 +21,8 @@ public class FeedView extends CellView {
     private boolean isScreenMirror = false;
 
     private int space = dp(16);
+
+    private String description = "QmlScrcpy not run on pc network";
 
     public FeedView(Context context) {
 
@@ -31,7 +34,6 @@ public class FeedView extends CellView {
         round = dp(18);
         cellWidth = (width - (space * 3)) / 2;
         space = dp(16);
-
 
 
         init();
@@ -49,8 +51,7 @@ public class FeedView extends CellView {
 
     public void init() {
 
-        titleLayout = new StaticLayout("Ubuntu Desktop", Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[12], width, Layout.Alignment.ALIGN_CENTER, 1.2f, 0.2f, false);
-        descriptionLayout = new StaticLayout("Phone Screen Mirror on Ubuntu Desktop", Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[6], width, Layout.Alignment.ALIGN_CENTER, 1.2f, 0.2f, false);
+        titleLayout = new StaticLayout("QmlScrcpy", Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[12], width, Layout.Alignment.ALIGN_CENTER, 1.2f, 0.2f, false);
         connectLayout = new StaticLayout("connected", Themp.TEXT_PAINT_FILL_AND_STROKE_2_WHITE[5], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
 
         invalidate();
@@ -60,15 +61,13 @@ public class FeedView extends CellView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        drawTextLayout(titleLayout, 0, dp(40));
-
         canvas.save(); // Ubuntu Desktop
         {
             int size = dp(120);
             int half = size / 2;
             int round = dp(7);
 
-            canvas.translate(centerX, dp(120));
+            canvas.translate(centerX, dp(90));
             canvas.drawCircle(dp(0), Themp.toolbar.cast_large.getWidth() / 2, half + dp(10), isConnected ? Themp.PAINT_GREEN : Themp.PAINT_RED);
             canvas.drawCircle(dp(0), Themp.toolbar.cast_large.getWidth() / 2, half + dp(7), Themp.PAINT_WHITE);
             if (isConnected) {
@@ -84,42 +83,27 @@ public class FeedView extends CellView {
             canvas.restore();
         }
 
-        if (isScreenMirror) {
+        drawTextLayout(titleLayout, 0, dp(215));
+
+
+        if (!isConnected) {
             canvas.save();
             {
-                canvas.translate(centerX, dp(230));
-                for (int i = 0; i < 5; i++) {
-                    canvas.drawCircle(0, i * dp(16), dp(4), Themp.STROKE_PAINT_PX_GREY);
-                    canvas.drawCircle(0, i * dp(16), dp(2), Themp.PAINT_GREEN);
-                }
-                canvas.restore();
-            }
+                canvas.translate(dp(40), dp(290));
 
-            canvas.save(); // Phone Cell
-            {
-                float phoneWidth = dp(100);
-                float phoneHeight = phoneWidth * 2;
-                int round1 = dp(8);
-                int round3 = dp(3);
-                int inside3 = dp(6);
-                canvas.translate(centerX - (phoneWidth / 2), dp(325));
+                Themp.PAINT_RED.setAlpha(25);
+                canvas.drawRoundRect(0, 0, getWidth() - dp(80), dp(150), dp(10), dp(10), Themp.PAINT_RED);
+                Themp.PAINT_RED.setAlpha(255);
 
-                canvas.drawRoundRect(0, 0, phoneWidth, phoneHeight, round1, round1, Themp.STROKE_PAINT_1DP_BLACK);
-                canvas.drawRoundRect(inside3, inside3 + dp(10), phoneWidth - inside3, phoneHeight - inside3 - dp(11), round3, round3, Themp.STROKE_PAINT_1DP_BLACK);
+                layout = new StaticLayout("Connection Failed", Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[10], width - dp(80), Layout.Alignment.ALIGN_CENTER, 1.2f, 0.2f, false);
+                drawTextLayout(layout, 0, dp(10));
 
-                canvas.save(); // cell phone Home Speaker and Camera
-                canvas.translate(phoneWidth / 2 - dp(20), dp(8));
-                canvas.drawRoundRect(0, 0, dp(40), dp(3), dp(10), dp(10), Themp.STROKE_PAINT_1DP_BLACK);
-                canvas.drawCircle(-dp(15), dp(1), dp(2), Themp.STROKE_PAINT_1DP_BLACK);
-                canvas.restore();
+                layout = new StaticLayout("Make sure QmlScrcpy is run on pc", Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[8], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
+                drawTextLayout(layout, dp(20), dp(60));
 
-                canvas.save(); // cell phone Home button
-                canvas.translate(phoneWidth / 2 - dp(20), phoneHeight - dp(12));
-                canvas.drawRoundRect(0, 0, dp(35), dp(7), dp(3), dp(3), Themp.STROKE_PAINT_1DP_BLACK);
-                canvas.restore();
+                layout = new StaticLayout("Make sure Wi-Fi is on", Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[8], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
+                drawTextLayout(layout, dp(20), dp(90));
 
-                int iconCast = Themp.toolbar.cast.getWidth() / 2;
-                canvas.drawBitmap(Themp.toolbar.cast, (phoneWidth / 2) - iconCast, phoneHeight / 2 - iconCast, Themp.ICON_PAINT_MULTIPLY_BLACK);
 
                 canvas.restore();
             }
