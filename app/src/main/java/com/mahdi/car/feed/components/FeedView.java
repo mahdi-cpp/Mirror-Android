@@ -104,13 +104,11 @@ public class FeedView extends CellView {
                 layout = new StaticLayout("Make sure Wi-Fi is on", Themp.TEXT_PAINT_FILL_AND_STROKE_1_BLACK[8], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
                 drawTextLayout(layout, dp(20), dp(90));
 
-
                 canvas.restore();
             }
         }
 
         //drawTextLayout(descriptionLayout, 0, dp(550));
-
     }
 
 }
