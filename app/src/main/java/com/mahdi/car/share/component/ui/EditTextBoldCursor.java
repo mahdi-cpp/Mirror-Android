@@ -276,7 +276,7 @@ public class EditTextBoldCursor extends EditText
         }
 
         if (showLine) {
-            canvas.drawLine(0, getHeight(), getWidth(), getHeight(), paint);
+            //canvas.drawLine(0, getHeight(), getWidth(), getHeight(), paint);
         }
     }
 

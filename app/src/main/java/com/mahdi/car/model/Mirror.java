@@ -5,7 +5,7 @@ public class Mirror {
     public String wifiIp;
     public String username;
     public String title ;
-    public String bitrate ;
-    public String resolution;
+    public int bitrate ;
+    public int resolution;
     public String connectionType;
 }

@@ -208,7 +208,6 @@ public class MainActivity extends android.app.Activity implements NotificationCe
         AndroidUtilities.unregisterUpdates();
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -239,6 +238,7 @@ public class MainActivity extends android.app.Activity implements NotificationCe
     protected void onStop() {
         super.onStop();
     }
+
 
     @Override
     protected void onDestroy() {

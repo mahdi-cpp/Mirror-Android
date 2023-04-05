@@ -12,7 +12,7 @@ import com.mahdi.car.messenger.AndroidUtilities;
 import com.mahdi.car.share.Themp;
 import com.mahdi.car.share.component.ui.LayoutHelper;
 
-public class QualityView extends CellView {
+public class ResolutionView extends CellView {
 
     private Delegate delegate;
 
@@ -39,7 +39,7 @@ public class QualityView extends CellView {
     public static int SHIFT_Y = dp(55);
     public static int CIRCLE_SIZE = dp(30);
 
-    public QualityView(Context context) {
+    public ResolutionView(Context context) {
 
         super(context);
         setLayoutParams(LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 130));
@@ -103,9 +103,25 @@ public class QualityView extends CellView {
                 canvas.drawCircle(x, topMargin, dp(15), Themp.STROKE_PAINT_PX_GREY);
                 //canvas.drawCircle(x, topMargin, dp(8), Themp.PAINT_FF444444);
             }
-
         }
+    }
 
+    public void setResolution(int bitrateValue) {
+        switch (bitrateValue) {
+            case 720:
+                select = 0;
+                break;
+            case 1080:
+                select = 1;
+                break;
+            case 1280:
+                select = 2;
+                break;
+            case 1920:
+                select = 3;
+                break;
+        }
+        invalidate();
     }
 
     @Override
@@ -145,16 +161,16 @@ public class QualityView extends CellView {
 
                 if (x < cell && y > SHIFT_Y && y < cellHeight && isPressed == 0) {
                     select = 0;
-                    delegate.click(0);
+                    delegate.click(720);
                 } else if (x > cell && x < (cell * 2) && y > SHIFT_Y && y < cellHeight && isPressed == 1) {
                     select = 1;
-                    delegate.click(1);
+                    delegate.click(1080);
                 } else if (x > (cell * 2) && x < (cell * 3) && y > SHIFT_Y && y < cellHeight && isPressed == 2) {
                     select = 2;
-                    delegate.click(2);
+                    delegate.click(1280);
                 } else if (x > (cell * 3) && x < (cell * 4) && y > SHIFT_Y && y < cellHeight && isPressed == 3) {
                     select = 3;
-                    delegate.click(3);
+                    delegate.click(1920);
                 } else if (x > (cell * 4) && x < (cell * 5) && y > SHIFT_Y && y < cellHeight && isPressed == 4) {
                     select = 4;
                     delegate.click(4);
@@ -170,7 +186,7 @@ public class QualityView extends CellView {
 
 
     public interface Delegate {
-        void click(int index);
+        void click(int resolution);
     }
 
     public void setDelegate(Delegate delegate) {

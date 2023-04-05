@@ -6,6 +6,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.Gravity;
 import android.view.View;
 
@@ -37,6 +38,8 @@ public class FeedFragment extends BaseFragment {
     private CastButton mirrorButton;
 
     FeedView feedView;
+
+    private SharedPreferences mirrorPreferences;
 
     @Override
     public View createView(Context context) {
@@ -70,15 +73,19 @@ public class FeedFragment extends BaseFragment {
 
             if (ServiceManager.instance().webSocketIsOpen()) {
 
+                String username = mirrorPreferences.getString("username", "User");
+                int bitrate = mirrorPreferences.getInt("bitrate", 2);
+                int resolution = mirrorPreferences.getInt("resolution", 1080);
+
                 Mirror mirror = new Mirror();
                 //String androidId = Settings.Secure.getString(getParentActivity().getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 
                 mirror.clientRequest = ClientRequest.CLIENT_REQUEST_MIRROR;
                 mirror.wifiIp = ServiceManager.instance().getWifiIp();
-                mirror.username = "Mahdi Abdolmaleki";
+                mirror.username = username;
                 mirror.title = "Start Screen Mirror ...";
-                mirror.bitrate = "2 Mbit";
-                mirror.resolution = "Full HD";
+                mirror.bitrate = bitrate;
+                mirror.resolution = resolution;
                 mirror.connectionType = "WiFi";
 
                 Gson gson = new GsonBuilder().disableHtmlEscaping().create();
@@ -91,6 +98,8 @@ public class FeedFragment extends BaseFragment {
 
         swipe.addView(feedView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP, 0, 0, 0, 0));
         swipe.addView(mirrorButton, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 90, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 40, 0, 40, 170));
+
+        mirrorPreferences = context.getSharedPreferences("mirror", 0); // 0 - for private mode
 
 
         parentView.invalidate();

@@ -9,7 +9,6 @@ import android.text.StaticLayout;
 import android.view.Gravity;
 import android.view.MotionEvent;
 
-import com.mahdi.car.core.RootView;
 import com.mahdi.car.core.cell.CellFrameLayout;
 import com.mahdi.car.messenger.AndroidUtilities;
 import com.mahdi.car.server.model.User;
@@ -25,22 +24,13 @@ public class ProfileCell extends CellFrameLayout {
     private Delegate delegate;
 
     private StaticLayout nameLayout;
-
     private int button_y_shift = dp(250);
     private boolean buttonVisible = true;
 
-    Button btnEdit;
-
-
-    public void startWaiting() {
-        buttonVisible = false;
-        startStoryRing();
-    }
+    private Button btnEdit;
 
     public ProfileCell(Context context) {
         super(context);
-
-        setName(9, "Mahdi Abdolmaleki");
 
         round = dp(4);
 
@@ -59,6 +49,7 @@ public class ProfileCell extends CellFrameLayout {
         btnEdit.setTitle("Edit");
         btnEdit.setColor(1);
         btnEdit.setFontSize(6);
+        btnEdit.setDelegate((Button.Delegate) () -> delegate.edit());
         addView(btnEdit, LayoutHelper.createFrame(150, 30, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0, 0, 20));
 
         setUser();
@@ -70,6 +61,29 @@ public class ProfileCell extends CellFrameLayout {
         username = user.Username;
         //user.Avatar = null;
         //setAvatar(user.Avatar);
+    }
+
+    public void setUsername(String username) {
+        setName(9, username);
+    }
+
+    public void setName(int userid, String name) {
+        name = name == null ? " " : name;
+        name = name.length() == 0 ? " " : name;
+        String start = name.substring(0, 1);
+
+        if (AndroidUtilities.isEnglishWord(start)) {
+            nameLayout = new StaticLayout(name, Themp.TEXT_PAINT_FILL_BLACK[8], width, Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
+        } else {
+            nameLayout = new StaticLayout(name, Themp.TEXT_PAINT_FILL_BLACK[8], width, Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
+        }
+
+        invalidate();
+    }
+
+    public void startWaiting() {
+        buttonVisible = false;
+        startStoryRing();
     }
 
     @Override
@@ -148,22 +162,10 @@ public class ProfileCell extends CellFrameLayout {
         return true;
     }
 
-    public void setName(int userid, String name) {
-        name = name == null ? " " : name;
-        name = name.length() == 0 ? " " : name;
-        String start = name.substring(0, 1);
-
-        if (AndroidUtilities.isEnglishWord(start)) {
-            nameLayout = new StaticLayout(name, Themp.TEXT_PAINT_FILL_BLACK[8], width, Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
-        } else {
-            nameLayout = new StaticLayout(name, Themp.TEXT_PAINT_FILL_BLACK[8], width, Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
-        }
-
-        invalidate();
-    }
-
     public interface Delegate {
         void button();
+
+        void edit();
     }
 
     public void setDelegate(Delegate delegate) {

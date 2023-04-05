@@ -57,15 +57,15 @@ public class FloatView extends CellFrameLayout {
         }
 
         str[0] = mirror.connectionType;
-        str[1] = mirror.bitrate;
-        str[2] = mirror.resolution;
+        str[1] = mirror.bitrate + " Mbit";
+        str[2] = mirror.resolution + "";
 
         //User user = new User();
         //userid = user.ID;
         //user.Avatar = "2019-02-02_18-57-04_UTC_profile_pic.jpg";
         //setAvatar(user.Avatar);
 
-        toolbarNameLayout = new StaticLayout(mirror.username, Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[6], dp(200), Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
+        toolbarNameLayout = new StaticLayout(mirror.username, Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[6], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
         toolbarTitleLayout = new StaticLayout(mirror.title, Themp.TEXT_PAINT_FILL_GREY[5], width, Layout.Alignment.ALIGN_NORMAL, 1.2f, 0.2f, false);
 
         titleLayout = new StaticLayout("Screen Mirror On Ubuntu Desktop", Themp.TEXT_PAINT_FILL_AND_STROKE_3_BLACK[8], width, Layout.Alignment.ALIGN_CENTER, 1.2f, 0.2f, false);

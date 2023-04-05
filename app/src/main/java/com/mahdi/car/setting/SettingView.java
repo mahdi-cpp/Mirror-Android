@@ -1,6 +1,7 @@
 package com.mahdi.car.setting;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.view.Gravity;
 import android.view.View;
@@ -9,13 +10,14 @@ import android.view.ViewGroup;
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mahdi.car.core.RootView;
 import com.mahdi.car.core.cell.CellFrameLayout;
 import com.mahdi.car.core.cell.CellView;
 import com.mahdi.car.core.component.ToolBar;
 import com.mahdi.car.library.viewAnimator.ViewAnimator;
 import com.mahdi.car.setting.cell.BitrateView;
 import com.mahdi.car.setting.cell.ProfileCell;
-import com.mahdi.car.setting.cell.QualityView;
+import com.mahdi.car.setting.cell.ResolutionView;
 import com.mahdi.car.setting.cell.SettingCell;
 import com.mahdi.car.share.CustomGridLayoutManager;
 import com.mahdi.car.share.RefreshRecyclerView;
@@ -42,6 +44,9 @@ public class SettingView extends CellFrameLayout {
     private boolean isShow = false;
 
     protected ToolBar toolbar;
+
+    private SharedPreferences mirrorPreferences;
+    private SharedPreferences.Editor mirrorPreferencesEdit;
 
     public interface Delegate {
         void leftPressed();
@@ -117,7 +122,11 @@ public class SettingView extends CellFrameLayout {
             }
         });
 
+
         addView(swipe, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.TOP, 0, 47, 0, 0));
+
+        mirrorPreferences = context.getSharedPreferences("mirror", 0); // 0 - for private mode
+        mirrorPreferencesEdit = mirrorPreferences.edit();
 
         invalidate();
     }
@@ -242,7 +251,7 @@ public class SettingView extends CellFrameLayout {
             } else if (viewType == rowBitrate) {
                 return new Holder(new BitrateView(context));
             } else if (viewType == rowResolution) {
-                return new Holder(new QualityView(context));
+                return new Holder(new ResolutionView(context));
             } else {
                 return new Holder(new SettingCell(context));
             }
@@ -253,20 +262,44 @@ public class SettingView extends CellFrameLayout {
 
             if (position == rowProfile) {
                 ProfileCell cell = (ProfileCell) holder.itemView;
-            }  else if (position == rowMirrorSeparate) {
+                cell.setUsername(mirrorPreferences.getString("username", "User"));
+                cell.setDelegate(new ProfileCell.Delegate() {
+                    @Override
+                    public void button() {
+
+                    }
+
+                    @Override
+                    public void edit() {
+                        EditNameFragment fragment = new EditNameFragment(mirrorPreferences.getString("username", "User"));
+                        fragment.setDelegate(username -> {
+                            mirrorPreferencesEdit.putString("username", username);
+                            mirrorPreferencesEdit.apply();
+                            cell.setUsername(username);
+                            fragment.finishFragment();
+                        });
+                        RootView.instance().presentFragment(fragment);
+                    }
+                });
+            } else if (position == rowMirrorSeparate) {
                 SettingCell cell = (SettingCell) holder.itemView;
                 cell.setColor(0);
                 cell.setEmpty(30);
             } else if (position == rowBitrate) {
                 BitrateView cell = (BitrateView) holder.itemView;
-                cell.setDelegate(index -> {
-
+                cell.setBitrate(mirrorPreferences.getInt("bitrate", 1));
+                cell.setDelegate(bitrate -> {
+                    mirrorPreferencesEdit.putInt("bitrate", bitrate);
+                    mirrorPreferencesEdit.apply();
                 });
             } else if (position == rowResolution) {
-                QualityView cell = (QualityView) holder.itemView;
-                cell.setDelegate(index -> {
-
+                ResolutionView cell = (ResolutionView) holder.itemView;
+                cell.setResolution(mirrorPreferences.getInt("resolution", 1080));
+                cell.setDelegate(resolution -> {
+                    mirrorPreferencesEdit.putInt("resolution", resolution);
+                    mirrorPreferencesEdit.apply();
                 });
+
             } else if (position == rowAboutSeparate) {
                 SettingCell cell = (SettingCell) holder.itemView;
                 cell.setColor(0);
@@ -285,4 +318,6 @@ public class SettingView extends CellFrameLayout {
             return position;
         }
     }
+
+
 }
